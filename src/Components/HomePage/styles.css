@@ -1,0 +1,357 @@
+@import "tailwindcss";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#app {
+  height: 100%;
+}
+html,
+body {
+  position: relative;
+  height: 100%;
+}
+button {
+  cursor: pointer !important;
+}
+/* body {
+  background: #eee;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: #000;
+  margin: 0;
+  padding: 0;
+} */
+
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+.swiper-container {
+  position: relative;
+  height: 400px;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: var(--main-color);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  /* z-index: 10; */
+  font-size: 30px;
+  border-radius: 25px 25px 0;
+  width: 67px;
+  height: 60px;
+  /* display: flex; */
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.swiper-button-prev {
+  left: -37px;
+  clip-path: inset(0 30px 0 0);
+}
+
+.swiper-button-next {
+  right: -37px;
+  border-radius: 0 25px 25px 0;
+  justify-content: end;
+  clip-path: inset(0 0 0 30px);
+}
+
+.containerEveryday {
+  padding-left: 30px;
+  padding-right: 30px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  margin-top: 24px;
+}
+@media (min-width: 1000px) {
+  .containerEveryday {
+    padding-left: 54px;
+    padding-right: 54px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+  }
+}
+.swiper-slide {
+  /* text-align: center; */
+  font-size: 18px;
+  background: #fff;
+  width: 200px !important;
+  margin-right: 25px !important;
+  /* height: 180px !important; */
+  margin-top: 40px !important;
+
+  /* Center slide text vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 7px 0 0 0;
+}
+
+/* .swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+} */
+.MuiPaper-root {
+  width: 200px !important;
+  /* height: 373px; */
+  /* height: 100%; */
+  overflow: visible !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.card {
+  background-color: #fff !important;
+  width: 200px !important;
+  /* height: 373px; */
+  /* height: 100%; */
+  overflow: visible !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
+    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+}
+figure img {
+  width: 200px !important;
+  background-color: blueviolet;
+  border-radius: 8px 0 0 0;
+  height: 180px;
+  width: 100%;
+  object-fit: contain;
+}
+.card-content {
+  padding: 16px 8px !important;
+  width: 100%;
+  /* height: 200px; */
+  height: 180px;
+}
+.card-content .card-title {
+  margin: 0;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 400;
+  font-size: 1.3rem;
+  line-height: 1.334;
+  letter-spacing: 0em;
+  /* margin-bottom: 0.35em; */
+  color: #aa8cee;
+  font-weight: bold;
+  height: 50px; /*this to ensure that all description on all cards start from same line like not a descriptoon in first card is above the one in the second card*/
+}
+.description p {
+  margin: 0;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 400;
+  /* font-size: 0.875rem; */
+  line-height: 1.43;
+  letter-spacing: 0.01071em;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 1rem;
+
+  /* height: 50px; */
+}
+/* .MuiCardActions-root {
+  height: 0;
+} */
+/* .MuiCard-root {
+  width: 100% !important;
+  /* place-items: center; */
+/* } */
+.MuiCardMedia-root {
+  /* width: 100% !important;
+  height: 277px !important; */
+  background-color: blueviolet;
+  border-radius: 7px 0 0 0;
+}
+@media (max-width: 640px) {
+  .swiper-slide {
+    width: 200px !important;
+    margin-right: 15px !important;
+  }
+  .MuiCardMedia-root {
+    width: 100% !important;
+  }
+}
+
+.swiper-pagination {
+  display: none !important;
+}
+.swiper {
+  width: 100%;
+  height: 600px;
+}
+.swiper-wrapper {
+  position: relative;
+  width: 100%;
+  height: 345px !important;
+  z-index: 1;
+  display: flex;
+  transition-property: transform;
+  transition-timing-function: var(
+    --swiper-wrapper-transition-timing-function,
+    initial
+  );
+  box-sizing: content-box;
+}
+/* .MuiPaper-root {
+  height: 345px;
+} */
+.favoriteButton {
+  background-color: #f9faf7;
+  align-items: center;
+}
+.favBtn {
+  align-items: center;
+  background-color: #e6dbff;
+}
+.favBtn i {
+  fill: var(--main-color) !important;
+  color: var(--main-color) !important;
+}
+.offers {
+  font-weight: 500;
+}
+.offers span {
+  align-items: center;
+  border-radius: 7px 0 10px 0;
+  background-color: #eec7b5;
+}
+.price {
+  margin-top: 10px;
+}
+.QuantityInput {
+  /* background-color: #e6dbff; */
+  margin-top: 30px;
+  /* margin-left: -7px; */
+  /* padding-left: 27px; */
+}
+
+.QuantityInput .dec {
+  border: 1px solid var(--main-color);
+  color: #7c4aed;
+}
+.QuantityInput .input {
+  background-color: #e6dbff;
+  color: #7c4aed;
+}
+.QuantityInput .inc {
+  background-color: var(--main-color-2);
+}
+.MuiCardContent-root {
+  padding: 16px 8px !important;
+  width: 100%;
+}
+.everyDayNeeds {
+  margin-top: 0px !important;
+  margin-bottom: 80px !important;
+}
+.best-deals {
+  margin-top: 125px !important;
+}
+
+/* Footer */
+footer {
+  background-color: var(--main-color);
+}
+
+footer .cont {
+  padding: 30px;
+}
+footer h2 {
+  color: white;
+  font-size: 1.1rem;
+}
+footer li {
+  cursor: pointer;
+}
+
+footer .foot {
+  padding: 23px;
+}
+footer .foot .icons {
+  gap: 6px;
+}
+footer .foot .icons i:hover {
+  transform: scale(1.1);
+  color: var(--main-color-2);
+}
+@media (max-width: 640px) {
+  footer .foot {
+    padding: 16px;
+  }
+}
+/* Footer */
+/* product card */
+.outOfStock {
+  color: rgba(226, 53, 53);
+  background-color: rgba(255, 218, 218);
+}
+
+.Notify {
+  background-color: var(--main-color-2);
+  transition: all 0.5s;
+}
+.Notify:hover {
+  background-color: var(--main-color);
+}
+.cart span {
+  background-color: var(--main-color-2);
+}
+@media (max-width: 740px) {
+  .value {
+    width: 1rem;
+    height: 1rem;
+    left: 12px;
+    top: -5px;
+  }
+}
+
+.bx-heart,
+.bxs-heart {
+  transition: all 0.5s;
+}
+.favoriteButton .bx-heart:hover,
+.bxs-heart:hover {
+  transform: scale(1.1);
+}
+/* product card */
+/* Search */
+.searchList {
+  grid-template-columns: 1fr;
+  margin: 15px !important;
+}
+.anchorItems {
+  color: var(--main-color-2);
+  font-weight: 700;
+}
+.searchMenu {
+  background-color: var(--main-color-alt);
+  /* transition: all 5s; */
+}
+/* Search */
+
+/* categorySideBar */
+
+.drawer-overlay {
+  background-color: #000000bd;
+}
+.drawer-side {
+  background-color: var(--main-color-alt);
+}
+/* categorySideBar */
