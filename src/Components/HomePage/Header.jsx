@@ -5,7 +5,7 @@ import { useQuantity } from "./useQuantity";
 import { useTotalQuantity } from "./TotalQuantityContext";
 import { useQuantityWish } from "./useQuantityWish";
 import { useTotalWish } from "./TotalWishQuantity";
-import { BottomDrawer } from "./BottomDrawer";
+// import { BottomDrawer } from "./BottomDrawer";
 import SearchList from "./SearchList";
 import SearchItems from "./SearchItems";
 import NoResult from "./NoResult";
@@ -182,7 +182,7 @@ function SearchContainer({ children, products, open, setOpen }) {
             </SearchList>
           </SearchMenu>
         </form>
-        <BottomDrawer open={open} setOpen={setOpen} />
+        {/* <BottomDrawer open={open} setOpen={setOpen} /> */}
 
         {/* <div className="absolute top-[72%] left-0 right-0 z-51">
           <SearchMenu />
@@ -209,8 +209,6 @@ function SearchMenu({ children, searchOpen }) {
     </div>
   );
 }
-
-
 
 function LowCategories({ isSideBarOpen, setIsSideBarOpen, products }) {
   // const [categoryDrawerOpen, setCategoryDrawerOpen] = useState(false);
