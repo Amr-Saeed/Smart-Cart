@@ -34,7 +34,7 @@ export function BottomDrawer({ open, setOpen }) {
     <Drawer
       open={open}
       position="bottom"
-      className=" lg:hidden block place-items-center"
+      className=" lg:hidden block place-items-center !h-[100vh] max-h-[100vh]"
       style={{ backgroundColor: "#e6dbff" }}
     >
       <DrawerContent>
@@ -72,7 +72,7 @@ export function BottomDrawer({ open, setOpen }) {
 function SearchMenu2({ children }) {
   return (
     <div
-      className={`searchMenu w-full rounded-[10px] top-full max-h-[50vh]
+      className={`searchMenu w-full rounded-[10px] top-full
       overflow-y-auto shadow-lg rounded-b-lg !mt-[-25px] `}
     >
       {/* <SearchList /> */}
@@ -91,7 +91,7 @@ function SearchBaring({ searchQuery2, setSearchQuery2, handleClose }) {
       onClick={(e) => e.stopPropagation()}
     >
       <form
-        className="searchBar relative flex justify-center items-center sticky top-0 z-50"
+        className="searchBar  flex justify-center items-center sticky top-0 z-50"
         onSubmit={(e) => e.preventDefault()}
       >
         <input

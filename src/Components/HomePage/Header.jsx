@@ -128,7 +128,7 @@ function SearchContainer({ children, products, open, setOpen }) {
           <input
             type="text"
             placeholder="Search Products"
-            className="searchInput w-[13rem]  p-2.5 bg-white outline-none md:w-[50%] lg:w-full h-12 lg:rounded-lg shadow "
+            className="searchInput w-[13rem]  p-2.5 bg-white outline-none md:w-[50%] lg:w-full h-12 lg:rounded-lg rounded-l-lg shadow "
             // onFocus={handleSearchOpen}
             onBlur={handleInputBlur}
             onChange={handleUserSearch}
