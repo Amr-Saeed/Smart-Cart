@@ -56,7 +56,7 @@ function SmallHeader({ isSideBarOpen, setIsSideBarOpen, children }) {
     <>
       <div className="logo-container w-full    flex justify-between items-center lg:hidden ">
         <button
-          className="basis-24"
+          className="basis-0 md:basis-24"
           onClick={() => setIsSideBarOpen((open) => !open)}
         >
           <i className="bx bx-menu-alt-left md:text-3xl text-[1.3rem] "></i>
@@ -64,7 +64,7 @@ function SmallHeader({ isSideBarOpen, setIsSideBarOpen, children }) {
         <Logo
           src="/logo.png"
           alt="Smart-Cart"
-          className="md:w-24 md:h-24  logo "
+          className="md:w-24 md:h-24  logo left-[12px] md:left-0 relative"
         />
         {children}
       </div>
@@ -128,7 +128,7 @@ function SearchContainer({ children, products, open, setOpen }) {
           <input
             type="text"
             placeholder="Search Products"
-            className="searchInput w-72  p-2.5 bg-white outline-none lg:w-full h-12 lg:rounded-lg shadow "
+            className="searchInput w-[13rem]  p-2.5 bg-white outline-none md:w-[50%] lg:w-full h-12 lg:rounded-lg shadow "
             // onFocus={handleSearchOpen}
             onBlur={handleInputBlur}
             onChange={handleUserSearch}
@@ -141,7 +141,7 @@ function SearchContainer({ children, products, open, setOpen }) {
           />
           <button
             type="submit"
-            className="searchButton lg:absolute right-0 h-12 rounded-r-lg  w-12 flex justify-center items-center"
+            className="searchButton lg:absolute right-0 h-12 rounded-r-lg  w-[4rem] md:w-12 flex justify-center items-center"
           >
             <i className="bx bx-search text-black"></i>
           </button>
