@@ -91,31 +91,39 @@ function SearchContainer({ children, products, open, setOpen }) {
     setSearchQuery(e.target.value);
   }
 
+  // function handleInputBlur() {
+  //   // Only close the dropdown menu on desktop, not the mobile drawer
+  //   const isLargeScreen = window.matchMedia("(min-width: 1024px)").matches;
+  //   if (isLargeScreen) {
+  //     // Add a slight delay to allow for clicks on search results
+  //     setTimeout(() => {
+  //       setSearchOpen(false);
+  //     }, 200);
+  //   }
+  // }
+
   function handleInputBlur() {
     // Only close the dropdown menu on desktop, not the mobile drawer
-    const isLargeScreen = window.matchMedia("(min-width: 1024px)").matches;
-    if (isLargeScreen) {
-      // Add a slight delay to allow for clicks on search results
-      setTimeout(() => {
-        setSearchOpen(false);
-      }, 200);
-    }
+    setTimeout(() => {
+      setSearchOpen(false);
+    }, 200);
   }
+
   function handleDrawer() {
     setOpen((open) => !open);
   }
-  function handleInputFocus() {
-    // Check if screen is large (lg breakpoint is typically 1024px)
-    const isLargeScreen = window.matchMedia("(min-width: 1024px)").matches;
+  // function handleInputFocus() {
+  //   // Check if screen is large (lg breakpoint is typically 1024px)
+  //   const isLargeScreen = window.matchMedia("(min-width: 1024px)").matches;
 
-    if (isLargeScreen) {
-      // Only open search menu on large screens
-      handleSearchOpen();
-    } else {
-      // Only open drawer on small/medium screens
-      handleDrawer();
-    }
-  }
+  //   if (isLargeScreen) {
+  //     // Only open search menu on large screens
+  //     handleSearchOpen();
+  //   } else {
+  //     // Only open drawer on small/medium screens
+  //     handleDrawer();
+  //   }
+  // }
   return (
     <div className="search lg:grid lg:grid-cols-3 ">
       <Logo
@@ -124,21 +132,30 @@ function SearchContainer({ children, products, open, setOpen }) {
         className="w-24 h-24  logoLG hidden lg:flex "
       />
       <div className="searchBar overflow-visible relative flex justify-center items-center">
+        {/* Button for Small/Medium Screens */}
+
         <form className="searchBar relative flex justify-center items-center">
           <input
             type="text"
             placeholder="Search Products"
-            className="searchInput w-[13rem]  p-2.5 bg-white outline-none md:w-[50%] lg:w-full h-12 lg:rounded-lg rounded-l-lg shadow "
+            className="searchInput w-[13rem] hidden lg:flex  p-2.5 bg-white outline-none md:w-[50%] lg:w-full h-12 lg:rounded-lg rounded-l-lg shadow "
             // onFocus={handleSearchOpen}
-            onBlur={handleInputBlur}
+            onBlur={handleSearchOpen}
             onChange={handleUserSearch}
             // onFocus={handleDrawer}
             // onFocus={() => {
             //   handleDrawer(); // Always call for mobile
             //   handleSearchOpen(); // Always call to toggle the search state
             // }}
-            onFocus={handleInputFocus}
+            onFocus={handleSearchOpen}
           />
+          <button
+            type="button"
+            className="searchInput text-gray-400 font-normal w-[13rem] lg:hidden  p-2.5 bg-white outline-none md:w-[50%] lg:w-full h-12 lg:rounded-lg rounded-l-lg shadow flex items-center"
+            onClick={handleDrawer}
+          >
+            Search Products
+          </button>
           <button
             type="submit"
             className="searchButton lg:absolute right-0 h-12 rounded-r-lg  w-[4rem] md:w-12 flex justify-center items-center"

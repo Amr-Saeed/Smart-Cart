@@ -68,6 +68,50 @@ export function BottomDrawer({ open, setOpen }) {
     </Drawer>
   );
 }
+// import { useEffect, useState } from "react";
+
+// function DrawerContent({ className, children, ...props }) {
+//   const [drawerHeight, setDrawerHeight] = useState("100vh");
+
+//   useEffect(() => {
+//     // Function to update the height dynamically
+//     const updateHeight = () => {
+//       const height = window.visualViewport?.height || window.innerHeight;
+//       setDrawerHeight(`${height}px`);
+//     };
+
+//     updateHeight(); // Set initial height
+//     window.visualViewport?.addEventListener("resize", updateHeight); // Update on resize
+//     window.visualViewport?.addEventListener("scroll", updateHeight); // Fix when scrolling causes resize
+
+//     return () => {
+//       window.visualViewport?.removeEventListener("resize", updateHeight);
+//       window.visualViewport?.removeEventListener("scroll", updateHeight);
+//     };
+//   }, []);
+
+//   return (
+//     <DrawerPrimitive.Content
+//       data-slot="drawer-content"
+//       className={cn(
+//         "group/drawer-content fixed z-50 flex flex-col bg-[var(--main-color-alt)]",
+//         "inset-x-0 bottom-0 shadow-lg",
+//         "overflow-hidden translate-y-0 overscroll-none",
+//         className
+//       )}
+//       style={{ height: drawerHeight, maxHeight: drawerHeight }} // Dynamically set height
+//       {...props}
+//     >
+//       {/* Search Bar (Fixed at the Top) */}
+//       <div className="w-full p-4 hidden">{children[0]}</div>
+
+//       {/* Product List (Takes Full Remaining Space & Scrolls) */}
+//       <div className="flex-1 w-full overflow-y-auto overflow-x-hidden place-items-center">
+//         {children.slice(1)}
+//       </div>
+//     </DrawerPrimitive.Content>
+//   );
+// }
 
 function SearchMenu2({ children }) {
   return (
