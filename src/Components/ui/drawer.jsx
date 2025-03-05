@@ -3,8 +3,14 @@ import { Drawer as DrawerPrimitive } from "vaul";
 
 import { cn } from "../../lib/utils";
 
-function Drawer({ ...props }) {
-  return <DrawerPrimitive.Root data-slot="drawer" {...props} />;
+function Drawer({ className, ...props }) {
+  return (
+    <DrawerPrimitive.Root
+      data-slot="drawer"
+      className={cn("fixed inset-0 h-[100dvh] bg-black/50", className)} // 🚀 This ensures full height
+      {...props}
+    />
+  );
 }
 
 // function DrawerTrigger({ ...props }) {
@@ -34,24 +40,28 @@ function DrawerClose({ ...props }) {
 
 function DrawerContent({ className, children, ...props }) {
   return (
-    // <DrawerPortal data-slot="drawer-portal">
-    // <DrawerOverlay />
     <DrawerPrimitive.Content
       data-slot="drawer-content"
       className={cn(
-        "group/drawer-content bg-[var(--main-color-alt)] fixed z-50 flex h-[90%] flex-col !place-items-center",
-        "data-[vaul-drawer-direction=top]:inset-x-0 data-[vaul-drawer-direction=top]:top-0 data-[vaul-drawer-direction=top]:mb-24  data-[vaul-drawer-direction=top]:rounded-b-lg",
-        "data-[vaul-drawer-direction=bottom]:inset-x-0 data-[vaul-drawer-direction=bottom]:bottom-0 data-[vaul-drawer-direction=bottom]:mt-24 ",
-        "data-[vaul-drawer-direction=right]:inset-y-0 data-[vaul-drawer-direction=right]:right-0 data-[vaul-drawer-direction=right]:w-3/4 data-[vaul-drawer-direction=right]:sm:max-w-sm",
-        "data-[vaul-drawer-direction=left]:inset-y-0 data-[vaul-drawer-direction=left]:left-0 data-[vaul-drawer-direction=left]:w-3/4 data-[vaul-drawer-direction=left]:sm:max-w-sm",
+        "group/drawer-content fixed z-50 flex flex-col bg-[var(--main-color-alt)]",
+        "inset-x-0 bottom-0  shadow-lg",
+        "h-[100dvh] max-h-[100dvh] overflow-hidden", // 🚀 Keeps drawer full height
+        "translate-y-0", // 🚀 Prevents it from moving when keyboard opens
+        "overscroll-none", // 🚀 Stops weird scrolling issues
         className
       )}
       {...props}
     >
-      <div className="bg-muted hidden mx-auto mt-4  h-2 w-[100px] shrink-0 rounded-full" />
-      {children}
+      {/* Search Bar (Fixed at the Top) */}
+      <div className="w-full p-4 hidden">
+        {children[0]} {/* Assuming the first child is the search bar */}
+      </div>
+
+      {/* Product List (Takes Full Remaining Space & Scrolls) */}
+      <div className="flex-1 w-full overflow-y-auto">
+        {children.slice(1)} {/* Rest of the content (products) */}
+      </div>
     </DrawerPrimitive.Content>
-    // </DrawerPortal>
   );
 }
 
