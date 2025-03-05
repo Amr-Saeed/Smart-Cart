@@ -142,6 +142,7 @@ function SearchContainer({ children, products, open, setOpen }) {
           <button
             type="submit"
             className="searchButton lg:absolute right-0 h-12 rounded-r-lg  w-[4rem] md:w-12 flex justify-center items-center"
+            onClick={(e) => e.preventDefault()}
           >
             <i className="bx bx-search text-black"></i>
           </button>

@@ -58,7 +58,7 @@ function DrawerContent({ className, children, ...props }) {
       </div>
 
       {/* Product List (Takes Full Remaining Space & Scrolls) */}
-      <div className="flex-1 w-full overflow-y-auto">
+      <div className="flex-1 w-full overflow-y-auto overflow-x-hidden place-items-center">
         {children.slice(1)} {/* Rest of the content (products) */}
       </div>
     </DrawerPrimitive.Content>
