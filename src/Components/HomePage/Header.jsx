@@ -60,7 +60,7 @@ function SmallHeader({ isSideBarOpen, setIsSideBarOpen, children }) {
           <i className="bx bx-menu-alt-left md:text-3xl text-[1.3rem] "></i>
         </button>
         <Logo
-          src="/logo.png"
+          src="/logo.webp"
           alt="Smart-Cart"
           className="md:w-24 md:h-24  logo left-[12px] md:left-0 relative"
         />
