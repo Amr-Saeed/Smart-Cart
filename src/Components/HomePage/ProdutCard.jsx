@@ -9,37 +9,7 @@ export default function ProductCard({
   children,
   id,
 }) {
-  // const [quantity, setQuantity] = useState(0);
-
-  // function handleAdd(e) {
-  //   // e.preventDefault();
-  //   // setQuantity((quantity) => quantity + 1);
-  //   setQuantity((quantity) => (quantity === "" ? 1 : Number(quantity) + 1));
-  // }
-  // function handleDec(e) {
-  //   // e.preventDefault();
-  //   setQuantity((quantity) => (quantity > 1 ? quantity - 1 : 0));
-  //   // setQuantity((quantity) => (quantity > 1 ? Number(quantity) - 1 : ""));
-  // }
-
-  // function handleChange(e) {
-  //   const value = e.target.value;
-
-  //   // If the input is cleared (empty string), set quantity to empty string
-  //   if (value === "") {
-  //     setQuantity("");
-  //   } else {
-  //     // Otherwise, parse the value as a number
-  //     const numValue = Number(value);
-  //     if (!isNaN(numValue) && numValue >= 0) {
-  //       setQuantity(numValue);
-  //     }
-  //   }
-  // }
-
-  // const { quantity, handleAdd, handleDec, handleChange } = useQuantity(id);
-  // console.log(id);
-
+  
   return (
     <>
       <div className="card h-[399px]">

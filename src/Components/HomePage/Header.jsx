@@ -1,9 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useProducts } from "../useProducts";
-import { useQuantity } from "./useQuantity";
 import { useTotalQuantity } from "./TotalQuantityContext";
-import { useQuantityWish } from "./useQuantityWish";
 import { useTotalWish } from "./TotalWishQuantity";
 import { BottomDrawer } from "./BottomDrawer";
 import SearchList from "./SearchList";
@@ -91,17 +89,6 @@ function SearchContainer({ children, products, open, setOpen }) {
     setSearchQuery(e.target.value);
   }
 
-  // function handleInputBlur() {
-  //   // Only close the dropdown menu on desktop, not the mobile drawer
-  //   const isLargeScreen = window.matchMedia("(min-width: 1024px)").matches;
-  //   if (isLargeScreen) {
-  //     // Add a slight delay to allow for clicks on search results
-  //     setTimeout(() => {
-  //       setSearchOpen(false);
-  //     }, 200);
-  //   }
-  // }
-
   function handleInputBlur() {
     // Only close the dropdown menu on desktop, not the mobile drawer
     setTimeout(() => {
@@ -112,22 +99,12 @@ function SearchContainer({ children, products, open, setOpen }) {
   function handleDrawer() {
     setOpen((open) => !open);
   }
-  // function handleInputFocus() {
-  //   // Check if screen is large (lg breakpoint is typically 1024px)
-  //   const isLargeScreen = window.matchMedia("(min-width: 1024px)").matches;
 
-  //   if (isLargeScreen) {
-  //     // Only open search menu on large screens
-  //     handleSearchOpen();
-  //   } else {
-  //     // Only open drawer on small/medium screens
-  //     handleDrawer();
-  //   }
   // }
   return (
     <div className="search lg:grid lg:grid-cols-3 ">
       <Logo
-        src="/logo.png"
+        src="/logo.webp"
         alt="Smart-Cart"
         className="w-24 h-24  logoLG hidden lg:flex "
       />
@@ -139,14 +116,8 @@ function SearchContainer({ children, products, open, setOpen }) {
             type="text"
             placeholder="Search Products"
             className="searchInput w-[13rem] hidden lg:flex  p-2.5 bg-white outline-none md:w-[50%] lg:w-full h-12 lg:rounded-lg rounded-l-lg shadow "
-            // onFocus={handleSearchOpen}
             onBlur={handleSearchOpen}
             onChange={handleUserSearch}
-            // onFocus={handleDrawer}
-            // onFocus={() => {
-            //   handleDrawer(); // Always call for mobile
-            //   handleSearchOpen(); // Always call to toggle the search state
-            // }}
             onFocus={handleSearchOpen}
           />
           <button
@@ -163,22 +134,6 @@ function SearchContainer({ children, products, open, setOpen }) {
           >
             <i className="bx bx-search text-black"></i>
           </button>
-          {/* {searchOpen && (
-            <SearchMenu searchOpen={searchOpen}>
-              <SearchList>
-                {products.map((product) => (
-                  <SearchItems
-                    img={product.imageUrl}
-                    name={product.name}
-                    unit={product.unit}
-                    key={product.id}
-                    price={product.price}
-                    offers={product.offers}
-                  />
-                ))}
-              </SearchList>
-            </SearchMenu>
-          )} */}
 
           <SearchMenu searchOpen={searchOpen}>
             <SearchList>
@@ -331,81 +286,5 @@ function Logo({ className, src, alt }) {
     />
   );
 }
-// function UpperHeader() {
-//   return <></>;
-// }
 
-// function SearchBar() {
-//   return (
-
-//   );
-// }
 export default Header;
-
-{
-  // <div className="containerr ">
-  //   <div className="lower-header flex  items-center">
-  //     <ul className="categories flex justify-center items-center gap-24  ">
-  //       <li className="min-w-max">
-  //         <button className="flex justify-center items-center gap-1">
-  //           <i class="bx bx-menu-alt-left"></i>
-  //           All Categories
-  //         </button>
-  //       </li>
-  //       <li className="min-w-max">
-  //         <a href="#">Dairy, Eggs & Cheese</a>
-  //       </li>
-  //       <li className="min-w-max">
-  //         <a href="#">Fruits & Vegetables</a>
-  //       </li>
-  //       <li className="min-w-max">
-  //         <a href="#">Snacks & Sweets</a>
-  //       </li>
-  //       <li className="min-w-max">
-  //         <a href="#">Meat & Poultry</a>
-  //       </li>
-  //       <li className="min-w-max flex justify-center items-center">
-  //         <a href="#" className="flex justify-center items-center gap-1">
-  //           <i class="bx bxs-offer"></i>
-  //           Deals
-  //         </a>
-  //       </li>
-  //     </ul>
-  //   </div>
-  // </div>;
-}
-
-// small icons
-{
-  /* <div className="icons  flex  mr-0  ">
-            <i class="bx bx-user md:text-3xl text-[1.3rem] cursor-pointer"></i>
-            <i class="bx bx-heart md:text-3xl text-[1.3rem] cursor-pointer"></i>
-            <i class="bx bx-cart md:text-3xl text-[1.3rem] cursor-pointer"></i>
-          </div> */
-}
-
-//big icons
-{
-  /* <div className="iconsLG lg:flex justify-end items-center gap-2.5  hidden">
-            <i class="bx bx-user text-3xl cursor-pointer"></i>
-            <i class="bx bx-heart text-3xl cursor-pointer"></i>
-            <i class="bx bx-cart text-3xl cursor-pointer"></i>
-          </div> */
-}
-// small img
-{
-  /* <Logo
-  src="/logo.png"
-  alt="Smart-Cart"
-  className="md:w-24 md:h-24 w-16 h-16  logo "
-/>; */
-}
-
-// big img
-{
-  /* <Logo
-  src="/logo.png"
-  alt="Smart-Cart"
-  className="w-24 h-24  logoLG hidden lg:flex "
-/>; */
-}

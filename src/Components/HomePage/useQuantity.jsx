@@ -6,14 +6,6 @@ export function useQuantity(productID) {
   const [quantity, setQuantity] = useLocalStorage(0, `quantity-${productID}`);
 
   const { setTotalQuantity, totalQuantity } = useTotalQuantity();
-  // function handleAdd(e) {
-  //   // e.preventDefault();
-  //   // setQuantity((quantity) => quantity + 1);
-  //   setQuantity((quantity) => (quantity === "" ? 1 : Number(quantity) + 1));
-  //   setTotalQuantity((quantity) =>
-  //     quantity === "" ? 1 : Number(quantity) + 1
-  //   );
-  // }
 
   function handleAdd(e) {
     // Save the current quantity value before updating
@@ -27,12 +19,6 @@ export function useQuantity(productID) {
     // Update total separately using the current known values, not in a nested callback
     setTotalQuantity((prev) => prev + 1);
   }
-  // function handleDec(e) {
-  //   // e.preventDefault();
-  //   setQuantity((quantity) => (quantity > 1 ? quantity - 1 : 0));
-  //   // setQuantity((quantity) => (quantity > 1 ? Number(quantity) - 1 : ""));
-  //   setTotalQuantity((quantity) => (quantity > 1 ? quantity - 1 : 0));
-  // }
 
   function handleDec() {
     // Only proceed if we have a positive quantity

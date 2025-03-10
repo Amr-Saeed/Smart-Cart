@@ -1,10 +1,7 @@
 import TrueFocus from "../TextAnimations/TrueFocus/TrueFocus";
-// import { useProducts } from "../useProducts";
 import SwiperComponent from "./Swiper";
 
 function AnySlider({ title }) {
-  // const { products, isLoading } = useProducts();
-
   return (
     <section
       className={title === "Best Deals" ? "best-deals" : "everyDayNeeds"}

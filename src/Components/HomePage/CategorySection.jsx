@@ -6,19 +6,7 @@ function CategorySection() {
 
   if (isLoading) return <h1>Loading...</h1>;
 
-  // const newProduct = products.reduce((arr, product) => {
-  //   if (!arr.map((el) => el.category).includes(product.category))
-  //     return [
-  //       ...arr,
-  //       {
-  //         category: product.category,
-  //         name: product.name,
-  //         imageUrl: product.imageUrl,
-  //         id: product.id,
-  //       },
-  //     ];
-  //   else return arr;
-  // }, []);
+
   const newProduct = products.reduce((arr, product) => {
     // Special case: If category is "Meat", only include product with id = 11
     if (product.category === "Meat & Poultry") {

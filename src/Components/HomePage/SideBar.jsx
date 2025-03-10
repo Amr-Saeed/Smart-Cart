@@ -7,37 +7,6 @@ export default function Sidebar({ isOpen, setIsOpen }) {
 
   const { products } = useProducts();
 
-  // const AllCAtegories = products.reduce((arr, product) => {
-  //   // Special case: If category is "Meat", only include product with id = 11
-  //   if (product.category === "Meat & Poultry") {
-  //     const hasMeatId11 = arr.some((el) => el.category === "Meat & Poultry");
-  //     if (!hasMeatId11 && product.id === 11) {
-  //       return [
-  //         ...arr,
-  //         {
-  //           category: product.category,
-  //           img: product.imageUrl,
-  //         },
-  //       ];
-  //     }
-  //   } else if (product.category === "Fruits & Vegetables") {
-  //     const hasCheese = arr.some((el) => el.category === "Fruits & Vegetables");
-
-  //     if (!hasCheese && product.id === 7) {
-  //       return [
-  //         ...arr,
-  //         {
-  //           category: product.category,
-  //           img: product.imageUrl,
-  //         },
-  //       ];
-  //     }
-  //   } else if (!arr.map((el) => el.category).includes(product.category)) {
-  //     return [...arr, { category: product.category, img: product.imageUrl }];
-  //   }
-  //   return arr;
-  // }, []);
-
   const AllCAtegories = products.reduce((arr, product) => {
     // Replace " and " with " & " in category names
     const categoryName = product.category.replace(/ and /g, " & ");
