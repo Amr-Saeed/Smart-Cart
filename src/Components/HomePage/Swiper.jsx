@@ -25,7 +25,6 @@ export default function SwiperComponent({ content, title }) {
     (product) => product?.bestDeal === true
   );
 
-  console.log("Filtered Best Deals:", bestDealsProducts);
   const uniqueNavPrev = `swiper-button-prev-${title.replace(/\s+/g, "")}`;
   const uniqueNavNext = `swiper-button-next-${title.replace(/\s+/g, "")}`;
 
@@ -103,13 +102,10 @@ function Offer({ offers }) {
 }
 
 function FavBtn({ id }) {
-  // const [isLiked, setIsLiked] = useState(false);
-  // const [isLiked, setIsLiked] = useLocalStorage(false, `isLiked-${id}`);
   const { wishQuan, handleAdd, handleDec } = useQuantityWish(id);
   const { totalWish } = useTotalWish();
 
   const isLiked = wishQuan > 0;
-  // console.log(totalWish);
 
   function handleToggle() {
     // setIsLiked((is) => !is);

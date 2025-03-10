@@ -3,7 +3,8 @@ import { useProducts } from "../useProducts";
 
 function Slider() {
   const { products, isLoading } = useProducts();
-  console.log(products);
+
+  if (isLoading) return <h1>Loading...</h1>;
 
   return (
     <div>

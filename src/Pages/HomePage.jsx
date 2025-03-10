@@ -5,8 +5,6 @@ import CategorySection from "../Components/HomePage/CategorySection";
 import EveryDayNeeds from "../Components/HomePage/EveryDayNeeds";
 import BestDeals from "../Components/HomePage/BestDeals";
 import Footer from "../Components/HomePage/Footer";
-// import DragCloseDrawerExample from "../Components/HomePage/DragCloseDrawerExample";
-import { DragCloseDrawerExample } from "../Components/HomePage/DragCloseDrawerExample";
 
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -30,7 +28,6 @@ function HomePage() {
       {/* <CategorySection /> */}
       <BestDeals />
       <Footer />
-      <DragCloseDrawerExample />
     </>
   );
 }

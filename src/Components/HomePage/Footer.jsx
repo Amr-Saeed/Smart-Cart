@@ -118,9 +118,9 @@ function Footer() {
             . All Rights Reserved.
           </span>
           <div className="icons flex">
-            <i class="bx bxl-facebook-circle text-3xl  cursor-pointer"></i>
-            <i class="bx bxl-linkedin-square text-3xl   cursor-pointer"></i>{" "}
-            <i class="bx bxl-github text-3xl  cursor-pointer"></i>
+            <i className="bx bxl-facebook-circle text-3xl  cursor-pointer"></i>
+            <i className="bx bxl-linkedin-square text-3xl   cursor-pointer"></i>{" "}
+            <i className="bx bxl-github text-3xl  cursor-pointer"></i>
           </div>
         </div>
       </div>

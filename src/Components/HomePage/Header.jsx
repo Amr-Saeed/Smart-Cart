@@ -111,7 +111,10 @@ function SearchContainer({ children, products, open, setOpen }) {
       <div className="searchBar overflow-visible relative flex justify-center items-center">
         {/* Button for Small/Medium Screens */}
 
-        <form className="searchBar relative flex justify-center items-center">
+        <form
+          id="searchForm"
+          className="searchBar relative flex justify-center items-center"
+        >
           <input
             type="text"
             placeholder="Search Products"
@@ -124,6 +127,7 @@ function SearchContainer({ children, products, open, setOpen }) {
             type="button"
             className="searchInput text-gray-400 font-normal w-[13rem] lg:hidden  p-2.5 bg-white outline-none md:w-[50%] lg:w-full h-12 lg:rounded-lg rounded-l-lg shadow flex items-center"
             onClick={handleDrawer}
+            disabled={open}
           >
             Search Products
           </button>

@@ -49,18 +49,6 @@ export default function Sidebar({ isOpen, setIsOpen }) {
     ),
   }));
 
-  console.log(`categoryProducts`, categoryProducts);
-  // const productsByCategory = AllCAtegories.reduce((arr, category) => {
-  //   return [
-  //     ...arr,
-  //     {
-  //       ...category,
-  //       products: products.filter(
-  //         (product) => product.category === category.category
-  //       ),
-  //     },
-  //   ];
-  // }, []);
   return (
     <div className={`drawer ${isOpen ? "open" : ""}`}>
       <div className="drawer-content">
@@ -126,7 +114,6 @@ function SideCategories({
     (cat) => cat.category === category.category
   );
   const productsList = categoryData ? categoryData.products : [];
-  console.log(`productsList`, productsList);
   return (
     <li className="menu-item !pr-4 !pl-4  rounded-2xl md:w-full !mb-[55px] w-[130%]">
       <button
