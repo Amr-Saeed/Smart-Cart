@@ -112,6 +112,7 @@ button {
 }
 .searchInput {
   padding: 10px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 .searchInputSM {
   margin: 5px 0 5px 0;
@@ -122,7 +123,7 @@ button {
   margin: 10px;
 }
 .logoLG {
-  margin: 10px 0 10px 17px;
+  margin: 10px 0 10px 0px;
 }
 .lower-header {
   /* padding: 20px; */

@@ -6,7 +6,6 @@ function CategorySection() {
 
   if (isLoading) return <h1>Loading...</h1>;
 
-
   const newProduct = products.reduce((arr, product) => {
     // Special case: If category is "Meat", only include product with id = 11
     if (product.category === "Meat & Poultry") {
@@ -63,7 +62,7 @@ function CategorySection() {
       <h2 className="main-title text-2xl font-bold text-center">
         <TrueFocus
           borderColor="#aa8cee"
-          //   manualMode={true}
+          manualMode={true}
           sentence="Featured Categories"
         />
 

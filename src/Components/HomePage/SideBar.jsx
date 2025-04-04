@@ -3,7 +3,7 @@ import { useProducts } from "../useProducts";
 import { img } from "framer-motion/client";
 
 export default function Sidebar({ isOpen, setIsOpen }) {
-  const [accordionOpen, setAccordionOpen] = useState(false);
+  const [accordionOpen, setAccordionOpen] = useState(null); //Keeps track of which category is currently open.
 
   const { products } = useProducts();
 

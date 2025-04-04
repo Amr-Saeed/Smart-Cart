@@ -10,7 +10,7 @@ import "./TrueFocus.css";
 
 const TrueFocus = ({
   sentence = "True Focus",
-  manualMode = false,
+  manualMode = true,
   blurAmount = 5,
   borderColor = "green",
   glowColor = "rgba(0, 255, 0, 0.6)",

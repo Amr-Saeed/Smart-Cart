@@ -1,10 +1,6 @@
 import { BrowserRouter, Routes } from "react-router-dom";
-import Login from "./Pages/Login";
 import { Route } from "react-router-dom";
-import BoxRegister from "./Components/Login/BoxRegister";
-// import SignUp from "./Pages/SignUp";
 import HomePage from "./Pages/HomePage";
-import { createContext, useEffect, useState } from "react";
 import { QunatityProvider } from "./Components/HomePage/TotalQuantityContext";
 import { WishProvider } from "./Components/HomePage/TotalWishQuantity";
 
