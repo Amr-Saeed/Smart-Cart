@@ -314,6 +314,14 @@ footer .foot .icons i:hover {
 .Notify:hover {
   background-color: var(--main-color);
 }
+
+.shopBtn {
+  transition: all 0.5s;
+}
+
+.shopBtn:hover {
+  background-color: var(--main-color);
+}
 .cart span {
   background-color: var(--main-color-2);
 }

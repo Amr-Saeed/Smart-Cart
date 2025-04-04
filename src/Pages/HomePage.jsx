@@ -5,6 +5,7 @@ import CategorySection from "../Components/HomePage/CategorySection";
 import EveryDayNeeds from "../Components/HomePage/EveryDayNeeds";
 import BestDeals from "../Components/HomePage/BestDeals";
 import Footer from "../Components/HomePage/Footer";
+import LandingSection from "../Components/HomePage/LandingSection";
 
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -22,6 +23,7 @@ function HomePage() {
   return (
     <>
       <Header />
+      <LandingSection />
       {/* <Slider /> */}
       <CategorySection />
       <EveryDayNeeds />

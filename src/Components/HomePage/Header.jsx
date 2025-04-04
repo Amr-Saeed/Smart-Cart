@@ -203,7 +203,7 @@ function LowCategories({ isSideBarOpen, setIsSideBarOpen, products }) {
     <div className="containerr low sticky top-0 z-50">
       <div className="lower-header hidden lg:flex  items-center">
         <ul className="categories lg:flex justify-center items-center gap-12 hidden  ">
-          <li className="min-w-max">
+          <li className="min-w-max text-[var(--category-color)] font-bold">
             <button
               // onClick={() => setOpen((open) => !open)}
               onClick={() => setIsSideBarOpen(true)}
@@ -220,7 +220,7 @@ function LowCategories({ isSideBarOpen, setIsSideBarOpen, products }) {
             />
           ))}
 
-          <li className="min-w-max flex justify-center items-center">
+          <li className="min-w-max flex justify-center items-center text-[#b8a6e3] font-bold">
             <a href="#" className="flex justify-center items-center gap-1">
               <i className="bx bxs-offer "></i>
               Deals
@@ -236,7 +236,7 @@ function LowCategories({ isSideBarOpen, setIsSideBarOpen, products }) {
 
 function FirstCategory({ category }) {
   return (
-    <li className="min-w-max">
+    <li className="min-w-max text-[var(--category-color)] font-bold">
       <a href="#">{category}</a>
     </li>
   );

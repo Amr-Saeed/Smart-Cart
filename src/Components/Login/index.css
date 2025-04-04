@@ -20,6 +20,7 @@
   --main-color-alt: #e6dbff;
   --main-color-2: #7c4aed;
   --main-color-3: #aa8cee;
+  --category-color: #8153e8;
 }
 .slider {
   background-color: var(--main-color);
@@ -43,8 +44,8 @@
   margin-bottom: 18px;
 }
 .containerr {
-  padding-left: 30px;
-  padding-right: 30px;
+  padding-left: 40px;
+  padding-right: 40px;
   margin-left: auto;
   margin-right: auto;
   width: 100%;
@@ -130,7 +131,7 @@ button {
   padding: 20px 0 40px 0px;
 }
 .low {
-  background-color: var(--main-color);
+  /* background-color: var(--main-color); */
 }
 .searchBar .searchButton {
   right: 0;
@@ -159,24 +160,25 @@ button {
 }
 .lower-header ul li,
 .lower-header ul i {
-  color: white !important ;
+  /* color: white !important ; */
 }
 .categories {
   font-size: 1.1rem;
 }
 .categories li {
-  color: var(--main-color);
+  /* color: var(--main-color); */
 }
 .categories li:last-child i {
-  color: var(--main-color-alt) !important;
+  /* color: var(--main-color-alt) !important; */
 }
 .categories li a {
   transition: 0.5s all;
 }
-.categories li:hover a {
+.categories li:not(:last-child):hover a {
   color: var(--main-color-alt);
   cursor: pointer;
 }
+
 .upper-header::after {
   content: "";
   position: absolute;
