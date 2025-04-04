@@ -7,6 +7,7 @@ import Price from "./Price";
 import TitleandDes from "./TitleandDes";
 import { useQuantityWish } from "./useQuantityWish";
 import { useTotalWish } from "./TotalWishQuantity";
+import { HiOutlineHeart } from "react-icons/hi";
 
 // Import Swiper styles
 import "swiper/css";
@@ -118,9 +119,14 @@ function FavBtn({ id }) {
         onClick={handleToggle}
         className="w-10 h-10  flex align-middle justify-center rounded-[50%] favBtn"
       >
-        <i
+        {/* <i
           className={isLiked ? "bx bxs-heart text-2xl" : "bx bx-heart text-2xl"}
-        ></i>
+        ></i> */}
+        {isLiked ? (
+          <HiOutlineHeart className="heart text-2xl  bxs-heart fill-[var(--main-color)]" />
+        ) : (
+          <HiOutlineHeart className="text-2xl heart bx-heart" />
+        )}
         {/* <i class="bx bxs-heart"></i> */}
       </button>
     </div>

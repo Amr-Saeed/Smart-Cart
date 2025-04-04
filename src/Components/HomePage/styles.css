@@ -224,8 +224,8 @@ figure img {
   align-items: center;
   background-color: #e6dbff;
 }
-.favBtn i {
-  fill: var(--main-color) !important;
+.favBtn svg {
+  /* fill: var(--main-color) !important; */
   color: var(--main-color) !important;
 }
 .offers {

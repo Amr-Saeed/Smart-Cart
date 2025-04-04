@@ -5,6 +5,9 @@ import Button from "./Button";
 import DecryptedText from "../TextAnimations/DecryptedText/DecryptedText";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { supabase } from "../../supabaseClient"; // ✅ Import the Supabase client
+import { UserIcon } from "@heroicons/react/24/outline";
+import { HiMiniEnvelope } from "react-icons/hi2";
+import { HiMiniLockClosed } from "react-icons/hi2";
 
 const initialState = {
   userName: "",
@@ -88,7 +91,8 @@ function UserNameInput({ userName, handleUserName }) {
         value={userName}
         onChange={handleUserName}
       />
-      <i className="bx bxs-user"></i>
+      {/* <i className="bx bxs-user"></i> */}
+      <UserIcon className="bx bxs-user" />
     </div>
   );
 }
@@ -103,7 +107,7 @@ function EmailInput({ email, handleEmail }) {
         value={email}
         onChange={handleEmail}
       />
-      <i className="bx bxs-envelope"></i>
+      <HiMiniEnvelope className="bx bxs-envelope" />
     </div>
   );
 }
@@ -118,7 +122,7 @@ function PasswordInput({ password, handlePassword }) {
         onChange={handlePassword}
         value={password}
       />
-      <i className="bx bxs-lock-alt"></i>
+      <HiMiniLockClosed className="bx bxs-lock-alt" />
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useProducts } from "../useProducts";
 import { img } from "framer-motion/client";
+import { HiOutlineX } from "react-icons/hi";
 
 export default function Sidebar({ isOpen, setIsOpen }) {
   const [accordionOpen, setAccordionOpen] = useState(null); //Keeps track of which category is currently open.
@@ -71,7 +72,8 @@ export default function Sidebar({ isOpen, setIsOpen }) {
               className="w-full h-14 flex items-center justify-end "
               onClick={() => setIsOpen(false)}
             >
-              <i className="bx bx-x text-3xl"></i>
+              {/* <i className="bx bx-x text-3xl"></i> */}
+              <HiOutlineX className="bx bx-x text-3xl" />
             </button>
             <div className="sideBarContent">
               <h2 className="text-[1.4rem] text-[var(--main-color-2)] font-extrabold !mb-[5px]">

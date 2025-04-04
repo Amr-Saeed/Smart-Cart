@@ -1,4 +1,7 @@
 import "./styles.css";
+import { MdFacebook } from "react-icons/md";
+import { AiFillLinkedin } from "react-icons/ai";
+import { AiFillGithub } from "react-icons/ai";
 
 function Footer() {
   return (
@@ -118,9 +121,9 @@ function Footer() {
             . All Rights Reserved.
           </span>
           <div className="icons flex">
-            <i className="bx bxl-facebook-circle text-3xl  cursor-pointer"></i>
-            <i className="bx bxl-linkedin-square text-3xl   cursor-pointer"></i>{" "}
-            <i className="bx bxl-github text-3xl  cursor-pointer"></i>
+            <MdFacebook className="bx bxl-facebook-circle text-3xl  cursor-pointer fill-[var(--main-color)]" />
+            <AiFillLinkedin className="bx bxl-linkedin-square text-3xl   cursor-pointer fill-[var(--main-color)]" />
+            <AiFillGithub className="bx bxl-github text-3xl  cursor-pointer fill-[var(--main-color)]" />
           </div>
         </div>
       </div>

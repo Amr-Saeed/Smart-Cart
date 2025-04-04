@@ -8,6 +8,12 @@ import SearchList from "./SearchList";
 import SearchItems from "./SearchItems";
 import NoResult from "./NoResult";
 import SideBar from "./SideBar";
+import { UserIcon } from "@heroicons/react/24/outline";
+import { HeartIcon } from "@heroicons/react/24/outline";
+import { ShoppingCartIcon } from "@heroicons/react/24/outline";
+import { HiMenuAlt2 } from "react-icons/hi";
+import { HiOutlineSearch } from "react-icons/hi";
+import { BiSolidOffer } from "react-icons/bi";
 
 function Header() {
   const navigate = useNavigate();
@@ -57,7 +63,8 @@ function SmallHeader({ isSideBarOpen, setIsSideBarOpen, children }) {
           className="basis-0 md:basis-24"
           onClick={() => setIsSideBarOpen((open) => !open)}
         >
-          <i className="bx bx-menu-alt-left md:text-3xl text-[1.3rem] "></i>
+          {/* <i className="bx bx-menu-alt-left md:text-3xl text-[1.3rem] "></i> */}
+          <HiMenuAlt2 className="bx bx-menu-alt-left text-[1.3rem] md:text-3xl " />
         </button>
         <Logo
           src="/logo.webp"
@@ -136,7 +143,11 @@ function SearchContainer({ children, products, open, setOpen }) {
             className="searchButton lg:absolute right-0 h-12 rounded-r-lg  w-[4rem] md:w-12 flex justify-center items-center"
             onClick={(e) => e.preventDefault()}
           >
-            <i className="bx bx-search text-black"></i>
+            {/* <i className="bx bx-search text-black"></i> */}
+            <HiOutlineSearch
+              className="bx bx-search text-white font-bold"
+              style={{ strokeWidth: 4 }}
+            />
           </button>
 
           <SearchMenu searchOpen={searchOpen}>
@@ -209,7 +220,8 @@ function LowCategories({ isSideBarOpen, setIsSideBarOpen, products }) {
               onClick={() => setIsSideBarOpen(true)}
               className="flex justify-center items-center gap-1 !cursor-pointer"
             >
-              <i className="bx bx-menu-alt-left"></i>
+              {/* <i className="bx bx-menu-alt-left"></i> */}
+              <HiMenuAlt2 className="bx bx-menu-alt-left " />
               All Categories
             </button>
           </li>
@@ -222,7 +234,8 @@ function LowCategories({ isSideBarOpen, setIsSideBarOpen, products }) {
 
           <li className="min-w-max flex justify-center items-center text-[#b8a6e3] font-bold">
             <a href="#" className="flex justify-center items-center gap-1">
-              <i className="bx bxs-offer "></i>
+              {/* <i className="bx bxs-offer "></i> */}
+              <BiSolidOffer className="bxs-offer" />
               Deals
             </a>
           </li>
@@ -252,18 +265,18 @@ function IconsGroup({ className, navigate }) {
       className={` ${className} icons  flex justify-end items-center  gap-2.5`}
     >
       <div>
-        <i
+        <UserIcon
           onClick={() => navigate(-1)}
-          className="bx bx-user md:text-3xl text-[1.3rem] cursor-pointer"
-        ></i>
+          className="w-[1.3rem] md:w-[1.875rem] cursor-pointer text-[var(--main-color)]"
+        />
       </div>
 
       <div className="relative cart text-center">
-        <i className="bx bx-heart md:text-3xl text-[1.3rem] cursor-pointer"></i>
+        <HeartIcon className="bx bx-heart w-[1.3rem] md:w-[1.875rem] cursor-pointer text-[var(--main-color)]" />
         {totalWish > 0 && <Value value={totalWish} />}
       </div>
       <div className="relative cart text-center">
-        <i className="bx bx-cart md:text-3xl text-[1.3rem] cursor-pointer"></i>
+        <ShoppingCartIcon className="bx bx-cart cursor-pointer w-[1.3rem] md:w-[1.875rem] text-[var(--main-color)]" />
         {totalQuantity > 0 && <Value value={totalQuantity} />}
       </div>
     </div>
