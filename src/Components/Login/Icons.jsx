@@ -1,19 +1,22 @@
 import styles from "./Icons.module.css";
-
+import { FaGoogle } from "react-icons/fa";
+import { MdFacebook } from "react-icons/md";
+import { AiFillLinkedin } from "react-icons/ai";
+import { AiFillGithub } from "react-icons/ai";
 function Icons() {
   return (
     <div className={styles.socialIcons}>
       <a href="#">
-        <i className="bx bxl-google"></i>
+        <FaGoogle />
       </a>
       <a href="#">
-        <i className="bx bxl-facebook"></i>
+        <MdFacebook />
       </a>
       <a href="#">
-        <i className="bx bxl-github"></i>
+        <AiFillGithub />
       </a>
       <a href="#">
-        <i className="bx bxl-linkedin"></i>
+        <AiFillLinkedin />
       </a>
     </div>
   );

@@ -1,7 +1,5 @@
 import "./styles.css";
-import { MdFacebook } from "react-icons/md";
-import { AiFillLinkedin } from "react-icons/ai";
-import { AiFillGithub } from "react-icons/ai";
+import { FooterIcons } from "./FooterIcons";
 
 function Footer() {
   return (
@@ -120,11 +118,7 @@ function Footer() {
             </a>
             . All Rights Reserved.
           </span>
-          <div className="icons flex">
-            <MdFacebook className="bx bxl-facebook-circle text-3xl  cursor-pointer fill-[var(--main-color)]" />
-            <AiFillLinkedin className="bx bxl-linkedin-square text-3xl   cursor-pointer fill-[var(--main-color)]" />
-            <AiFillGithub className="bx bxl-github text-3xl  cursor-pointer fill-[var(--main-color)]" />
-          </div>
+          <FooterIcons />
         </div>
       </div>
     </footer>

@@ -1,5 +1,5 @@
 import "./home.css";
-import Header from "../Components/HomePage/Header";
+import Header from "../Components/HomePage/Header/Header";
 // import Slider from "../Components/HomePage/Slider";
 import CategorySection from "../Components/HomePage/CategorySection";
 import EveryDayNeeds from "../Components/HomePage/EveryDayNeeds";

@@ -5,9 +5,7 @@ import { Navigation } from "swiper/modules"; // Import Navigation module
 import { useProducts } from "../useProducts";
 import Price from "./Price";
 import TitleandDes from "./TitleandDes";
-import { useQuantityWish } from "./useQuantityWish";
-import { useTotalWish } from "./TotalWishQuantity";
-import { HiOutlineHeart } from "react-icons/hi";
+import FavBtn from "./FavBtn";
 
 // Import Swiper styles
 import "swiper/css";
@@ -18,7 +16,8 @@ import ProductCard from "../HomePage/ProdutCard";
 
 // import required modules
 import { Pagination } from "swiper/modules";
-import { useLocalStorage } from "./useLocalStorage";
+import { Offer } from "./Offer";
+// import { useLocalStorage } from "./useLocalStorage";
 
 export default function SwiperComponent({ content, title }) {
   const { products, isLoading } = useProducts();
@@ -89,46 +88,5 @@ export default function SwiperComponent({ content, title }) {
         </Swiper>
       </div>
     </>
-  );
-}
-
-function Offer({ offers }) {
-  return (
-    <div className="offers left-0 top-[-27px] absolute z-50 ">
-      <span className="flex align-middle justify-center  w-[3.875rem] h-[1.9375rem] ">
-        {`-${offers}%`}
-      </span>
-    </div>
-  );
-}
-
-function FavBtn({ id }) {
-  const { wishQuan, handleAdd, handleDec } = useQuantityWish(id);
-  const { totalWish } = useTotalWish();
-
-  const isLiked = wishQuan > 0;
-
-  function handleToggle() {
-    // setIsLiked((is) => !is);
-    isLiked ? handleDec() : handleAdd();
-  }
-
-  return (
-    <div className=" favoriteButton  absolute flex align-middle justify-center z-50 w-[50px] h-[50px] rounded-[50%] top-[-44px] right-[-12px]">
-      <button
-        onClick={handleToggle}
-        className="w-10 h-10  flex align-middle justify-center rounded-[50%] favBtn"
-      >
-        {/* <i
-          className={isLiked ? "bx bxs-heart text-2xl" : "bx bx-heart text-2xl"}
-        ></i> */}
-        {isLiked ? (
-          <HiOutlineHeart className="heart text-2xl  bxs-heart fill-[var(--main-color)]" />
-        ) : (
-          <HiOutlineHeart className="text-2xl heart bx-heart" />
-        )}
-        {/* <i class="bx bxs-heart"></i> */}
-      </button>
-    </div>
   );
 }

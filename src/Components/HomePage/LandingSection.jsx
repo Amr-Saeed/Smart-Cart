@@ -19,7 +19,7 @@ function LandingSection() {
         </div>
         <div className="right">
           <img
-            src="/pngtree-supermarket-shopping-3d-illustration-png-image_11507123.png"
+            src="/png.avif"
             alt="Smart-Cart"
             className="w-[500px] md:h-96 object-cover h-auto"
           />

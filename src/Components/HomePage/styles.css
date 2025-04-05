@@ -291,9 +291,12 @@ footer .foot {
 footer .foot .icons {
   gap: 6px;
 }
-footer .foot .icons i:hover {
+footer .foot .icons svg {
+  transition: all 0.5s;
+}
+footer .foot .icons svg:hover {
   transform: scale(1.1);
-  color: var(--main-color-2);
+  fill: var(--main-color-2);
 }
 @media (max-width: 640px) {
   footer .foot {

@@ -1,7 +1,13 @@
-function Price({ price, offers, className }) {
-  const offer = ((offers / 100) * price).toFixed(2);
+import { useMemo } from "react";
 
-  const afterOffer = (price - offer).toFixed(2);
+function Price({ price, offers, className }) {
+  const offer = useMemo(() => {
+    return ((offers / 100) * price).toFixed(2);
+  }, [offers, price]);
+
+  const afterOffer = useMemo(() => {
+    return (price - offer).toFixed(2);
+  }, [offer, price]);
   return (
     <div className={`price w-full flex justify-between ${className}`}>
       <span className="font-bold">{offers > 0 ? afterOffer : price}</span>

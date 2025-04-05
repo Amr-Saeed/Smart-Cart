@@ -1,54 +1,61 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useProducts } from "../useProducts";
-import { img } from "framer-motion/client";
 import { HiOutlineX } from "react-icons/hi";
+import { SideCategories } from "./SideCategories";
 
 export default function Sidebar({ isOpen, setIsOpen }) {
   const [accordionOpen, setAccordionOpen] = useState(null); //Keeps track of which category is currently open.
 
   const { products } = useProducts();
 
-  const AllCAtegories = products.reduce((arr, product) => {
-    // Replace " and " with " & " in category names
-    const categoryName = product.category.replace(/ and /g, " & ");
+  const AllCAtegories = useMemo(() => {
+    return products.reduce((arr, product) => {
+      const categoryName = product.category.replace(/ and /g, " & ");
 
-    // Special case: If category is "Meat & Poultry", only include product with id = 11
-    if (categoryName === "Meat & Poultry") {
-      const hasMeatId11 = arr.some((el) => el.category === "Meat & Poultry");
-      if (!hasMeatId11 && product.id === 11) {
-        return [
-          ...arr,
-          {
-            category: categoryName,
-            img: product.imageUrl,
-          },
-        ];
+      if (categoryName === "Meat & Poultry") {
+        const hasMeatId11 = arr.some((el) => el.category === "Meat & Poultry");
+        if (!hasMeatId11 && product.id === 11) {
+          return [
+            ...arr,
+            {
+              category: categoryName,
+              img: product.imageUrl,
+            },
+          ];
+        }
+      } else if (categoryName === "Fruits & Vegetables") {
+        const hasCheese = arr.some(
+          (el) => el.category === "Fruits & Vegetables"
+        );
+        if (!hasCheese && product.id === 7) {
+          return [
+            ...arr,
+            {
+              category: categoryName,
+              img: product.imageUrl,
+            },
+          ];
+        }
+      } else if (!arr.map((el) => el.category).includes(categoryName)) {
+        return [...arr, { category: categoryName, img: product.imageUrl }];
       }
-    } else if (categoryName === "Fruits & Vegetables") {
-      const hasCheese = arr.some((el) => el.category === "Fruits & Vegetables");
-      if (!hasCheese && product.id === 7) {
-        return [
-          ...arr,
-          {
-            category: categoryName,
-            img: product.imageUrl,
-          },
-        ];
-      }
-    } else if (!arr.map((el) => el.category).includes(categoryName)) {
-      return [...arr, { category: categoryName, img: product.imageUrl }];
-    }
 
-    return arr;
-  }, []);
+      return arr;
+    }, []);
+  }, [products]); // Only recompute when `products` changes
 
   //Let's Take Products Depending on Category
-  const categoryProducts = AllCAtegories.map((cat) => ({
-    category: cat.category,
-    products: products.filter(
-      (product) => product.category.replace(/ and /g, " & ") === cat.category
-    ),
-  }));
+  const categoryProducts = useMemo(
+    () =>
+      AllCAtegories.map((cat) => ({
+        category: cat.category,
+        products: products.filter(
+          (product) =>
+            product.category.replace(/ and /g, " & ") === cat.category
+        ),
+      })),
+    [AllCAtegories, products]
+  ); // Only recompute when `AllCAtegories` or `products` changes
 
   return (
     <div className={`drawer ${isOpen ? "open" : ""}`}>
@@ -101,64 +108,5 @@ export default function Sidebar({ isOpen, setIsOpen }) {
         </div>
       </div>
     </div>
-  );
-}
-
-function SideCategories({
-  category,
-  categoryProducts,
-  accordionOpen,
-  setAccordionOpen,
-}) {
-  const isOpen = accordionOpen === category.category;
-  // Find the matching products for this category
-  const categoryData = categoryProducts.find(
-    (cat) => cat.category === category.category
-  );
-  const productsList = categoryData ? categoryData.products : [];
-  return (
-    <li className="menu-item !pr-4 !pl-4  rounded-2xl md:w-full !mb-[55px] w-[130%]">
-      <button
-        className="bg-[var(--main-color)] w-full h-14 flex items-center gap-2.5 text-[1rem] md:text-[1.125rem] leading-5 font-bold text-[var(--main-color-2)] rounded-[18px]"
-        onClick={() => setAccordionOpen(isOpen ? null : category.category)} // Open one, close others
-      >
-        <img
-          loading="lazy"
-          src={category.img}
-          alt={category.category}
-          className="md:w-[6rem] w-[4rem] object-contain translate-y-[-13%] "
-        />
-        {category.category}
-      </button>
-      {/* Accordion Content (Products List) */}
-      {isOpen &&
-        (productsList.length > 0 ? (
-          <ul className=" shadow-2xl !p-4 rounded-2xl flex flex-col">
-            {productsList.map((product) => (
-              <CategoriesItems key={product.id} product={product} />
-            ))}
-          </ul>
-        ) : (
-          <p className="text-gray-500">No products available</p>
-        ))}
-    </li>
-  );
-}
-
-function CategoriesItems({ product }) {
-  return (
-    <button>
-      <li key={product.id} className="flex items-center gap-3">
-        <img
-          loading="lazy"
-          src={product.imageUrl}
-          alt={product.name}
-          className="w-20 h-20 object-contain rounded-lg"
-        />
-        <span className="text-[var(--main-color)] font-bold">
-          {product.name}
-        </span>
-      </li>
-    </button>
   );
 }
