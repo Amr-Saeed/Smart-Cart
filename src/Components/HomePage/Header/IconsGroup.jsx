@@ -4,8 +4,11 @@ import { UserIcon } from "@heroicons/react/24/outline";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import { ShoppingCartIcon } from "@heroicons/react/24/outline";
 import Value from "./Value";
+import { memo } from "react";
 
-export default function IconsGroup({ className, navigate }) {
+function IconsGroup({ className, navigate }) {
+  console.log("IconsGroup re-rendered");
+
   const { totalQuantity } = useTotalQuantity();
   const { totalWish } = useTotalWish();
   // console.log(totalWish, totalQuantity);
@@ -32,3 +35,4 @@ export default function IconsGroup({ className, navigate }) {
     </div>
   );
 }
+export default memo(IconsGroup);

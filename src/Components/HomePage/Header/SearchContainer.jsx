@@ -6,12 +6,15 @@ import { HiOutlineSearch } from "react-icons/hi";
 import SearchBaring from "../SearchBaring";
 import SearchMenu from "../Header/SearchMenu";
 import Logo from "../Header/Logo";
+import { useProducts } from "../../useProducts";
 import { useState, useEffect, useCallback } from "react";
-export default function SearchContainer({ children, products, open, setOpen }) {
+export default function SearchContainer({ children, open, setOpen }) {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const { products } = useProducts();
 
   const [isSmallScreen, setIsSmallScreen] = useState(false);
+  console.log("SearchContainer re-rendered");
 
   useEffect(() => {
     // Define the media query

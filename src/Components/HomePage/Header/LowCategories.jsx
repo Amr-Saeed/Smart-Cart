@@ -1,18 +1,21 @@
 import { BiSolidOffer } from "react-icons/bi";
 import { HiMenuAlt2 } from "react-icons/hi";
-import SideBar from "../SideBar";
+// import SideBar from "../SideBar";
 import { FirstCategory } from "./FirstCategory";
+import { memo, useMemo } from "react";
 
-export function LowCategories({ isSideBarOpen, setIsSideBarOpen, products }) {
+function LowCategories({ children, setIsSideBarOpen, products }) {
   // const [categoryDrawerOpen, setCategoryDrawerOpen] = useState(false);
-  const productsCategories = products
-    .reduce((arr, product) => {
-      if (!arr.map((el) => el.category).includes(product.category)) {
-        return [...arr, { category: product.category }];
-      } else return arr;
-    }, [])
-    .slice(0, 4);
-  // console.log(productsCategories);
+  const productsCategories = useMemo(() => {
+    return products
+      .reduce((arr, product) => {
+        if (!arr.map((el) => el.category).includes(product.category)) {
+          return [...arr, { category: product.category }];
+        } else return arr;
+      }, [])
+      .slice(0, 4);
+  }, [products]);
+  console.log("LowCategories re-rendered");
   return (
     // <div className="containerr low sticky top-0 z-50">
     <div className="containerr low sticky top-0 z-50">
@@ -45,8 +48,9 @@ export function LowCategories({ isSideBarOpen, setIsSideBarOpen, products }) {
           </li>
         </ul>
       </div>
-      {/* <BottomDrawer open={open} setOpen={setOpen} />*/}
-      <SideBar isOpen={isSideBarOpen} setIsOpen={setIsSideBarOpen} />
+      {children}
     </div>
   );
 }
+
+export default memo(LowCategories); // Use memo to prevent unnecessary re-renders LowCategories;

@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 
 export function useProducts() {
   const [products, setProducts] = useState([]);
@@ -37,8 +37,5 @@ export function useProducts() {
     // };
   }, []);
 
-  // ✅ Memoize to avoid unnecessary recalculations in consuming components
-  const memoizedProducts = useMemo(() => products, [products]);
-
-  return { products: memoizedProducts, isLoading };
+  return { products, isLoading };
 }

@@ -1,7 +1,10 @@
 import { HiMenuAlt2 } from "react-icons/hi";
 import Logo from "./Logo";
+import { memo } from "react";
 
-export function SmallHeader({ isSideBarOpen, setIsSideBarOpen, children }) {
+function SmallHeader({ setIsSideBarOpen, children }) {
+  console.log("SmallHeader re-rendered");
+
   return (
     <>
       <div className="logo-container w-full    flex justify-between items-center lg:hidden ">
@@ -22,3 +25,5 @@ export function SmallHeader({ isSideBarOpen, setIsSideBarOpen, children }) {
     </>
   );
 }
+
+export default memo(SmallHeader); // Use memo to prevent unnecessary re-renders SmallHeader;

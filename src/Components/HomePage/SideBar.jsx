@@ -1,12 +1,17 @@
-import { useMemo, useState } from "react";
+import { memo, useMemo, useState, useEffect } from "react";
 import { useProducts } from "../useProducts";
 import { HiOutlineX } from "react-icons/hi";
 import { SideCategories } from "./SideCategories";
 
-export default function Sidebar({ isOpen, setIsOpen }) {
+function SideBar({ isOpen, setIsOpen }) {
   const [accordionOpen, setAccordionOpen] = useState(null); //Keeps track of which category is currently open.
+  console.log("👀 SideBar component loaded");
 
   const { products } = useProducts();
+
+  useEffect(() => {
+    console.log("Products changed in SideBar:", products);
+  }, [products]);
 
   const AllCAtegories = useMemo(() => {
     return products.reduce((arr, product) => {
@@ -110,3 +115,4 @@ export default function Sidebar({ isOpen, setIsOpen }) {
     </div>
   );
 }
+export default memo(SideBar); // Use memo to prevent unnecessary re-renders Sidebar;
