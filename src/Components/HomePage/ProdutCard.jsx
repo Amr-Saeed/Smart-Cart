@@ -1,14 +1,9 @@
+import { memo } from "react";
 import { OutOfStock } from "./OutOfStock";
 import { Quantity } from "./Quantity";
 import "./styles.css";
 
-export default function ProductCard({
-  productImg,
-  name,
-  stockAvailability,
-  children,
-  id,
-}) {
+function ProductCard({ productImg, name, stockAvailability, children, id }) {
   return (
     <>
       <div className="card h-[399px]">
@@ -31,3 +26,4 @@ function CardActions({ children }) {
     <div className="card-actions flex items-center !p-2 h-10">{children}</div>
   );
 }
+export default memo(ProductCard);

@@ -1,62 +1,75 @@
 import TrueFocus from "../TextAnimations/TrueFocus/TrueFocus";
-import { useProducts } from "../useProducts";
+// import { useProducts } from "../useProducts";
+import { useProductsContext } from "../HomePage/ProductsContext";
+
 import Category from "./Category";
+import { useMemo } from "react";
 
 function CategorySection() {
-  const { products, isLoading } = useProducts();
+  const { products } = useProductsContext();
 
-  if (isLoading) return <h1>Loading...</h1>;
+  const newProduct = useMemo(() => {
+    if (!products || products.length === 0) return []; // Don't compute categories if products are null
 
-  const newProduct = products.reduce((arr, product) => {
-    // Special case: If category is "Meat", only include product with id = 11
-    if (product.category === "Meat & Poultry") {
-      const hasMeatId11 = arr.some((el) => el.category === "Meat & Poultry");
-      if (!hasMeatId11 && product.id === 11) {
-        return [
-          ...arr,
-          {
-            category: product.category,
-            name: product.name,
-            imageUrl: product.imageUrl,
-            id: product.id,
-          },
-        ];
+    return products.reduce((arr, product) => {
+      // Special case: If category is "Meat", only include product with id = 11
+      if (product.category === "Meat & Poultry") {
+        const hasMeatId11 = arr.some((el) => el.category === "Meat & Poultry");
+        if (!hasMeatId11 && product.id === 11) {
+          return [
+            ...arr,
+            {
+              category: product.category,
+              name: product.name,
+              imageUrl: product.imageUrl,
+              id: product.id,
+            },
+          ];
+        }
+      } else if (product.category === "Dairy, Eggs & Cheese") {
+        const hasCheese = arr.some(
+          (el) => el.category === "Dairy, Eggs & Cheese"
+        );
+
+        if (!hasCheese && product.id === 5) {
+          return [
+            ...arr,
+            {
+              category: product.category,
+              name: product.name,
+              imageUrl: product.imageUrl,
+              id: product.id,
+            },
+          ];
+        }
       }
-    } else if (product.category === "Dairy, Eggs & Cheese") {
-      const hasCheese = arr.some(
-        (el) => el.category === "Dairy, Eggs & Cheese"
-      );
-
-      if (!hasCheese && product.id === 5) {
-        return [
-          ...arr,
-          {
-            category: product.category,
-            name: product.name,
-            imageUrl: product.imageUrl,
-            id: product.id,
-          },
-        ];
+      // General case: Add product if category is not already in arr
+      else {
+        const categoryExists = arr.some(
+          (el) => el.category === product.category
+        );
+        if (!categoryExists) {
+          return [
+            ...arr,
+            {
+              category: product.category,
+              name: product.name,
+              imageUrl: product.imageUrl,
+              id: product.id,
+            },
+          ];
+        }
       }
-    }
-    // General case: Add product if category is not already in arr
-    else {
-      const categoryExists = arr.some((el) => el.category === product.category);
-      if (!categoryExists) {
-        return [
-          ...arr,
-          {
-            category: product.category,
-            name: product.name,
-            imageUrl: product.imageUrl,
-            id: product.id,
-          },
-        ];
-      }
-    }
 
-    return arr;
-  }, []);
+      return arr;
+    }, []);
+  }, [products]); // Recompute when products change
+
+  // 🚫 Don't render anything until products are fetched
+  if (products === null) {
+    return null; // Skip rendering until products are fetched
+  }
+  // if (isLoading) return <h1>Loading...</h1>;
 
   return (
     <section className="categorySection ">

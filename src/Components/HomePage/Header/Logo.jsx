@@ -1,4 +1,6 @@
-export default function Logo({ className, src, alt }) {
+import { memo } from "react";
+
+function Logo({ className, src, alt }) {
   return (
     <img
       loading="lazy"
@@ -8,3 +10,5 @@ export default function Logo({ className, src, alt }) {
     />
   );
 }
+
+export default memo(Logo);

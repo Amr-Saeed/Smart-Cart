@@ -1,8 +1,8 @@
-import React, { useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules"; // Import Navigation module
-import { useProducts } from "../useProducts";
+import { useProductsContext } from "../HomePage/ProductsContext";
 import Price from "./Price";
 import TitleandDes from "./TitleandDes";
 import FavBtn from "./FavBtn";
@@ -20,10 +20,17 @@ import { Offer } from "./Offer";
 // import { useLocalStorage } from "./useLocalStorage";
 
 export default function SwiperComponent({ content, title }) {
-  const { products, isLoading } = useProducts();
-  const bestDealsProducts = products?.filter(
-    (product) => product?.bestDeal === true
-  );
+  const { products } = useProductsContext();
+
+  const bestDealsProducts = useMemo(() => {
+    if (!products || products.length === 0) return []; // Don't compute categories if products are null
+
+    return products?.filter((product) => product?.bestDeal === true);
+  });
+  // 🚫 Don't render anything until products are fetched
+  if (products === null) {
+    return null; // Skip rendering until products are fetched
+  }
 
   const uniqueNavPrev = `swiper-button-prev-${title.replace(/\s+/g, "")}`;
   const uniqueNavNext = `swiper-button-next-${title.replace(/\s+/g, "")}`;

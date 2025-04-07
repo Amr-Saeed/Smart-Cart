@@ -1,46 +1,45 @@
 import SearchList from "../SearchList";
 import SearchItems from "../SearchItems";
 import NoResult from "../NoResult";
-import { BottomDrawer } from "../BottomDrawer";
 import { HiOutlineSearch } from "react-icons/hi";
 import SearchBaring from "../SearchBaring";
-import SearchMenu from "../Header/SearchMenu";
 import Logo from "../Header/Logo";
-import { useProducts } from "../../useProducts";
-import { useState, useEffect, useCallback } from "react";
-export default function SearchContainer({ children, open, setOpen }) {
+import SearchMenu from "../Header/SearchMenu";
+// import { useProducts } from "../../useProducts";
+import { useProductsContext } from "../ProductsContext";
+import { useState, useCallback, useMemo, memo } from "react";
+import { lazy, Suspense } from "react";
+
+// const SearchMenu = lazy(() => import("../Header/SearchMenu"));
+const BottomDrawer = lazy(() => import("../BottomDrawer"));
+function SearchContainer({ children, open, setOpen }) {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const { products } = useProducts();
 
-  const [isSmallScreen, setIsSmallScreen] = useState(false);
+  const { products } = useProductsContext();
+
   console.log("SearchContainer re-rendered");
 
-  useEffect(() => {
-    // Define the media query
-    const mediaQuery = window.matchMedia("(max-width: 1024px)");
-
-    // Function to update the state based on the media query
-    const handleResize = () => {
-      setIsSmallScreen(mediaQuery.matches);
-    };
-
-    // Initial check
-    handleResize();
-
-    // Set up the listener for screen size changes
-    mediaQuery.addEventListener("change", handleResize);
-
-    // Clean up the listener on component unmount
-    return () => mediaQuery.removeEventListener("change", handleResize);
+  const handleClose = useCallback(function handleClose(e) {
+    e.stopPropagation(); // Prevents event bubbling
+    e.preventDefault(); // Stops default behavior
+    setOpen(false);
   }, []);
 
-  const searchedProducts =
-    searchQuery.length > 0
+  const searchedProducts = useMemo(() => {
+    if (!products || products.length === 0) return []; // Don't compute categories if products are null
+    return searchQuery.length > 0
       ? products.filter((product) =>
           product.name.toLowerCase().includes(searchQuery.toLowerCase())
         )
       : products.slice(0, 10);
+  }, [products, searchQuery]);
+  // Only recompute when `products` changes
+
+  // 🚫 Don't render anything until products are fetched
+  if (!products || products.length === 0) {
+    return null; // Skip rendering until products are fetched
+  }
 
   function handleSearchOpen() {
     setSearchOpen((searchOpen) => !searchOpen);
@@ -54,12 +53,6 @@ export default function SearchContainer({ children, open, setOpen }) {
   function handleDrawer() {
     setOpen((open) => !open);
   }
-
-  const handleClose = useCallback(function handleClose(e) {
-    e.stopPropagation(); // Prevents event bubbling
-    e.preventDefault(); // Stops default behavior
-    setOpen(false);
-  }, []);
 
   // }
   return (
@@ -101,38 +94,42 @@ export default function SearchContainer({ children, open, setOpen }) {
             <HiOutlineSearch className="bx bx-search text-white font-bold stroke-[4]" />
           </button>
 
-          <SearchMenu searchOpen={searchOpen}>
-            <SearchList>
-              {/* searchedProducts.length === 0 this means that what users entered isn't in out ptoducts so the searchedProducts will be empty so it's length is 0*/}
-              {searchQuery.length > 0 && searchedProducts.length === 0 ? (
-                <NoResult />
-              ) : (
-                searchedProducts.map((product) => (
-                  <SearchItems
-                    img={product.imageUrl}
-                    name={product.name}
-                    unit={product.unit}
-                    key={product.id}
-                    price={product.price}
-                    offers={product.offers}
-                  />
-                ))
-              )}
-            </SearchList>
-          </SearchMenu>
+          {searchOpen && (
+            <SearchMenu searchOpen={searchOpen}>
+              <SearchList>
+                {/* searchedProducts.length === 0 this means that what users entered isn't in out ptoducts so the searchedProducts will be empty so it's length is 0*/}
+                {searchQuery.length > 0 && searchedProducts.length === 0 ? (
+                  <NoResult />
+                ) : (
+                  searchedProducts.map((product) => (
+                    <SearchItems
+                      img={product.imageUrl}
+                      name={product.name}
+                      unit={product.unit}
+                      key={product.id}
+                      price={product.price}
+                      offers={product.offers}
+                    />
+                  ))
+                )}
+              </SearchList>
+            </SearchMenu>
+          )}
         </form>
-        {isSmallScreen && (
-          <BottomDrawer
-            open={open}
-            searchQuery2={searchQuery}
-            searchedProducts2={searchedProducts}
-          >
-            <SearchBaring
+        {open && (
+          <Suspense fallback={<div>Loading...</div>}>
+            <BottomDrawer
+              open={open}
               searchQuery2={searchQuery}
-              setSearchQuery2={setSearchQuery}
-              handleClose={handleClose}
-            />
-          </BottomDrawer>
+              searchedProducts2={searchedProducts}
+            >
+              <SearchBaring
+                searchQuery2={searchQuery}
+                setSearchQuery2={setSearchQuery}
+                handleClose={handleClose}
+              />
+            </BottomDrawer>
+          </Suspense>
         )}
 
         {/* <div className="absolute top-[72%] left-0 right-0 z-51">
@@ -143,3 +140,5 @@ export default function SearchContainer({ children, open, setOpen }) {
     </div>
   );
 }
+
+export default memo(SearchContainer);

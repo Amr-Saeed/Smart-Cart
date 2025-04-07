@@ -1,19 +1,13 @@
 import { memo, useMemo, useState, useEffect } from "react";
-import { useProducts } from "../useProducts";
 import { HiOutlineX } from "react-icons/hi";
 import { SideCategories } from "./SideCategories";
 
-function SideBar({ isOpen, setIsOpen }) {
-  const [accordionOpen, setAccordionOpen] = useState(null); //Keeps track of which category is currently open.
+function SideBar({ isOpen, setIsOpen, products }) {
   console.log("👀 SideBar component loaded");
 
-  const { products } = useProducts();
-
-  useEffect(() => {
-    console.log("Products changed in SideBar:", products);
-  }, [products]);
-
   const AllCAtegories = useMemo(() => {
+    if (!products || products.length === 0) return []; // Don't compute categories if products are null
+
     return products.reduce((arr, product) => {
       const categoryName = product.category.replace(/ and /g, " & ");
 
@@ -47,20 +41,25 @@ function SideBar({ isOpen, setIsOpen }) {
 
       return arr;
     }, []);
-  }, [products]); // Only recompute when `products` changes
+    // Only recompute when `products` changes
+  }, [products]); // Memoize the categories to avoid unnecessary recalculations
 
   //Let's Take Products Depending on Category
-  const categoryProducts = useMemo(
-    () =>
-      AllCAtegories.map((cat) => ({
-        category: cat.category,
-        products: products.filter(
-          (product) =>
-            product.category.replace(/ and /g, " & ") === cat.category
-        ),
-      })),
-    [AllCAtegories, products]
-  ); // Only recompute when `AllCAtegories` or `products` changes
+  const categoryProducts = useMemo(() => {
+    if (!products || products.length === 0) return []; // Don't compute categories if products are null
+    return AllCAtegories.map((cat) => ({
+      category: cat.category,
+      products: products.filter(
+        (product) => product.category.replace(/ and /g, " & ") === cat.category
+      ),
+    }));
+  }, [AllCAtegories, products]); // Memoize the category products to avoid unnecessary recalculations
+  // Only recompute when `AllCAtegories` or `products` changes
+
+  if (products === null) {
+    return null; // Skip rendering until products are fetched
+  }
+  console.log("👀 SideBar component loadedssssssss");
 
   return (
     <div className={`drawer ${isOpen ? "open" : ""}`}>
@@ -104,8 +103,6 @@ function SideBar({ isOpen, setIsOpen }) {
                   key={category.category}
                   category={category}
                   categoryProducts={categoryProducts}
-                  accordionOpen={accordionOpen}
-                  setAccordionOpen={setAccordionOpen}
                 />
               ))}
             </ul>

@@ -1,17 +1,23 @@
 import { CategoriesItems } from "./CategoriesItems";
+import { useMemo, useState } from "react";
 
-export function SideCategories({
-  category,
-  categoryProducts,
-  accordionOpen,
-  setAccordionOpen,
-}) {
+export function SideCategories({ category, categoryProducts }) {
+  const [accordionOpen, setAccordionOpen] = useState(null); //Keeps track of which category is currently open.
+
   const isOpen = accordionOpen === category.category;
   // Find the matching products for this category
-  const categoryData = categoryProducts.find(
-    (cat) => cat.category === category.category
+  const categoryData = useMemo(
+    () =>
+      categoryProducts.find(
+        (cat) => cat.category.replace(/ and /g, " & ") === category.category
+      ),
+    [categoryProducts, category.category]
   );
-  const productsList = categoryData ? categoryData.products : [];
+  const productsList = useMemo(
+    () => categoryData?.products || [],
+    [categoryData]
+  ); // Get the products list for this category
+  // Check if the category has products
   return (
     <li className="menu-item !pr-4 !pl-4  rounded-2xl md:w-full !mb-[55px] w-[130%]">
       <button

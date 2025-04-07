@@ -1,11 +1,8 @@
 "use client";
+import { memo } from "react";
 import { HiOutlineX } from "react-icons/hi";
 
-export default function SearchBaring({
-  searchQuery2,
-  setSearchQuery2,
-  handleClose,
-}) {
+function SearchBaring({ searchQuery2, setSearchQuery2, handleClose }) {
   function handleUserSearch(e) {
     e.preventDefault();
     setSearchQuery2(e.target.value);
@@ -40,3 +37,4 @@ export default function SearchBaring({
     </div>
   );
 }
+export default memo(SearchBaring);

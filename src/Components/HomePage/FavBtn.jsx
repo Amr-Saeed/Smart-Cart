@@ -1,8 +1,9 @@
 import { useQuantityWish } from "./useQuantityWish";
 import { useTotalWish } from "./TotalWishQuantity";
 import { HiOutlineHeart } from "react-icons/hi";
+import { memo } from "react";
 
-export default function FavBtn({ id }) {
+function FavBtn({ id }) {
   const { wishQuan, handleAdd, handleDec } = useQuantityWish(id);
   const { totalWish } = useTotalWish();
 
@@ -32,3 +33,5 @@ export default function FavBtn({ id }) {
     </div>
   );
 }
+
+export default memo(FavBtn);

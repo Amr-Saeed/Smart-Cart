@@ -9,6 +9,8 @@ import LandingSection from "../Components/HomePage/LandingSection";
 
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { ProductsProvider } from "../Components/HomePage/ProductsContext";
+
 function HomePage() {
   useEffect(() => {
     document.body.classList.add("Homebody");
@@ -21,7 +23,7 @@ function HomePage() {
     navigate(-1);
   }
   return (
-    <>
+    <ProductsProvider>
       <Header />
       <LandingSection />
       {/* <Slider /> */}
@@ -30,7 +32,7 @@ function HomePage() {
       {/* <CategorySection /> */}
       <BestDeals />
       <Footer />
-    </>
+    </ProductsProvider>
   );
 }
 

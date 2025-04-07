@@ -1,4 +1,5 @@
 export default function SearchMenu({ children, searchOpen }) {
+  console.log("SearchMenu re-rendered");
   return (
     <div
       className={`searchMenu rounded-[10px] w-[844px] h-[573px] z-[51] right-0 absolute top-full 

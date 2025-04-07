@@ -1,12 +1,15 @@
 import { BiSolidOffer } from "react-icons/bi";
 import { HiMenuAlt2 } from "react-icons/hi";
-// import SideBar from "../SideBar";
-import { FirstCategory } from "./FirstCategory";
-import { memo, useMemo } from "react";
+import FirstCategory from "./FirstCategory";
+import { memo, useMemo, useEffect, useState } from "react";
 
 function LowCategories({ children, setIsSideBarOpen, products }) {
   // const [categoryDrawerOpen, setCategoryDrawerOpen] = useState(false);
+
+  // Always call useMemo
   const productsCategories = useMemo(() => {
+    if (!products || products.length === 0) return []; // Don't compute categories if products are null
+
     return products
       .reduce((arr, product) => {
         if (!arr.map((el) => el.category).includes(product.category)) {
@@ -14,8 +17,17 @@ function LowCategories({ children, setIsSideBarOpen, products }) {
         } else return arr;
       }, [])
       .slice(0, 4);
-  }, [products]);
-  console.log("LowCategories re-rendered");
+  }, [products]); // Recalculate only when products change
+
+  console.log("useProducts called", products);
+  // 🚫 Don't render anything until products are fetched
+  if (!products || products.length === 0) {
+    return null; // Skip rendering until products are fetched
+  }
+  console.log("LowCategories called");
+
+  console.log("LowCategories re-rendered with products:", products);
+
   return (
     // <div className="containerr low sticky top-0 z-50">
     <div className="containerr low sticky top-0 z-50">
