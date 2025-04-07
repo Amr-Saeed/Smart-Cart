@@ -31,6 +31,7 @@ function LowCategories({ children, setIsSideBarOpen, products }) {
         <ul className="categories lg:flex justify-center items-center gap-12 hidden  ">
           <li className="min-w-max text-[var(--category-color)] font-bold">
             <button
+              aria-label="open-categories"
               // onClick={() => setOpen((open) => !open)}
               onClick={() => setIsSideBarOpen(true)}
               className="flex justify-center items-center gap-1 !cursor-pointer"

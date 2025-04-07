@@ -21,6 +21,7 @@ export function SideCategories({ category, categoryProducts }) {
   return (
     <li className="menu-item !pr-4 !pl-4  rounded-2xl md:w-full !mb-[55px] w-[130%]">
       <button
+        aria-label="open-category"
         className="bg-[var(--main-color)] w-full h-14 flex items-center gap-2.5 text-[1rem] md:text-[1.125rem] leading-5 font-bold text-[var(--main-color-2)] rounded-[18px]"
         onClick={() => setAccordionOpen(isOpen ? null : category.category)} // Open one, close others
       >

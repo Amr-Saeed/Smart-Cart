@@ -17,6 +17,7 @@ function FavBtn({ id }) {
   return (
     <div className=" favoriteButton  absolute flex align-middle justify-center z-50 w-[50px] h-[50px] rounded-[50%] top-[-44px] right-[-12px]">
       <button
+        aria-label="add-to-Cart"
         onClick={handleToggle}
         className="w-10 h-10  flex align-middle justify-center rounded-[50%] favBtn"
       >

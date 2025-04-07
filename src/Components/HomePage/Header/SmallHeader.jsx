@@ -7,6 +7,7 @@ function SmallHeader({ setIsSideBarOpen, children }) {
     <>
       <div className="logo-container w-full    flex justify-between items-center lg:hidden ">
         <button
+          aria-label="open-SideBar"
           className="basis-0 md:basis-24"
           onClick={() => setIsSideBarOpen((open) => !open)}
         >

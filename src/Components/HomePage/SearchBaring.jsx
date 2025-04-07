@@ -26,6 +26,7 @@ function SearchBaring({ searchQuery2, setSearchQuery2, handleClose }) {
           onFocus={(e) => e.stopPropagation()}
         />
         <button
+          aria-label="close-search"
           type="submit"
           className="searchButton absolute right-0 h-12 rounded-r-lg  w-12 flex justify-center items-center"
           onClick={handleClose}

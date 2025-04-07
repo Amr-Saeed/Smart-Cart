@@ -20,7 +20,11 @@ function ToggleRight({ onHandleToggle, isActive }) {
               />
             </p>
             {/* <Link to="/HomePage"> */}
-            <Button onClick={() => navigate("/HomePage")} type="btnPanel">
+            <Button
+              onClick={() => navigate("/HomePage")}
+              type="btnPanel"
+              aria-label="continue-without-login"
+            >
               <DecryptedText
                 text={"Continue"}
                 animateOn="view"
@@ -48,7 +52,12 @@ function ToggleRight({ onHandleToggle, isActive }) {
             speed={80}
           />
         </p>
-        <Button onClick={onHandleToggle} type="btnPanel" className="login-btn">
+        <Button
+          onClick={onHandleToggle}
+          type="btnPanel"
+          className="login-btn"
+          aria-label="login-button"
+        >
           <DecryptedText
             text={"Login"}
             animateOn="view"

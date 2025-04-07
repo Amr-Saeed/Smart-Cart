@@ -76,6 +76,7 @@ function SearchContainer({ children, open, setOpen }) {
             onFocus={handleSearchOpen}
           />
           <button
+            aria-label="open-Drawer"
             type="button"
             className="searchInput text-gray-400 font-normal w-[13rem] lg:hidden  p-2.5 bg-white outline-none md:w-[50%] lg:w-full h-12 lg:rounded-lg rounded-l-lg flex items-center"
             onClick={handleDrawer}
@@ -84,6 +85,7 @@ function SearchContainer({ children, open, setOpen }) {
             Search Products
           </button>
           <button
+            aria-label="search"
             type="submit"
             className="searchButton lg:absolute right-0 h-12 rounded-r-lg  w-[4rem] md:w-12 flex justify-center items-center"
             onClick={(e) => e.preventDefault()}

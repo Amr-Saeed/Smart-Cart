@@ -20,7 +20,11 @@ function ToggleLeft({ onHandleToggle, isActive }) {
                 maxIterations={50}
               />
             </p>
-            <Button onClick={() => navigate("/HomePage")} type="btnPanel">
+            <Button
+              onClick={() => navigate("/HomePage")}
+              type="btnPanel"
+              aria-label="continue-without-login"
+            >
               <DecryptedText
                 text={"Continue"}
                 animateOn="view"
@@ -39,7 +43,11 @@ function ToggleLeft({ onHandleToggle, isActive }) {
               />
             </p>
             {/* <Link to="/HomePage"> */}
-            <Button onClick={() => navigate("/HomePage")} type="btnPanel">
+            <Button
+              onClick={() => navigate("/HomePage")}
+              type="btnPanel"
+              aria-label="continue-without-login"
+            >
               <DecryptedText
                 text={"Continue"}
                 animateOn="view"
@@ -69,6 +77,7 @@ function ToggleLeft({ onHandleToggle, isActive }) {
           />
         </p>
         <Button
+          aria-label="register"
           onClick={onHandleToggle}
           // to="/register"
           type="btnPanel"

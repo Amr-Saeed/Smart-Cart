@@ -80,6 +80,7 @@ function SideBar({ isOpen, setIsOpen, products }) {
         >
           <header className="sideBarHeader ">
             <button
+              aria-label="close-SideBar"
               className="w-full h-14 flex items-center justify-end "
               onClick={() => setIsOpen(false)}
             >

@@ -40,11 +40,13 @@ export default function SwiperComponent({ content, title }) {
       <div className="swiper-container">
         {/* Unique Custom Navigation Buttons */}
         <button
+          aria-label="swiper-button-prev"
           className={`swiper-button-prev ${uniqueNavPrev} hidden lg:flex`}
         >
           {"<"}
         </button>
         <button
+          aria-label="swiper-button-next"
           className={`swiper-button-next ${uniqueNavNext} hidden lg:flex`}
         >
           {">"}

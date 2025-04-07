@@ -69,7 +69,7 @@ function Form({ showEmail, title }) {
           />
         </a>
       </div>
-      <Button type="submit">
+      <Button type="submit" aria-label="submit-button">
         {" "}
         <DecryptedText
           text={`${title}`}

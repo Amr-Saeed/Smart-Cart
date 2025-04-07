@@ -12,17 +12,22 @@ function LandingSection() {
             </p>
           </div>
           <div className="leftButton">
-            <button className="shopBtn text-white max-w-fit md:w-[40%] rounded-2xl !p-2.5 font-bold text-center bg-[#c9b2ff]">
+            <button
+              className="shopBtn text-white max-w-fit md:w-[40%] rounded-2xl !p-2.5 font-bold text-center bg-[#c9b2ff]"
+              aria-label="Shop-Now"
+            >
               Shop Now
             </button>
           </div>
         </div>
         <div className="right">
-          <img
-            src="/png.avif"
-            alt="Smart-Cart"
-            className="w-[500px] md:h-96 object-cover h-auto"
-          />
+          <picture>
+            <img
+              src="/png.avif"
+              alt="Smart-Cart"
+              className="w-[500px] md:h-96 object-cover h-auto"
+            />
+          </picture>
         </div>
       </div>
     </section>

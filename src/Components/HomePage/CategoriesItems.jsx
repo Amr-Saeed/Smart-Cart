@@ -1,6 +1,6 @@
 export function CategoriesItems({ product }) {
   return (
-    <button>
+    <button aria-label="open-product">
       <li key={product.id} className="flex items-center gap-3">
         <img
           loading="lazy"
