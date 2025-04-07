@@ -19,14 +19,10 @@ function LowCategories({ children, setIsSideBarOpen, products }) {
       .slice(0, 4);
   }, [products]); // Recalculate only when products change
 
-  console.log("useProducts called", products);
   // 🚫 Don't render anything until products are fetched
   if (!products || products.length === 0) {
     return null; // Skip rendering until products are fetched
   }
-  console.log("LowCategories called");
-
-  console.log("LowCategories re-rendered with products:", products);
 
   return (
     // <div className="containerr low sticky top-0 z-50">

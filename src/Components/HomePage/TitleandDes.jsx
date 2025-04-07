@@ -1,7 +1,7 @@
 function TitleandDes({ name, unit, description }) {
   return (
     <>
-      <h6 className="card-title">{`${name} - Per ${unit}`}</h6>
+      <span className="card-title">{`${name} - Per ${unit}`}</span>
       <div className="description overflow-hidden ">
         <p>{description}</p>
       </div>

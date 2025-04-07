@@ -3,8 +3,6 @@ import Logo from "./Logo";
 import { memo } from "react";
 
 function SmallHeader({ setIsSideBarOpen, children }) {
-  console.log("SmallHeader re-rendered");
-
   return (
     <>
       <div className="logo-container w-full    flex justify-between items-center lg:hidden ">

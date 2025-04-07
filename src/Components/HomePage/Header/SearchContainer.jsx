@@ -18,8 +18,6 @@ function SearchContainer({ children, open, setOpen }) {
 
   const { products } = useProductsContext();
 
-  console.log("SearchContainer re-rendered");
-
   const handleClose = useCallback(function handleClose(e) {
     e.stopPropagation(); // Prevents event bubbling
     e.preventDefault(); // Stops default behavior

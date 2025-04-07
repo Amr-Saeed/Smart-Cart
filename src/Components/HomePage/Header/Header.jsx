@@ -14,8 +14,6 @@ function Header() {
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
   const { products } = useProductsContext();
 
-  console.log("Header re-rendered");
-
   return (
     <header className=" w-full header sticky lg:relative top-0 z-50 shadow lg:shadow-none">
       <UpperContainer>
@@ -47,7 +45,6 @@ function Header() {
 }
 
 const UpperContainer = memo(({ children }) => {
-  console.log("UpperContainer re-rendered");
 
   return (
     <div className="containerr upper-header flex align-middle flex-col w- ">

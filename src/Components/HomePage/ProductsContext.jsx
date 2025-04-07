@@ -6,7 +6,6 @@ function ProductsProvider({ children }) {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    console.log("First Context Product Fetched");
     const fetchProducts = async () => {
       try {
         // setIsLoading(true);

@@ -7,8 +7,6 @@ import Value from "./Value";
 import { memo } from "react";
 
 function IconsGroup({ className, navigate }) {
-  console.log("IconsGroup re-rendered");
-
   const { totalQuantity } = useTotalQuantity();
   const { totalWish } = useTotalWish();
   // console.log(totalWish, totalQuantity);
