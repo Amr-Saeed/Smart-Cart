@@ -19,7 +19,7 @@ import { Pagination } from "swiper/modules";
 import { Offer } from "./Offer";
 // import { useLocalStorage } from "./useLocalStorage";
 
-export default function SwiperComponent({ content, title }) {
+export default function SwiperComponent({ content, title, relatedProducts }) {
   const { products } = useProductsContext();
 
   const bestDealsProducts = useMemo(() => {
@@ -31,6 +31,22 @@ export default function SwiperComponent({ content, title }) {
   if (products === null) {
     return null; // Skip rendering until products are fetched
   }
+  // Determine which products to render based on the title and relatedProducts prop
+  const productsToRender = useMemo(() => {
+    if (title === "You May Also Like") {
+      return relatedProducts || []; // Use relatedProducts if provided
+    }
+
+    if (title === "Best Deals") {
+      return products.filter((product) => product.bestDeal);
+    }
+
+    if (title === "EveryDay Needs") {
+      return products.filter((product) => product.everydayNeeds);
+    }
+
+    return [];
+  }, [title, relatedProducts, products]);
 
   const uniqueNavPrev = `swiper-button-prev-${title.replace(/\s+/g, "")}`;
   const uniqueNavNext = `swiper-button-next-${title.replace(/\s+/g, "")}`;
@@ -67,33 +83,36 @@ export default function SwiperComponent({ content, title }) {
           modules={[Pagination, Navigation]} // Include Navigation module
           freeMode={true}
         >
-          {products.map(
+          {/* {products.map(
             (product) =>
               (title === "Best Deals"
                 ? product.bestDeal
-                : product.everydayNeeds) && (
-                <SwiperSlide className="relative" key={product.id}>
-                  <FavBtn id={product.id} />
+                : title === "You May Also Like"
+                ? relatedProducts.some((p) => p.id === product.id)
+                : product.everydayNeeds) */}
+          {productsToRender.map((product) => (
+            <SwiperSlide className="relative" key={product.id}>
+              <FavBtn id={product.id} />
 
-                  {product.offers > 0 && <Offer offers={product.offers} />}
+              {product.offers > 0 && <Offer offers={product.offers} />}
 
-                  <ProductCard
-                    productImg={product.imageUrl}
-                    name={product.name}
-                    key={product.id}
-                    id={product.id}
-                    stockAvailability={product.stockAvailability}
-                  >
-                    <TitleandDes
-                      name={product.name}
-                      unit={product.unit}
-                      description={product.description}
-                    />
-                    <Price price={product.price} offers={product.offers} />
-                  </ProductCard>
-                </SwiperSlide>
-              )
-          )}
+              <ProductCard
+                productImg={product.imageUrl}
+                name={product.name}
+                key={product.id}
+                id={product.id}
+                stockAvailability={product.stockAvailability}
+              >
+                <TitleandDes
+                  name={product.name}
+                  unit={product.unit}
+                  description={product.description}
+                  id={product.id}
+                />
+                <Price price={product.price} offers={product.offers} />
+              </ProductCard>
+            </SwiperSlide>
+          ))}
         </Swiper>
       </div>
     </>

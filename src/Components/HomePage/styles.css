@@ -323,7 +323,7 @@ footer .foot .icons svg:hover {
 }
 
 .shopBtn:hover {
-  background-color: var(--main-color);
+  /* background-color: var(--main-color); */
 }
 .cart span {
   background-color: var(--main-color-2);

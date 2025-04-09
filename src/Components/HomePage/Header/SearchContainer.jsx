@@ -12,6 +12,7 @@ import { lazy, Suspense } from "react";
 
 // const SearchMenu = lazy(() => import("../Header/SearchMenu"));
 const BottomDrawer = lazy(() => import("../BottomDrawer"));
+
 function SearchContainer({ children, open, setOpen }) {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -93,28 +94,28 @@ function SearchContainer({ children, open, setOpen }) {
             {/* <i className="bx bx-search text-black"></i> */}
             <HiOutlineSearch className="bx bx-search text-white font-bold stroke-[4]" />
           </button>
-
-          {searchOpen && (
-            <SearchMenu searchOpen={searchOpen}>
-              <SearchList>
-                {/* searchedProducts.length === 0 this means that what users entered isn't in out ptoducts so the searchedProducts will be empty so it's length is 0*/}
-                {searchQuery.length > 0 && searchedProducts.length === 0 ? (
-                  <NoResult />
-                ) : (
-                  searchedProducts.map((product) => (
-                    <SearchItems
-                      img={product.imageUrl}
-                      name={product.name}
-                      unit={product.unit}
-                      key={product.id}
-                      price={product.price}
-                      offers={product.offers}
-                    />
-                  ))
-                )}
-              </SearchList>
-            </SearchMenu>
-          )}
+          {/* {searchOpen && ( */}
+          <SearchMenu searchOpen={searchOpen}>
+            <SearchList>
+              {/* searchedProducts.length === 0 this means that what users entered isn't in out ptoducts so the searchedProducts will be empty so it's length is 0*/}
+              {searchQuery.length > 0 && searchedProducts.length === 0 ? (
+                <NoResult />
+              ) : (
+                searchedProducts.map((product) => (
+                  <SearchItems
+                    img={product.imageUrl}
+                    name={product.name}
+                    unit={product.unit}
+                    key={product.id}
+                    price={product.price}
+                    offers={product.offers}
+                    id={product.id}
+                  />
+                ))
+              )}
+            </SearchList>
+          </SearchMenu>
+          {/* )} */}
         </form>
         {open && (
           <Suspense fallback={<div>Loading...</div>}>

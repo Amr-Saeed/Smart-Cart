@@ -5,8 +5,8 @@ const ProductsContext = createContext();
 function ProductsProvider({ children }) {
   const [products, setProducts] = useState([]);
 
-  useEffect(() => {
-    const fetchProducts = async () => {
+  useEffect(function () {
+    async function fetchProducts() {
       try {
         // setIsLoading(true);
         const res = await fetch(
@@ -20,8 +20,7 @@ function ProductsProvider({ children }) {
         // setIsLoading(false);
         // hasFetched.current = true; // Mark fetch as complete
       }
-    };
-
+    }
     fetchProducts();
   }, []); // Only run on mount
 

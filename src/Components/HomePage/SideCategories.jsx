@@ -5,6 +5,7 @@ export function SideCategories({ category, categoryProducts }) {
   const [accordionOpen, setAccordionOpen] = useState(null); //Keeps track of which category is currently open.
 
   const isOpen = accordionOpen === category.category;
+
   // Find the matching products for this category
   const categoryData = useMemo(
     () =>

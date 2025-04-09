@@ -2,6 +2,7 @@ import { memo } from "react";
 import { OutOfStock } from "./OutOfStock";
 import { Quantity } from "./Quantity";
 import "./styles.css";
+import { CardActions } from "./CardActions";
 
 function ProductCard({ productImg, name, stockAvailability, children, id }) {
   return (
@@ -19,11 +20,6 @@ function ProductCard({ productImg, name, stockAvailability, children, id }) {
         </CardActions>
       </div>
     </>
-  );
-}
-function CardActions({ children }) {
-  return (
-    <div className="card-actions flex items-center !p-2 h-10">{children}</div>
   );
 }
 export default memo(ProductCard);

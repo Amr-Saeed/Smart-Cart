@@ -2,9 +2,10 @@ import TrueFocus from "../TextAnimations/TrueFocus/TrueFocus";
 // import { useProducts } from "../useProducts";
 import { useProductsContext } from "../HomePage/ProductsContext";
 
-import Category from "./Category";
-import { useMemo } from "react";
+// import Category from "./Category";
+import { lazy, Suspense, useMemo } from "react";
 
+const Category = lazy(() => import("./Category"));
 function CategorySection() {
   const { products } = useProductsContext();
 
@@ -84,7 +85,9 @@ function CategorySection() {
       </h2>
       <div className="containerr grid grid-cols-4 lg:grid lg:grid-cols-8 gap-x-4">
         {newProduct.map((product) => (
-          <Category product={product} key={product.id} />
+          <Suspense fallback={<div>Loading...</div>} key={product.id}>
+            <Category product={product} key={product.id} />
+          </Suspense>
         ))}
       </div>
     </section>

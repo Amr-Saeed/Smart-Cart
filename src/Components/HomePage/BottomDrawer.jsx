@@ -52,6 +52,7 @@ export default function BottomDrawer({
                     key={product.id}
                     price={product.price}
                     offers={product.offers}
+                    id={product.id}
                   />
                 ))
               )}

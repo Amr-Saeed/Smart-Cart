@@ -1,6 +1,11 @@
 import { useQuantity } from "./useQuantity";
 
-export function Quantity({ stockAvailability, id }) {
+export function Quantity({
+  stockAvailability,
+  id,
+  atProduct = false,
+  comingFromSmallScreenProduct = false,
+}) {
   const {
     quantity,
     handleAdd,
@@ -11,10 +16,20 @@ export function Quantity({ stockAvailability, id }) {
   } = useQuantity(id);
 
   return (
-    <div className="QuantityInput  self-center w-[187px] relative rounded-[15px] flex items-center justify-center">
+    <div
+      className={`QuantityInput  self-center ${
+        comingFromSmallScreenProduct ? "w-full" : "w-[187px] "
+      } relative rounded-[15px] flex items-center justify-center `}
+    >
       {stockAvailability ? (
         <>
-          <div className="expandInput flex justify-center items-center">
+          <div
+            className={`expandInput ${
+              comingFromSmallScreenProduct
+                ? "w-full"
+                : "flex justify-center items-center"
+            } `}
+          >
             <button
               aria-label="decrease-quantity"
               onClick={handleDec}
@@ -48,7 +63,7 @@ export function Quantity({ stockAvailability, id }) {
           className="Notify text-white w-full rounded-2xl !p-2.5 font-bold text-center"
           aria-label="Notify-Button"
         >
-          Notify Me
+          {atProduct ? "Add to Cart" : "Notify Me"}
         </button>
       )}
     </div>

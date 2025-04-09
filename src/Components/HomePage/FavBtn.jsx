@@ -3,7 +3,7 @@ import { useTotalWish } from "./TotalWishQuantity";
 import { HiOutlineHeart } from "react-icons/hi";
 import { memo } from "react";
 
-function FavBtn({ id }) {
+function FavBtn({ id, prod = false }) {
   const { wishQuan, handleAdd, handleDec } = useQuantityWish(id);
   const { totalWish } = useTotalWish();
 
@@ -15,7 +15,11 @@ function FavBtn({ id }) {
   }
 
   return (
-    <div className=" favoriteButton  absolute flex align-middle justify-center z-50 w-[50px] h-[50px] rounded-[50%] top-[-44px] right-[-12px]">
+    <div
+      className={` favoriteButton  absolute flex align-middle justify-center w-[50px] h-[50px] rounded-[50%] ${
+        prod ? "top-[-16px] z-0" : "top-[-44px] z-50"
+      } right-[-12px]`}
+    >
       <button
         aria-label="add-to-Cart"
         onClick={handleToggle}

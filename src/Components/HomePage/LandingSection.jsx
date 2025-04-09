@@ -13,7 +13,7 @@ function LandingSection() {
           </div>
           <div className="leftButton">
             <button
-              className="shopBtn text-white max-w-fit md:w-[40%] rounded-2xl !p-2.5 font-bold text-center bg-[#c9b2ff]"
+              className="shopBtn text-white max-w-fit md:w-[40%] rounded-2xl !p-2.5 font-bold text-center bg-[var(--main-color)] hover:bg-[#c9b2ff]"
               aria-label="Shop-Now"
             >
               Shop Now
