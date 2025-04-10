@@ -7,6 +7,7 @@ import { WishProvider } from "./Components/HomePage/TotalWishQuantity";
 import Login from "./Pages/Login";
 import { lazy, Suspense } from "react";
 import { ProductsProvider } from "./Components/HomePage/ProductsContext";
+import DashBoard from "./Pages/DashBoard";
 
 const Product = lazy(() => import("./Components/HomePage/Product/Product"));
 
@@ -22,8 +23,10 @@ function App() {
                 {/* <Route index element={<Login />} /> */}
                 {/* <Route path="/HomePage" element={<HomePage />} /> */}
                 {/* <Route path="HomePage/:id" element={<Product />} /> */}
-                <Route index element={<HomePage />} />
-                <Route path="/:id" element={<Product />} />
+                {/* <Route index element={<HomePage />} />
+                <Route path="/:id" element={<Product />} /> */}
+                <Route index element={<DashBoard />} />
+                {/* path="/DashBoard" */}
                 {/* <Route path="/HomePage" element={<HomePage />} /> */}
               </Routes>
             </Suspense>

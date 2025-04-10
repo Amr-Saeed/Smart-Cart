@@ -48,7 +48,6 @@ function SearchContainer({ children, open, setOpen }) {
     e.preventDefault();
     setSearchQuery(e.target.value);
   }
-
   function handleDrawer() {
     setOpen((open) => !open);
   }

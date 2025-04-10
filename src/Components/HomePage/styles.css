@@ -370,8 +370,39 @@ footer .foot .icons svg:hover {
   background-color: var(--main-color-alt);
 }
 /* categorySideBar */
+/* Start DashBoard SideBar */
+.Home {
+  position: relative;
+}
+/* .Home::after {
+  content: "";
+  position: absolute;
+  width: 100px;
+  height: 3px;
+  background-color: blue;
+  bottom: 2px;
+} */
+.addProduct {
+  position: relative;
+}
+/* .addProduct::after {
+  content: "";
+  position: absolute;
+  width: 177px;
+  height: 3px;
+  background-color: blue;
+  bottom: 2px;
+} */
+.overlay {
+  transition: all 0.5s;
+}
+.card:hover .overlay {
+  opacity: 1;
+}
 
-:root {
+/* End DashBoard SideBar */
+
+/* :root {
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -488,4 +519,4 @@ footer .foot .icons svg:hover {
   body {
     @apply bg-background text-foreground;
   }
-}
+} */
