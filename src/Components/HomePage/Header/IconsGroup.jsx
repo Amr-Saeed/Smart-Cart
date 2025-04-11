@@ -5,11 +5,30 @@ import { HeartIcon } from "@heroicons/react/24/outline";
 import { ShoppingCartIcon } from "@heroicons/react/24/outline";
 import Value from "./Value";
 import { memo } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function IconsGroup({ className, navigate }) {
   const { totalQuantity } = useTotalQuantity();
   const { totalWish } = useTotalWish();
+
+  console.log(totalQuantity);
+
+  const location = useLocation();
+  const isCartPage = location.pathname === "/cart";
   // console.log(totalWish, totalQuantity);
+
+  const isWishListPage = location.pathname === "/wishlist";
+
+  function handleWishlistClick() {
+    if (!isWishListPage) {
+      navigate("/wishlist");
+    }
+  }
+  function handleClick() {
+    if (!isCartPage) {
+      navigate("/cart");
+    }
+  }
 
   return (
     <div
@@ -23,11 +42,19 @@ function IconsGroup({ className, navigate }) {
       </div>
 
       <div className="relative cart text-center">
-        <HeartIcon className="bx bx-heart w-[1.3rem] md:w-[1.875rem] cursor-pointer text-[var(--main-color)]" />
+        <HeartIcon
+          className="bx bx-heart w-[1.3rem] md:w-[1.875rem] cursor-pointer text-[var(--main-color)]"
+          onClick={handleWishlistClick}
+          disabled={isWishListPage}
+        />
         {totalWish > 0 && <Value value={totalWish} />}
       </div>
       <div className="relative cart text-center">
-        <ShoppingCartIcon className="bx bx-cart cursor-pointer w-[1.3rem] md:w-[1.875rem] text-[var(--main-color)]" />
+        <ShoppingCartIcon
+          className="bx bx-cart cursor-pointer w-[1.3rem] md:w-[1.875rem] text-[var(--main-color)]"
+          onClick={handleClick}
+          disabled={isCartPage}
+        />
         {totalQuantity > 0 && <Value value={totalQuantity} />}
       </div>
     </div>

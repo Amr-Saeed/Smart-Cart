@@ -8,8 +8,11 @@ import Login from "./Pages/Login";
 import { lazy, Suspense } from "react";
 import { ProductsProvider } from "./Components/HomePage/ProductsContext";
 import DashBoard from "./Pages/DashBoard";
+import WishList from "./Pages/WishList";
 
 const Product = lazy(() => import("./Components/HomePage/Product/Product"));
+
+const Cart = lazy(() => import("./Pages/Cart"));
 
 // export const ProductsContext = createContext();
 function App() {
@@ -23,10 +26,11 @@ function App() {
                 {/* <Route index element={<Login />} /> */}
                 {/* <Route path="/HomePage" element={<HomePage />} /> */}
                 {/* <Route path="HomePage/:id" element={<Product />} /> */}
-                {/* <Route index element={<HomePage />} />
-                <Route path="/:id" element={<Product />} /> */}
-                <Route index element={<DashBoard />} />
-                {/* path="/DashBoard" */}
+                <Route index element={<HomePage />} />
+                <Route path="/Cart" element={<Cart />} />
+                <Route path="/wishlist" element={<WishList />} />
+                {/* <Route path="/:id" element={<Product />} /> */}
+                {/* <Route path="/DashBoard" element={<DashBoard />} /> */}
                 {/* <Route path="/HomePage" element={<HomePage />} /> */}
               </Routes>
             </Suspense>

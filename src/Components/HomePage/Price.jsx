@@ -1,6 +1,12 @@
-import { useMemo } from "react";
+import { memo, useMemo } from "react";
 
-function Price({ price, offers, className, showContent = false }) {
+function Price({
+  price,
+  offers,
+  className,
+  showContent = false,
+  noWidthforCartProd = false,
+}) {
   const offer = useMemo(() => {
     return ((offers / 100) * price).toFixed(2);
   }, [offers, price]);
@@ -10,7 +16,7 @@ function Price({ price, offers, className, showContent = false }) {
   }, [offer, price]);
   return (
     <div
-      className={`price w-full ${
+      className={`price ${!noWidthforCartProd ? "w-full" : ""} ${
         showContent ? "flex-col text-[1.3rem]" : "flex-row"
       } flex justify-between ${className}`}
     >
@@ -20,4 +26,4 @@ function Price({ price, offers, className, showContent = false }) {
   );
 }
 
-export default Price;
+export default memo(Price);

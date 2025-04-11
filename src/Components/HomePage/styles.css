@@ -399,8 +399,13 @@ footer .foot .icons svg:hover {
 .card:hover .overlay {
   opacity: 1;
 }
-
 /* End DashBoard SideBar */
+/* Start Cart */
+.cartProdName:hover {
+  color: var(--main-color);
+  transform: scale(0.9);
+}
+/* End Cart */
 
 /* :root {
   --background: oklch(1 0 0);
