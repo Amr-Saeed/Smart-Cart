@@ -6,6 +6,7 @@ import NoResult from "../HomePage/NoResult";
 import Modal from "./Modal";
 import inputFields from "./InputFields";
 import InputField from "./InputField";
+import { UserButton } from "@clerk/clerk-react";
 
 function DashHome() {
   const [searchDashQuery, setDashSearchQuery] = useState("");
@@ -65,7 +66,10 @@ function DashHome() {
           value={searchDashQuery}
         />
         <div className="welcome bg-[var(--main-color)] !p-[15px] rounded-[10px] !mr-[15px]">
-          <span className="text-white font-bold ">Welcome, Admin</span>
+          <span className="text-white font-bold flex items-center justify-center gap-[8px]">
+            <UserButton />
+            Welcome
+          </span>
         </div>
       </form>
 
@@ -155,6 +159,7 @@ function DashHome() {
             </button>
           </div>
         </Modal>
+        <UserButton />
       </section>
     </div>
   );

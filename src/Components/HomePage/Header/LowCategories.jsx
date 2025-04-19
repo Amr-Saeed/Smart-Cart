@@ -2,6 +2,7 @@ import { BiSolidOffer } from "react-icons/bi";
 import { HiMenuAlt2 } from "react-icons/hi";
 import FirstCategory from "./FirstCategory";
 import { memo, useMemo, useEffect, useState } from "react";
+import { UserButton } from "@clerk/clerk-react";
 
 function LowCategories({ children, setIsSideBarOpen, products }) {
   // const [categoryDrawerOpen, setCategoryDrawerOpen] = useState(false);
@@ -26,7 +27,7 @@ function LowCategories({ children, setIsSideBarOpen, products }) {
 
   return (
     // <div className="containerr low sticky top-0 z-50">
-    <div className="containerr low sticky top-0 z-50">
+    <div className="containerr low sticky top-0 z-50 ">
       <div className="lower-header hidden lg:flex  items-center">
         <ul className="categories lg:flex justify-center items-center gap-12 hidden  ">
           <li className="min-w-max text-[var(--category-color)] font-bold">
@@ -58,6 +59,7 @@ function LowCategories({ children, setIsSideBarOpen, products }) {
         </ul>
       </div>
       {children}
+      {/* <UserButton /> */}
     </div>
   );
 }

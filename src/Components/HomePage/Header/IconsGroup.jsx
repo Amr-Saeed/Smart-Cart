@@ -6,6 +6,7 @@ import { ShoppingCartIcon } from "@heroicons/react/24/outline";
 import Value from "./Value";
 import { memo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { UserButton } from "@clerk/clerk-react";
 
 function IconsGroup({ className, navigate }) {
   const { totalQuantity } = useTotalQuantity();
@@ -34,11 +35,12 @@ function IconsGroup({ className, navigate }) {
     <div
       className={` ${className} icons  flex justify-end items-center  gap-2.5`}
     >
-      <div>
-        <UserIcon
+      <div className="w-[1.3rem] md:w-[1.875rem] cursor-pointer text-[var(--main-color)]">
+        {/* <UserIcon
           onClick={() => navigate(-1)}
           className="w-[1.3rem] md:w-[1.875rem] cursor-pointer text-[var(--main-color)]"
-        />
+        /> */}
+        <UserButton />
       </div>
 
       <div className="relative cart text-center">
