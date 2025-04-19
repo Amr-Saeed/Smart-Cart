@@ -3,10 +3,25 @@ import { useProductsContext } from "../HomePage/ProductsContext";
 import ProdutCard from "../HomePage/ProdutCard";
 import Price from "../HomePage/Price";
 import NoResult from "../HomePage/NoResult";
+import Modal from "./Modal";
+import inputFields from "./InputFields";
+import InputField from "./InputField";
 
 function DashHome() {
   const [searchDashQuery, setDashSearchQuery] = useState("");
   const { products } = useProductsContext();
+  //start Modal control
+  const [isOpen, setIsOpen] = useState(false);
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function close() {
+    setIsOpen(false);
+  }
+
+  //End Modal control
 
   const searchedDashProducts = useMemo(() => {
     if (!products || products.length === 0) return []; // Don't compute categories if products are null
@@ -56,7 +71,7 @@ function DashHome() {
 
       <section className="overView flex items-center justify-center !mt-[70px]">
         <div className="overViewContent w-[90%]">
-          <h1 className="!mb-[10px] text-[blueviolet] text-[1.4rem] font-bold ">
+          <h1 className="!mb-[10px] text-[blueviolet] text-[1.4rem] font-bold text-[2rem]">
             OverView
           </h1>
           <div className="overViewCards grid grid-cols-2 gap-[10px] lg:grid-cols-4 lg:gap-[20px]">
@@ -94,8 +109,11 @@ function DashHome() {
         </div>
       </section>
 
-      <section className="dashProducts flex items-center justify-center ">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-[10px] h-[400px] md:h-[750px] lg:h-[500px] grid-rows-[350px] overflow-y-scroll w-[90%] !mx-auto">
+      <section className="dashProducts  items-center justify-center ">
+        <h1 className="!mb-[10px] text-[blueviolet]  font-bold text-[2rem] !m-[auto] w-[90%]">
+          Products
+        </h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-[100px] gap-x-[5px] h-[400px] md:h-[750px] lg:h-[500px] grid-rows-[350px] overflow-y-scroll w-[90%] !mx-auto">
           {searchDashQuery.length > 0 && searchedDashProducts.length === 0 ? (
             <p className="col-span-4 bg-[blueviolet] flex items-center justify-center text-white font-bold text-[1.3rem]">
               No results found
@@ -103,56 +121,100 @@ function DashHome() {
           ) : (
             searchedDashProducts.map((product) => (
               <DashProducts
-                img={product.imageUrl}
-                name={product.name}
-                unit={product.unit}
+                // img={product.imageUrl}
+                // name={product.name}
+                // unit={product.unit}
+                // key={product.id}
+                // price={product.price}
+                // offers={product.offers}
+                // id={product.id}
+                // stockAvailability={product.stockAvailability}
+                // desc={product.description}
+                product={product}
                 key={product.id}
-                price={product.price}
-                offers={product.offers}
-                id={product.id}
-                stockAvailability={product.stockAvailability}
-                desc={product.description}
+                openModal={openModal}
               />
             ))
           )}
         </div>
+        <Modal isOpen={isOpen} close={close} title={"Add Product"}>
+          {inputFields.map((input) => (
+            <div className="!mb-[10px] flex flex-col" key={input.id}>
+              <label htmlFor={input.id} className="text-[#0000009c] font-bold">
+                {input.label}
+              </label>
+              <InputField input={input} />
+            </div>
+          ))}
+          <div className="flex gap-2 !mt-[20px]">
+            <button className="w-[50%] justify-center inline-flex items-center gap-2 rounded-md bg-gray-700 !py-1.5 !px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[focus]:outline-1 data-[focus]:outline-white data-[open]:bg-gray-700">
+              Cancel
+            </button>
+            <button className="w-[50%] justify-center inline-flex items-center gap-2 rounded-md bg-gray-700 !py-1.5 !px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[focus]:outline-1 data-[focus]:outline-white data-[open]:bg-gray-700">
+              Submit
+            </button>
+          </div>
+        </Modal>
       </section>
     </div>
   );
 }
 
 function DashProducts({
-  img,
-  name,
-  unit,
-  price,
-  offers,
-  id,
-  stockAvailability,
-  desc,
+  // img,
+  // name,
+  // unit,
+  // price,
+  // offers,
+  // id,
+  // stockAvailability,
+  // desc,
+  product,
+  openModal,
 }) {
+  const {
+    imageUrl: img,
+    name,
+    unit,
+    price,
+    offers,
+    id,
+    stockAvailability,
+    description,
+  } = product;
   return (
-    <div className="card bg-base-100 w-96 shadow-sm h-auto cursor-pointer relative">
+    <div className="card bg-base-100 w-96 shadow-sm   relative h-[400px]">
       <figure>
         <img src={img} alt={name} />
       </figure>
-      <div className="card-content flex flex-col justify-between items-start">
+      <div className="card-content flex flex-col justify-between items-start !h-[230px]">
         <h2 className="card-title">{name}</h2>
-        <p>{desc}</p>
-        <Price price={price} offers={offers} />
-        <div className="price justify-end">
+        <p className="h-[50px]">{description}</p>
+        <Price price={price} offers={offers} className={"h-[20px]"} />
+        {/* <div className="price justify-end">
           {offers ? <p>Offer: {`${offers}%`}</p> : null}
+        </div> */}
+        <div className=" flex  items-center justify-center gap-[10px] h-[90px] w-full ">
+          <button
+            className="text-white font-bold rounded-[10px] bg-[#ffc107] !p-[10px]  text-center w-[50%]"
+            onClick={openModal}
+          >
+            Edit
+          </button>
+          <button className="text-white font-bold rounded-[10px] bg-[#ff3333] !p-[10px]  text-center w-[50%]">
+            Delete
+          </button>
         </div>
       </div>
       {/* overlay */}
-      <div className="overlay bg-[#8153e8ad] opacity-0  absolute inset-0 flex flex-col items-center justify-center gap-[30px]">
+      {/* <div className="overlay bg-[#8153e8ad] opacity-0  absolute inset-0 flex flex-col items-center justify-center gap-[30px]">
         <button className="text-white font-bold rounded-[10px] bg-[#ff3333] !p-[10px] w-[70px] text-center">
           Delete
         </button>
         <button className="text-white font-bold rounded-[10px] bg-[#ffc107] !p-[10px] w-[70px] text-center">
           Edit
         </button>
-      </div>
+      </div> */}
     </div>
   );
 }

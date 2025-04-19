@@ -26,11 +26,13 @@ function App() {
                 {/* <Route index element={<Login />} /> */}
                 {/* <Route path="/HomePage" element={<HomePage />} /> */}
                 {/* <Route path="HomePage/:id" element={<Product />} /> */}
-                <Route index element={<HomePage />} />
-                <Route path="/Cart" element={<Cart />} />
-                <Route path="/wishlist" element={<WishList />} />
+
+                {/* <Route index element={<HomePage />} /> */}
+                {/* <Route path="/Cart" element={<Cart />} /> */}
+                {/* <Route path="/wishlist" element={<WishList />} /> */}
+
                 {/* <Route path="/:id" element={<Product />} /> */}
-                {/* <Route path="/DashBoard" element={<DashBoard />} /> */}
+                <Route index element={<DashBoard />} />
                 {/* <Route path="/HomePage" element={<HomePage />} /> */}
               </Routes>
             </Suspense>
