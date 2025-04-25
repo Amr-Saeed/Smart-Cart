@@ -92,9 +92,9 @@ export default function SwiperComponent({ content, title, relatedProducts }) {
                 : product.everydayNeeds) */}
           {productsToRender.map((product) => (
             <SwiperSlide className="relative" key={product.id}>
-              <FavBtn id={product.id} />
+              {/* <FavBtn id={product.id} /> */}
 
-              {product.offers > 0 && <Offer offers={product.offers} />}
+              {/* {product.offers > 0 && <Offer offers={product.offers} />} */}
 
               <ProductCard
                 productImg={product.imageUrl}
@@ -102,6 +102,7 @@ export default function SwiperComponent({ content, title, relatedProducts }) {
                 key={product.id}
                 id={product.id}
                 stockAvailability={product.stockAvailability}
+                offers={product.offers}
               >
                 <TitleandDes
                   name={product.name}

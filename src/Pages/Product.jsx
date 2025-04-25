@@ -1,16 +1,20 @@
 import { useEffect, useState, useMemo, lazy, Suspense } from "react";
 import { useParams } from "react-router-dom";
-import Header from "../Header/Header";
-import LowCategories from "../Header/LowCategories";
+import Header from "../Components/HomePage/Header/Header";
+import LowCategories from "../Components/HomePage/Header/LowCategories";
 
-import { useProductsContext } from "../ProductsContext";
+import { useProductsContext } from "../Components/HomePage/ProductsContext";
 // import Footer from "../Footer";
 // import MayAlsoLike from "./MayAlsoLike";
 // import ProductInfo from "./ProductInfo";
 
-const ProductInfo = lazy(() => import("./ProductInfo"));
-const MayAlsoLike = lazy(() => import("./MayAlsoLike"));
-const Footer = lazy(() => import("../Footer"));
+const ProductInfo = lazy(() =>
+  import("../Components/HomePage/Product/ProductInfo")
+);
+const MayAlsoLike = lazy(() =>
+  import("../Components/HomePage/Product/MayAlsoLike")
+);
+const Footer = lazy(() => import("../Components/HomePage/Footer"));
 
 function Product() {
   const { id } = useParams();
@@ -52,7 +56,7 @@ function Product() {
       getProduct(id);
     },
     [id]
-  ); // Only run on mount
+  );
 
   console.log("currentProduct", currentProduct);
   // const {

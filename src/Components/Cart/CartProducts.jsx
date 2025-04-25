@@ -1,6 +1,6 @@
 import { CardActions } from "../HomePage/CardActions";
 import FavBtn from "../HomePage/FavBtn";
-import Product from "../HomePage/Product/Product";
+import Product from "../../Pages/Product";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { Quantity } from "../HomePage/Quantity";
 import Price from "../HomePage/Price";

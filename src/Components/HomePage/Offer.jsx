@@ -1,8 +1,12 @@
 import React from "react";
 
-export function Offer({ offers }) {
+export function Offer({ offers, prodCategory = false }) {
   return (
-    <div className="offers left-0 top-[-27px] absolute z-50 ">
+    <div
+      className={`offers ${
+        prodCategory ? "top-0" : "top-[-27px]"
+      } left-0  absolute z-50`}
+    >
       <span className="flex align-middle justify-center  w-[3.875rem] h-[1.9375rem] ">
         {`-${offers}%`}
       </span>

@@ -13,24 +13,25 @@ import { SignIn, useUser, SignUp } from "@clerk/clerk-react";
 import CustomSignIn from "./Pages/CustomSignIn";
 import { Navigate } from "react-router-dom";
 import CustomSignUp from "./Pages/CustomSignUp";
+import Category from "./Pages/Category";
 
-const Product = lazy(() => import("./Components/HomePage/Product/Product"));
+const Product = lazy(() => import("./Pages/Product"));
 
 const Cart = lazy(() => import("./Pages/Cart"));
 
 // export const ProductsContext = createContext();
 function App() {
-  const { user, isLoaded } = useUser(); // Get the current user
+  // const { user, isLoaded } = useUser(); // Get the current user
 
-  // If the user data is not loaded yet, you can show a loading spinner or something else
-  if (!isLoaded) {
-    return <div>Loading...</div>;
-  }
-  console.log(user);
+  // // If the user data is not loaded yet, you can show a loading spinner or something else
+  // if (!isLoaded) {
+  //   return <div>Loading...</div>;
+  // }
+  // console.log(user);
 
-  // Check if the user has an "admin" role
-  const isAdmin = user?.publicMetadata?.example === "admin"; // Assuming 'example' stores the role
-  console.log(isAdmin);
+  // // Check if the user has an "admin" role
+  // const isAdmin = user?.publicMetadata?.example === "admin"; // Assuming 'example' stores the role
+  // console.log(isAdmin);
   return (
     <WishProvider>
       <QunatityProvider>
@@ -38,7 +39,7 @@ function App() {
           <BrowserRouter>
             <Suspense fallback={<div>Loading...</div>}>
               <Routes>
-                <Route
+                {/* <Route
                   index
                   element={
                     user ? (
@@ -51,26 +52,28 @@ function App() {
                       <CustomSignIn />
                     )
                   }
-                />
+                /> */}
                 {/* Sign Up Route */}
-                <Route
+                {/* <Route
                   path="/sign-up"
                   element={
                     <CustomSignUp signInUrl="/" redirectUrl="/HomePage" />
                   } // Redirect to SignIn when "Sign In" is clicked
-                />
-                <Route path="/HomePage" element={<HomePage />} />
+                /> */}
+                <Route path="/" element={<HomePage />} />
                 {/* <Route path="HomePage/:id" element={<Product />} /> */}
 
+                <Route path="/:category" element={<Category />} />
+
                 {/* <Route index element={<HomePage />} /> */}
-                {/* <Route path="/Cart" element={<Cart />} /> */}
+                <Route path="/Cart" element={<Cart />} />
                 {/* <Route path="/wishlist" element={<WishList />} /> */}
 
                 {/* <Route path="/:id" element={<Product />} /> */}
-                <Route
+                {/* <Route
                   path="/DashBoard"
                   element={isAdmin ? <DashBoard /> : <Navigate to="/" />}
-                />
+                /> */}
                 {/* <Route path="/HomePage" element={<HomePage />} /> */}
               </Routes>
             </Suspense>
