@@ -1,24 +1,31 @@
 const inputFields = [
   {
     label: "Product Title",
-    name: "title",
+    name: "name",
     type: "text",
-    id: "title",
+    id: "name",
   },
-  { label: "Price", name: "price", type: "number", id: "price", min: 0 },
+  {
+    label: "Price",
+    name: "price",
+    type: "number",
+    id: "price",
+    min: 0,
+    step: 0.01,
+  },
   {
     label: "Offer",
-    name: "offer",
+    name: "offers",
     type: "number",
-    id: "offer",
+    id: "offers",
     min: 0,
     max: 100,
   },
   {
     label: "Stock",
-    name: "stock",
+    name: "inStock",
     type: "text",
-    id: "stock",
+    id: "inStock",
   },
   {
     label: "unit",
@@ -28,9 +35,9 @@ const inputFields = [
   },
   {
     label: "image",
-    name: "image",
+    name: "imageUrl",
     type: "text",
-    id: "image",
+    id: "imageUrl",
   },
 ];
 
