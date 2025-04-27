@@ -6,7 +6,7 @@ function TitleandDes({ name, unit, description, id }) {
       <span className="card-title">
         <Link
           className="card-title"
-          to={`/${id}`}
+          to={`/product/${id}`}
         >{`${name} - Per ${unit}`}</Link>
       </span>
       <div className="description overflow-hidden ">

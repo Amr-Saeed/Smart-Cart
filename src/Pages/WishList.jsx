@@ -9,7 +9,6 @@ function WishList() {
   const wishListProducts = products.slice(0, 5);
   return (
     <>
-      <Header />
       <LowCategories />
       {wishListProducts.length > 0 ? (
         <WishListProducts wishListProducts={wishListProducts} />

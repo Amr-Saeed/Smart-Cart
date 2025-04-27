@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import MultiRangeSlider from "multi-range-slider-react";
-function MultiSlider() {
-  const [minValue, set_minValue] = useState(0);
-  const [maxValue, set_maxValue] = useState(1000);
+function MultiSlider({ minValue, maxValue, setMinValue, setMaxValue }) {
   const handleInput = (e) => {
-    set_minValue(e.minValue);
-    set_maxValue(e.maxValue);
+    setMinValue(e.minValue);
+    setMaxValue(e.maxValue);
   };
 
   return (
@@ -21,9 +19,7 @@ function MultiSlider() {
         thumbLeftColor="white"
         barInnerColor="var(--main-color)"
         className="!bg-none !border-0 !shadow-none"
-        onInput={(e) => {
-          handleInput(e);
-        }}
+        onInput={handleInput}
       />
     </div>
   );

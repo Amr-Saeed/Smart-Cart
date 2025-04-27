@@ -4,7 +4,7 @@ export default function Category({ product }) {
   return (
     <div className="category flex flex-col align-middle justify-center hover:scale-[1.1] transition-all duration-300 ease-in-out">
       <Link
-        to={`/${product.category}`}
+        to={`/category/${product.category}`}
         className="category flex flex-col align-middle justify-center"
       >
         <div className="pic h-12 w-[80%] lg:w-full rounded-2xl flex justify-center align-middle ">

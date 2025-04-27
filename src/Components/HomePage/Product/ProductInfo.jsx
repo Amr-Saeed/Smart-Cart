@@ -16,16 +16,16 @@ function ProductInfo({ currentProduct, id }) {
   } = currentProduct;
   return (
     <section className="Product containerr">
-      <div className="flex w-full lg:gap-[50px] lg:flex-row flex-col gap-[30px] ">
+      <div className="flex w-full lg:gap-[50px] lg:flex-row flex-col gap-[30px] place-items-center md:place-items-start">
         {/* w-[70%] */}
-        <picture className="relative flex bg-[blueviolet] rounded-2xl lg:w-[350px] lg:order-0 h-[350px] items-center justify-center order-2 w-full">
+        <picture className="relative flex bg-[blueviolet] rounded-2xl lg:w-[350px] md:w-full lg:order-0 md:h-[350px] items-center justify-center order-2 w-full h-[250px]">
           <FavBtn id={id} prod={true} />
           {stockAvailability === false && <OutOfStock />}
           <img
             loading="lazy"
             src={imageUrl}
             alt={name}
-            className="lg:w-full w-[80%] "
+            className="lg:w-full w-[80%] md:w-[55%] "
           />
         </picture>
 

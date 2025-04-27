@@ -73,13 +73,11 @@ function Product() {
   console.log(relatedProducts);
   return (
     <>
-      <Header />
       <LowCategories />
       <Suspense fallback={<h1>Loading...</h1>}>
         <ProductInfo currentProduct={currentProduct} id={id} />
 
         <MayAlsoLike relatedProducts={relatedProducts} />
-        <Footer />
       </Suspense>
     </>
   );
