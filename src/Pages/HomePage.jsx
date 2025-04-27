@@ -30,7 +30,6 @@ function HomePage() {
   return (
     // <ProductsProvider>
     <Suspense fallback={<div>Loading...</div>}>
-      <Header />
       <LandingSection />
       <Suspense fallback={<div>Loading...</div>}>
         <CategorySection />
@@ -38,7 +37,6 @@ function HomePage() {
       <EveryDayNeeds />
       {/* <CategorySection /> */}
       <BestDeals />
-      <Footer />
     </Suspense>
     // </ProductsProvider>
   );

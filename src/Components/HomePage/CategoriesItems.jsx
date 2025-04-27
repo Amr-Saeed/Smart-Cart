@@ -4,7 +4,7 @@ export function CategoriesItems({ product }) {
   return (
     <button aria-label="open-product">
       <li key={product.id}>
-        <Link to={`/${product.id}`} className="flex items-center gap-3">
+        <Link to={`/product/${product.id}`} className="flex items-center gap-3">
           <img
             loading="lazy"
             src={product.imageUrl}

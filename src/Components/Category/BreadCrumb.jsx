@@ -8,6 +8,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "../ui/breadcrumb";
+import { memo } from "react";
 // import {
 //   DropdownMenu,
 //   DropdownMenuContent,
@@ -15,12 +16,12 @@ import {
 //   DropdownMenuTrigger,
 // } from "../ui/dropdown-menu";
 
-export function BreadcrumbDemo() {
+function BreadcrumbDemo() {
   const { category } = useParams();
   const location = useLocation();
 
   const isCategory = location.pathname === `/${category}`;
-  console.log("categosssssssry", category);
+  console.log("categosssssssssssry", category);
   return (
     <Breadcrumb>
       <BreadcrumbList>
@@ -39,3 +40,5 @@ export function BreadcrumbDemo() {
     </Breadcrumb>
   );
 }
+
+export default memo(BreadcrumbDemo); // Use memo to prevent unnecessary re-renders BreadcrumbDemo;

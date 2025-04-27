@@ -5,7 +5,7 @@ function FirstCategory({ category }) {
   return (
     <li className="min-w-max text-[var(--category-color)] font-bold">
       <Link
-        to={`/${category}`}
+        to={`/category/${category}`}
         className="min-w-max text-[var(--category-color)] font-bold"
       >
         <span href="#">{category}</span>

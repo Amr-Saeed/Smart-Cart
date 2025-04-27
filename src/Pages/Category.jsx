@@ -25,16 +25,16 @@ function Category() {
   useEffect(() => {
     getCategoryProducts(category);
   }, [category]);
-  console.log("currentCategoryProducts", currentCategoryProducts);
+  console.log("currentCategoryProductsssssss", currentCategoryProducts);
   return (
     <>
-      <Header />
       <LowCategories />
       <div className="flex ">
         <MainCategory
           category={category}
           categoryProducts={currentCategoryProducts}
         />
+
         <div className="basis-[30%]"></div>
       </div>
     </>

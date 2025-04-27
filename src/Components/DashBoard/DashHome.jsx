@@ -9,6 +9,7 @@ import InputField from "./InputField";
 import OverView from "./OverView";
 import SearchDashBoard from "./SearchDashBoard";
 import SelectMenu from "./SelectMenu";
+import { useAuth } from "@clerk/clerk-react";
 
 function DashHome({
   product,
@@ -21,6 +22,7 @@ function DashHome({
 }) {
   const [searchDashQuery, setDashSearchQuery] = useState("");
   //start Modal control
+  const { getToken } = useAuth();
 
   // State for selected category
 
@@ -29,10 +31,90 @@ function DashHome({
   const [productToEdit, setProductToEdit] = useState(defaultProduct);
 
   //Edit Modal
-  function handlEditeSubmit(e) {
+  // function handlEditeSubmit(e) {
+  //   e.preventDefault();
+  //   console.log(productToEdit); //HERE WE WILL POST TO THE API
+  // }
+  // async function handlEditeSubmit(e) {
+  //   e.preventDefault();
+
+  //   console.log(productToEdit); // Confirm it contains id and other fields
+
+  //   try {
+  //     const token = await getToken();
+
+  //     const response = await fetch(
+  //       `https://nutrigeen.com/api/products/${productToEdit.id}`,
+  //       {
+  //         method: "PUT", // or 'PATCH' depending on your API
+  //         headers: {
+  //           // "Content-Type": "application/json",
+  //           // Add authorization headers if needed
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //         body: JSON.stringify(productToEdit),
+  //       }
+  //     );
+
+  //     if (!response.ok) {
+  //       throw new Error("Failed to update product");
+  //     }
+
+  //     const updatedProduct = await response.json();
+  //     console.log("Product updated successfully:", updatedProduct);
+  //     // Optionally, close modal and refresh the product list
+  //     CloseEditModal();
+  //   } catch (error) {
+  //     console.error("Error updating product:", error);
+  //   }
+  // }
+
+  async function handlEditeSubmit(e) {
     e.preventDefault();
-    console.log(productToEdit); //HERE WE WILL POST TO THE API
+
+    console.log(productToEdit); // Confirm it contains id and other fields
+
+    try {
+      const token = await getToken();
+
+      // Create FormData to simulate a form submission
+      const formData = new FormData();
+
+      // Append your product data to FormData
+      for (const key in productToEdit) {
+        if (productToEdit.hasOwnProperty(key)) {
+          formData.append(key, productToEdit[key]);
+        }
+      }
+
+      // Add the authorization token to headers
+      const response = await fetch(
+        `https://nutrigeen.com/api/products/${productToEdit.id}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            // 'Content-Type' should NOT be set here when using FormData
+            // The browser will automatically set it correctly
+          },
+          body: formData,
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to update product");
+      }
+
+      const updatedProduct = await response.json();
+      console.log("Product updated successfully:", updatedProduct);
+      // Optionally, close modal and refresh the product list
+      CloseEditModal();
+    } catch (error) {
+      console.error("Error updating product:", error);
+    }
   }
+
+  console.log("productToEdit", productToEdit);
 
   function openEditModal() {
     setIsOpenEdit(true);

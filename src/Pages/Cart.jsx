@@ -22,7 +22,6 @@ function Cart() {
   console.log(cartProducts); // Log the cart products to the console for debugging
   return (
     <>
-      <Header />
       <LowCategories />
       {cartProducts.length > 0 ? (
         <div className="containerr flex flex-col lg:flex-row gap-[40px] w-full h-full">

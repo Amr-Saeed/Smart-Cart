@@ -1,4 +1,9 @@
-import { BrowserRouter, Routes } from "react-router-dom";
+import {
+  BrowserRouter,
+  createBrowserRouter,
+  RouterProvider,
+  Routes,
+} from "react-router-dom";
 import { Route } from "react-router-dom";
 import HomePage from "./Pages/HomePage";
 import { QunatityProvider } from "./Components/HomePage/TotalQuantityContext";
@@ -14,6 +19,7 @@ import CustomSignIn from "./Pages/CustomSignIn";
 import { Navigate } from "react-router-dom";
 import CustomSignUp from "./Pages/CustomSignUp";
 import Category from "./Pages/Category";
+import AppLayout from "./Components/AppLayout";
 
 const Product = lazy(() => import("./Pages/Product"));
 
@@ -21,63 +27,74 @@ const Cart = lazy(() => import("./Pages/Cart"));
 
 // export const ProductsContext = createContext();
 function App() {
-  // const { user, isLoaded } = useUser(); // Get the current user
+  const { user, isLoaded } = useUser(); // Get the current user
 
-  // // If the user data is not loaded yet, you can show a loading spinner or something else
-  // if (!isLoaded) {
-  //   return <div>Loading...</div>;
-  // }
-  // console.log(user);
+  // If the user data is not loaded yet, you can show a loading spinner or something else
+  if (!isLoaded) {
+    return <div>Loading...</div>;
+  }
+  console.log(user);
 
-  // // Check if the user has an "admin" role
-  // const isAdmin = user?.publicMetadata?.example === "admin"; // Assuming 'example' stores the role
+  // Check if the user has an "admin" role
+  const isAdmin = user?.publicMetadata?.example === "admin"; // Assuming 'example' stores the role
   // console.log(isAdmin);
+
+  const router = createBrowserRouter([
+    {
+      element: <AppLayout />,
+      children: [
+        {
+          path: "/HomePage",
+          element: <HomePage />,
+        },
+        {
+          path: "/Cart",
+          element: <Cart />,
+        },
+        {
+          path: "/product/:id", // 👈 fixed
+          element: <Product />,
+        },
+        {
+          path: "/wishlist",
+          element: <WishList />,
+        },
+
+        {
+          path: "/category/:category",
+          element: <Category />,
+        },
+      ],
+    },
+    {
+      path: "/",
+      element: user ? (
+        isAdmin ? (
+          <Navigate to="/DashBoard" />
+        ) : (
+          <Navigate to="/HomePage" />
+        )
+      ) : (
+        <CustomSignIn />
+      ),
+    },
+    {
+      path: "/sign-up",
+      element: <CustomSignUp signInUrl="/" redirectUrl="/HomePage" />,
+    },
+    {
+      path: "/DashBoard",
+      element: isAdmin ? <DashBoard /> : <Navigate to="/" />,
+    },
+  ]);
+
   return (
     <WishProvider>
       <QunatityProvider>
         <ProductsProvider>
-          <BrowserRouter>
-            <Suspense fallback={<div>Loading...</div>}>
-              <Routes>
-                {/* <Route
-                  index
-                  element={
-                    user ? (
-                      isAdmin ? (
-                        <Navigate to="/DashBoard" />
-                      ) : (
-                        <Navigate to="/HomePage" />
-                      )
-                    ) : (
-                      <CustomSignIn />
-                    )
-                  }
-                /> */}
-                {/* Sign Up Route */}
-                {/* <Route
-                  path="/sign-up"
-                  element={
-                    <CustomSignUp signInUrl="/" redirectUrl="/HomePage" />
-                  } // Redirect to SignIn when "Sign In" is clicked
-                /> */}
-                <Route path="/" element={<HomePage />} />
-                {/* <Route path="HomePage/:id" element={<Product />} /> */}
-
-                <Route path="/:category" element={<Category />} />
-
-                {/* <Route index element={<HomePage />} /> */}
-                <Route path="/Cart" element={<Cart />} />
-                {/* <Route path="/wishlist" element={<WishList />} /> */}
-
-                {/* <Route path="/:id" element={<Product />} /> */}
-                {/* <Route
-                  path="/DashBoard"
-                  element={isAdmin ? <DashBoard /> : <Navigate to="/" />}
-                /> */}
-                {/* <Route path="/HomePage" element={<HomePage />} /> */}
-              </Routes>
-            </Suspense>
-          </BrowserRouter>
+          <Suspense fallback={<div>Loading...</div>}>
+            <RouterProvider router={router} />
+          </Suspense>
         </ProductsProvider>
       </QunatityProvider>
     </WishProvider>

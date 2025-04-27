@@ -1,6 +1,12 @@
 import { IoIosArrowDown } from "react-icons/io";
+import { useState } from "react";
 
-function FilterDropDown({ label, name, options, isOpen, onToggle }) {
+function FilterDropDown({ label, name, options, isOpen, onToggle, onSelect }) {
+  const [selectedOption, setSelectedOption] = useState(null);
+  function handleSeletedOption(option) {
+    setSelectedOption(option);
+    onSelect(option); // Call the onSelect function with the selected value
+  }
   return (
     <div className="relative">
       <button
@@ -22,7 +28,10 @@ function FilterDropDown({ label, name, options, isOpen, onToggle }) {
           {options.map((option) => (
             <li
               key={option}
-              className="!pl-[0.75rem] !py-[6px] border-b-1 border-b-[blueviolet] last:border-b-0"
+              className={`!pl-[0.75rem] ${
+                selectedOption === option ? "bg-[blueviolet] text-white" : ""
+              } hover:bg-[blueviolet] hover:text-white !cursor-pointer !py-[6px] border-b-1 border-b-[blueviolet] last:border-b-0`}
+              onClick={() => handleSeletedOption(option)}
             >
               {option}
             </li>

@@ -6,6 +6,7 @@ import Modal from "./Modal";
 import inputFields from "./InputFields";
 import InputField from "./InputField";
 import SelectMenu from "./SelectMenu";
+import { useAuth } from "@clerk/clerk-react";
 
 function DashSideBar({
   product,
@@ -17,6 +18,9 @@ function DashSideBar({
 }) {
   const [activeTab, setActiveTab] = useState("Home");
   const [isOpen, setIsOpen] = useState(false);
+  const { getToken } = useAuth();
+
+  console.log("productsssssssss", product);
   //Add Modal
   function openModal() {
     handleTabClick("addProduct");
@@ -32,10 +36,52 @@ function DashSideBar({
     setProduct(defaultProduct);
     CloseAddModal();
   }
-  function handleSubmit(e) {
+  // function handleSubmit(e) {
+  //   e.preventDefault();
+  //   console.log(product); //HERE WE WILL POST TO THE API
+  // }
+  async function handleSubmit(e) {
     e.preventDefault();
-    console.log(product); //HERE WE WILL POST TO THE API
+
+    console.log(product); // Confirm it contains id and other fields
+
+    try {
+      const token = await getToken();
+
+      // Create FormData to simulate a form submission
+      const formData = new FormData();
+
+      // Append your product data to FormData
+      for (const key in product) {
+        if (product.hasOwnProperty(key)) {
+          formData.append(key, product[key]);
+        }
+      }
+
+      // Add the authorization token to headers
+      const response = await fetch(`https://nutrigeen.com/api/products`, {
+        method: "POST", // or 'PATCH' depending on your API
+        headers: {
+          Authorization: `Bearer ${token}`,
+          // 'Content-Type' should NOT be set here when using FormData
+          // The browser will automatically set it correctly
+        },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update product");
+      }
+
+      const updatedProduct = await response.json();
+      console.log("Product updated successfully:", updatedProduct);
+      // Optionally, close modal and refresh the product list
+      CloseEditModal();
+    } catch (error) {
+      console.error("Error updating product:", error);
+    }
   }
+
   function handleTabClick(tab) {
     setActiveTab(tab);
   }

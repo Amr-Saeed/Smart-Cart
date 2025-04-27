@@ -51,6 +51,9 @@ function SearchContainer({ children, open, setOpen }) {
   function handleDrawer() {
     setOpen((open) => !open);
   }
+  function handleCloseDrawer() {
+    setOpen(false);
+  }
 
   // }
   return (
@@ -109,6 +112,7 @@ function SearchContainer({ children, open, setOpen }) {
                     price={product.price}
                     offers={product.offers}
                     id={product.id}
+                    handleDrawer={handleDrawer}
                   />
                 ))
               )}
