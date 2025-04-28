@@ -88,18 +88,15 @@ function DashHome({
       }
 
       // Add the authorization token to headers
-      const response = await fetch(
-        `https://nutrigeen.com/api/products/${productToEdit.id}`,
-        {
-          method: "PUT",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            // 'Content-Type' should NOT be set here when using FormData
-            // The browser will automatically set it correctly
-          },
-          body: formData,
-        }
-      );
+      const response = await fetch(`https://nutrigeen.com/api/products/id`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          // 'Content-Type' should NOT be set here when using FormData
+          // The browser will automatically set it correctly
+        },
+        body: formData,
+      });
 
       if (!response.ok) {
         throw new Error("Failed to update product");
@@ -115,6 +112,26 @@ function DashHome({
   }
 
   console.log("productToEdit", productToEdit);
+
+  async function handleDeleteProduct() {
+    try {
+      const token = await getToken();
+      console.log("token", token);
+      const response = await fetch(`https://nutrigeen.com/api/products/id`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete product");
+      }
+
+      console.log("Product deleted successfully");
+      // Optionally, refresh the product list or update state
+    } catch (error) {}
+  }
 
   function openEditModal() {
     setIsOpenEdit(true);
@@ -185,6 +202,7 @@ function DashHome({
                 openEditModal={openEditModal}
                 setProductToEdit={setProductToEdit}
                 productToEdit={productToEdit}
+                handleDeleteProduct={handleDeleteProduct}
               />
             ))
           )}
@@ -243,6 +261,7 @@ function DashProducts({
   setProductToEdit,
   productToEdit,
   openEditModal,
+  handleDeleteProduct,
 }) {
   function handleEdit() {
     // console.log(product);
@@ -279,7 +298,10 @@ function DashProducts({
           >
             Edit
           </button>
-          <button className="text-white font-bold rounded-[10px] bg-[#ff3333] !p-[10px]  text-center w-[50%]">
+          <button
+            className="text-white font-bold rounded-[10px] bg-[#ff3333] !p-[10px]  text-center w-[50%]"
+            onClick={handleDeleteProduct}
+          >
             Delete
           </button>
         </div>

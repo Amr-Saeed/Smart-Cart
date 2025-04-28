@@ -19,8 +19,6 @@ createRoot(document.getElementById("root")).render(
     routing="path" // 👈 use React Router-style routing
     signInUrl="/"
     signUpUrl="/sign-up"
-    afterSignInUrl="/"
-    afterSignUpUrl="/user-profile"
     publishableKey={PUBLISHABLE_KEY}
     afterSignOutUrl="/"
   >

@@ -7,12 +7,22 @@ import { RiVisaFill } from "react-icons/ri";
 function CartCheckout({ cartProducts }) {
   const [isPromoCodeVisible, setIsPromoCodeVisible] = useState(false);
 
+  // const pricesafterOffers = useMemo(() => {
+  //   return cartProducts.map((product) => {
+  //     return product.price - (product.price * product.offers) / 100;
+  //   });
+  // }, [cartProducts]);
+  // useMemo is used to memoize the prices after applying offers to avoid recalculating on every render
+
   const pricesafterOffers = useMemo(() => {
     return cartProducts.map((product) => {
-      return product.price - (product.price * product.offers) / 100;
+      const quantity =
+        Number(localStorage.getItem(`quantity-${product.id}`)) || 1;
+      const discountedPrice =
+        product.price - (product.price * product.offers) / 100;
+      return discountedPrice * quantity;
     });
   }, [cartProducts]);
-  // useMemo is used to memoize the prices after applying offers to avoid recalculating on every render
 
   const totalPrice = useMemo(() => {
     return pricesafterOffers.reduce((acc, price) => acc + price, 0);

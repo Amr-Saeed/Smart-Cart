@@ -1,11 +1,20 @@
 import { ProductCart } from "./CartProducts";
 
-export function ListofCartProducts({ cartProducts }) {
+export function ListofCartProducts({
+  cartProducts,
+  setQuantityChangeTrigger,
+  handleDelete,
+}) {
   return (
     <div className="cartProduct flex flex-col w-full">
       <ul>
         {cartProducts.map((product) => (
-          <ProductCart key={product.id} product={product} />
+          <ProductCart
+            key={product.id}
+            product={product}
+            setQuantityChangeTrigger={setQuantityChangeTrigger}
+            handleDelete={handleDelete}
+          />
         ))}
       </ul>
       <a href="/">

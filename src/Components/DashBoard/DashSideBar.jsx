@@ -7,6 +7,7 @@ import inputFields from "./InputFields";
 import InputField from "./InputField";
 import SelectMenu from "./SelectMenu";
 import { useAuth } from "@clerk/clerk-react";
+import ImgDropZone from "./ImgDropZone";
 
 function DashSideBar({
   product,
@@ -35,11 +36,19 @@ function DashSideBar({
   function handleCancel() {
     setProduct(defaultProduct);
     CloseAddModal();
+    handleTabClick("Home");
   }
   // function handleSubmit(e) {
   //   e.preventDefault();
   //   console.log(product); //HERE WE WILL POST TO THE API
   // }
+
+  function handleFileChange(file) {
+    setProduct((prevProduct) => ({
+      ...prevProduct,
+      imageUrl: file, // Save the file in the imageUrl field
+    }));
+  }
   async function handleSubmit(e) {
     e.preventDefault();
 
@@ -52,9 +61,27 @@ function DashSideBar({
       const formData = new FormData();
 
       // Append your product data to FormData
-      for (const key in product) {
-        if (product.hasOwnProperty(key)) {
-          formData.append(key, product[key]);
+      // for (const key in product) {
+      //   if (product.hasOwnProperty(key)) {
+      //     formData.append(key, product[key]);
+      //   }
+      // }
+
+      const finalProduct = {
+        ...product,
+        stockAvailability: product.inStock > 0,
+      };
+
+      for (const key in finalProduct) {
+        if (finalProduct.hasOwnProperty(key)) {
+          const value = finalProduct[key];
+          if (value instanceof File) {
+            // If it's a File object, append it directly
+            formData.append(key, value);
+          } else {
+            // Otherwise, append it as text
+            formData.append(key, value);
+          }
         }
       }
 
@@ -76,10 +103,11 @@ function DashSideBar({
       const updatedProduct = await response.json();
       console.log("Product updated successfully:", updatedProduct);
       // Optionally, close modal and refresh the product list
-      CloseEditModal();
+      CloseAddModal();
     } catch (error) {
       console.error("Error updating product:", error);
     }
+    handleTabClick("Home");
   }
 
   function handleTabClick(tab) {
@@ -87,14 +115,29 @@ function DashSideBar({
   }
 
   function handleChange(e) {
-    const { value, name } = e.target;
+    const { name, type, checked, value } = e.target;
 
     setProduct((product) => ({
       ...product,
-      [name]: value,
+      [name]: type === "checkbox" ? checked : value,
       category: selectedCategory,
     }));
   }
+
+  // function handleChange(e) {
+  //   const { name, type, checked, value, files } = e.target;
+
+  //   setProduct((product) => ({
+  //     ...product,
+  //     [name]:
+  //       type === "checkbox"
+  //         ? checked
+  //         : type === "file"
+  //         ? files[0] // 👈 take the first uploaded file
+  //         : value,
+  //     category: selectedCategory, // keep your logic here
+  //   }));
+  // }
   return (
     <div className="bg-[#ededed] flex flex-col  basis-[20%] place-items-center ">
       <Logo
@@ -128,18 +171,29 @@ function DashSideBar({
       {/* Add Product Modal */}
       <Modal isOpen={isOpen} close={CloseAddModal} title={"Add Product"}>
         <form onSubmit={handleSubmit}>
-          {inputFields.map((input) => (
-            <div className="!mb-[10px] flex flex-col" key={input.id}>
-              <label htmlFor={input.id} className="text-[#0000009c] font-bold">
-                {input.label}
-              </label>
-              <InputField
-                input={input}
-                value={product?.[input.name] || ""}
-                onChange={handleChange}
-              />
-            </div>
-          ))}
+          {/* 🆕 Dropzone for uploading the product image */}
+          <div className="!mb-[10px] flex flex-col">
+            <label className="text-[#0000009c] font-bold">Upload Image</label>
+            <ImgDropZone onFileAccepted={handleFileChange} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {inputFields.map((input) => (
+              <div className="!mb-[10px] flex flex-col" key={input.id}>
+                <label
+                  htmlFor={input.id}
+                  className="text-[#0000009c] font-bold"
+                >
+                  {input.label}
+                </label>
+                <InputField
+                  input={input}
+                  value={product?.[input.name] || ""}
+                  onChange={handleChange}
+                />
+              </div>
+            ))}
+          </div>
+
           <SelectMenu
             products={products}
             value={selectedCategory}

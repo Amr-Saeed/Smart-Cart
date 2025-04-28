@@ -4,13 +4,14 @@ const ProductsContext = createContext();
 
 function ProductsProvider({ children }) {
   const [products, setProducts] = useState([]);
+  console.log("products", products);
 
   useEffect(function () {
     async function fetchProducts() {
       try {
         // setIsLoading(true);
         const res = await fetch(
-          "https://smartcart.tryasp.net/api/TodoItems/showAll"
+          "https://smartcart.tryasp.net/api/TodoItems/showAll" //https://nutrigeen.com/api/products
         );
         const data = await res.json();
         setProducts(data);

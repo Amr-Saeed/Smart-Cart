@@ -2,16 +2,48 @@ import Header from "../Components/HomePage/Header/Header";
 import LowCategories from "../Components/HomePage/Header/LowCategories";
 import WishListEmpty from "../Components/WishList/WishListEmpty";
 import { useProductsContext } from "../Components/HomePage/ProductsContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import WishListProducts from "../Components/WishList/WishListProducts";
+import { useTotalWish } from "../Components/HomePage/TotalWishQuantity";
 function WishList() {
   const { products } = useProductsContext();
-  const wishListProducts = products.slice(0, 5);
+  const [wishListProducts, setWishListProducts] = useState([]);
+  const { totalWish, setTotalWish } = useTotalWish();
+
+  // const wishListProducts = products.slice(0, 5);
+
+  // const wishListProducts = products.filter((product) => {
+  //   const quantity = Number(localStorage.getItem(`wishQuantity-${product.id}`));
+  //   return quantity > 0;
+  // });
+
+  useEffect(() => {
+    // Get products from localStorage and filter them based on their quantity
+    const savedwishProducts = products.filter((product) => {
+      const quantity = Number(
+        localStorage.getItem(`wishQuantity-${product.id}`)
+      );
+      return quantity > 0; // Only include products with quantity > 0
+    });
+
+    // Set the cart products state to the filtered products
+    setWishListProducts(savedwishProducts);
+  }, [products]); // Re-run when 'products' changes
+
+  function handleDeleteWish(id) {
+    localStorage.removeItem(`wishQuantity-${id}`);
+    setWishListProducts((prevProducts) =>
+      prevProducts.filter((product) => product.id !== id)
+    );
+  }
   return (
     <>
       <LowCategories />
       {wishListProducts.length > 0 ? (
-        <WishListProducts wishListProducts={wishListProducts} />
+        <WishListProducts
+          wishListProducts={wishListProducts}
+          handleDeleteWish={handleDeleteWish}
+        />
       ) : (
         <WishListEmpty />
       )}{" "}

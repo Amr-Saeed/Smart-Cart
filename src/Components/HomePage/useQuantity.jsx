@@ -4,6 +4,7 @@ import { useLocalStorage } from "./useLocalStorage";
 export function useQuantity(productID) {
   //   const [quantity, setQuantity] = useState(0);
   const [quantity, setQuantity] = useLocalStorage(0, `quantity-${productID}`);
+  const [isFirstChange, setIsFirstChange] = useState(true);
 
   const { setTotalQuantity, totalQuantity } = useTotalQuantity();
 
@@ -17,14 +18,38 @@ export function useQuantity(productID) {
     });
 
     // Update total separately using the current known values, not in a nested callback
-    setTotalQuantity((prev) => prev + 1);
+    // Update total quantity only if it's the first change (new product)
+    if (isFirstChange && currentQuantity === 0) {
+      setTotalQuantity((prev) => prev + 1);
+      setIsFirstChange(false); // Mark that this product has been added at least once
+    }
   }
+
+  // function handleDec() {
+  //   // Only proceed if we have a positive quantity
+  //   if (quantity > 0) {
+  //     setQuantity(Number(quantity) - 1);
+  //     setTotalQuantity((prev) => prev - 1);
+  //     // Decrease total quantity only if the product quantity becomes 0
+  //     if (quantity === 1) {
+  //       setTotalQuantity((prev) => prev - 1);
+  //       setIsFirstChange(true); // Reset isFirstChange since the product is removed
+  //     }
+  //   }
+  // }
 
   function handleDec() {
     // Only proceed if we have a positive quantity
     if (quantity > 0) {
-      setQuantity(Number(quantity) - 1);
-      setTotalQuantity((prev) => prev - 1);
+      setQuantity((prevQuantity) => {
+        const newQuantity = Number(prevQuantity) - 1;
+        // Decrease total quantity only if the product quantity becomes 0
+        if (newQuantity === 0) {
+          setTotalQuantity((prev) => prev - 1);
+          setIsFirstChange(true); // Reset isFirstChange since the product is removed
+        }
+        return newQuantity;
+      });
     }
   }
   function handleFocus(e) {

@@ -5,13 +5,18 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { Quantity } from "../HomePage/Quantity";
 import Price from "../HomePage/Price";
 import { Link } from "react-router-dom";
+import { Children } from "react";
 
-function WishListProducts({ wishListProducts }) {
+function WishListProducts({ wishListProducts, handleDeleteWish }) {
   return (
     <div className="cartProduct flex flex-col w-full lg:!w-[80%] containerr">
       <ul className="flex flex-col justify-center items-center w-full">
         {wishListProducts.map((product) => (
-          <ProductCart key={product.id} product={product} />
+          <ProductCart
+            key={product.id}
+            product={product}
+            handleDeleteWish={handleDeleteWish}
+          />
         ))}
       </ul>
       <a href="/" className="flex justify-center items-center">
@@ -23,7 +28,7 @@ function WishListProducts({ wishListProducts }) {
   );
 }
 
-export function ProductCart({ product }) {
+export function ProductCart({ product, handleDeleteWish }) {
   const { id, name, price, imageUrl, stockAvailability, unit, offers } =
     product;
 
@@ -32,7 +37,11 @@ export function ProductCart({ product }) {
       <div className="cartData border-b border-b-[var(--main-color)] w-[80%] relative flex-col md:flex-row flex md:gap-[30px]">
         <div>
           <figure className="relative w-[200px]">
-            <FavBtn id={id} prod={true} />{" "}
+            <FavBtn
+              id={product.id}
+              prod={true}
+              handleDeleteWish={handleDeleteWish}
+            />{" "}
             <img
               loading="lazy"
               src={imageUrl}
@@ -43,7 +52,7 @@ export function ProductCart({ product }) {
         </div>
 
         <div className="data md:!mt-[20px] flex flex-col w-[40%] justify-between">
-          <Link to={`/${id}`}>
+          <Link to={`/product/${id}`}>
             <span className="cartProdName inline-block text-[1.1rem] text-[var(--main-color-2)] font-bold transition-all duration-300">{`${name} - Per ${unit}`}</span>{" "}
             {/* inline element doesn't respond to transform so we make it inline-block */}
           </Link>

@@ -3,17 +3,20 @@ import { useTotalWish } from "./TotalWishQuantity";
 import { HiOutlineHeart } from "react-icons/hi";
 import { memo } from "react";
 
-function FavBtn({ id, prod = false, prodCtegory }) {
+function FavBtn({ id, prod = false, prodCtegory, handleDeleteWish }) {
   const { wishQuan, handleAdd, handleDec } = useQuantityWish(id);
   const { totalWish } = useTotalWish();
 
   const isLiked = wishQuan > 0;
 
   function handleToggle() {
-    // setIsLiked((is) => !is);
-    isLiked ? handleDec() : handleAdd();
+    if (isLiked) {
+      handleDec();
+      if (handleDeleteWish) handleDeleteWish(id); // <<< Call handleDeleteWish here when unliking
+    } else {
+      handleAdd();
+    }
   }
-
   return (
     <div
       className={` favoriteButton  absolute flex align-middle justify-center w-[50px] h-[50px] rounded-[50%] ${
