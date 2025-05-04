@@ -20,6 +20,7 @@ import { Navigate } from "react-router-dom";
 import CustomSignUp from "./Pages/CustomSignUp";
 import Category from "./Pages/Category";
 import AppLayout from "./Components/AppLayout";
+import { TokenProvider } from "./Components/TokenContext";
 
 const Product = lazy(() => import("./Pages/Product"));
 
@@ -89,15 +90,17 @@ function App() {
   ]);
 
   return (
-    <WishProvider>
-      <QunatityProvider>
-        <ProductsProvider>
-          <Suspense fallback={<div>Loading...</div>}>
-            <RouterProvider router={router} />
-          </Suspense>
-        </ProductsProvider>
-      </QunatityProvider>
-    </WishProvider>
+    <TokenProvider>
+      <WishProvider>
+        <QunatityProvider>
+          <ProductsProvider>
+            <Suspense fallback={<div>Loading...</div>}>
+              <RouterProvider router={router} />
+            </Suspense>
+          </ProductsProvider>
+        </QunatityProvider>
+      </WishProvider>
+    </TokenProvider>
   );
 
   // <HomePage />;

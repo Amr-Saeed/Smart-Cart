@@ -1,6 +1,7 @@
 import { IoIosArrowDown } from "react-icons/io";
 import { useState } from "react";
-
+import BottomDrawer from "../HomePage/BottomDrawer";
+import BottomDrawerFilters from "./BottomDrawerFilters";
 function FilterDropDown({ label, name, options, isOpen, onToggle, onSelect }) {
   const [selectedOption, setSelectedOption] = useState(null);
   function handleSeletedOption(option) {
@@ -23,7 +24,7 @@ function FilterDropDown({ label, name, options, isOpen, onToggle, onSelect }) {
         </span>
       </button>
 
-      {isOpen && (
+      {isOpen && name !== "filters" ? (
         <ul className="filersList z-50 absolute border-1 border-[blueviolet] bg-white w-full border-t-0 rounded-br-[8px] rounded-bl-[8px]">
           {options.map((option) => (
             <li
@@ -37,6 +38,8 @@ function FilterDropDown({ label, name, options, isOpen, onToggle, onSelect }) {
             </li>
           ))}
         </ul>
+      ) : (
+        <BottomDrawerFilters open={isOpen} />
       )}
     </div>
   );

@@ -6,6 +6,7 @@ import SearchContainer from "./SearchContainer";
 import LowCategories from "./LowCategories";
 import { lazy, Suspense } from "react";
 import { useProductsContext } from "../ProductsContext";
+import { useAuth } from "@clerk/clerk-react";
 
 const SideBar = lazy(() => import("../SideBar"));
 function Header() {
@@ -13,7 +14,9 @@ function Header() {
   const [open, setOpen] = useState(false); // State to control drawer visibility
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
   const { products } = useProductsContext();
-
+  const { getToken } = useAuth();
+  const token = getToken();
+  console.log("token", token); // This will log the token to the console
   return (
     <header className=" w-full header sticky lg:relative top-0 z-50 shadow lg:shadow-none">
       <UpperContainer>
@@ -45,7 +48,6 @@ function Header() {
 }
 
 const UpperContainer = memo(({ children }) => {
-
   return (
     <div className="containerr upper-header flex align-middle flex-col w- ">
       {children}

@@ -5,6 +5,7 @@ export function Quantity({
   id,
   atProduct = false,
   comingFromSmallScreenProduct = false,
+  comingFromSmScreensCategoryPage = false,
 }) {
   const {
     quantity,
@@ -18,7 +19,11 @@ export function Quantity({
   return (
     <div
       className={`QuantityInput  self-center ${
-        comingFromSmallScreenProduct ? "w-full" : "w-[187px] "
+        comingFromSmallScreenProduct
+          ? "w-full"
+          : comingFromSmScreensCategoryPage
+          ? "w-[135px]"
+          : "w-[187px]"
       } relative rounded-[15px] flex items-center justify-center `}
     >
       {stockAvailability ? (
@@ -60,7 +65,9 @@ export function Quantity({
         </>
       ) : (
         <button
-          className="Notify text-white w-full rounded-2xl !p-2.5 font-bold text-center"
+          className={`Notify text-white  ${
+            comingFromSmScreensCategoryPage ? "w-[135px]" : "w-full"
+          } rounded-2xl !p-2.5 font-bold text-center`}
           aria-label="Notify-Button"
         >
           {atProduct ? "Add to Cart" : "Notify Me"}

@@ -7,6 +7,7 @@ import Value from "./Value";
 import { memo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { UserButton } from "@clerk/clerk-react";
+import { useUser } from "@clerk/clerk-react";
 
 function IconsGroup({ className, navigate }) {
   const { totalQuantity } = useTotalQuantity();
@@ -15,6 +16,7 @@ function IconsGroup({ className, navigate }) {
   console.log(totalQuantity);
 
   const location = useLocation();
+  const { user } = useUser();
   const isCartPage = location.pathname === "/cart";
   // console.log(totalWish, totalQuantity);
 
@@ -36,11 +38,14 @@ function IconsGroup({ className, navigate }) {
       className={` ${className} icons  flex justify-end items-center  gap-2.5`}
     >
       <div className="w-[1.3rem] md:w-[1.875rem] cursor-pointer text-[var(--main-color)]">
-        {/* <UserIcon
-          onClick={() => navigate(-1)}
-          className="w-[1.3rem] md:w-[1.875rem] cursor-pointer text-[var(--main-color)]"
-        /> */}
-        <UserButton />
+        {user ? (
+          <UserButton />
+        ) : (
+          <UserIcon
+            onClick={() => navigate(-1)}
+            className="w-[1.3rem] md:w-[1.875rem] cursor-pointer text-[var(--main-color)]"
+          />
+        )}
       </div>
 
       <div className="relative cart text-center">

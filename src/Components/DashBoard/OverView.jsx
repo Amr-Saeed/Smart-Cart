@@ -10,7 +10,7 @@ function OverView({ products }) {
   const productsInStock = useMemo(() => {
     if (!products || products.length === 0) return []; // Don't compute categories if products are null
 
-    return products.filter((product) => product.stockAvailability === true);
+    return products.filter((product) => product.stockAvailability);
   }, [products]);
 
   const productOutOfStock = useMemo(() => {

@@ -35,7 +35,7 @@ function Category() {
           categoryProducts={currentCategoryProducts}
         />
 
-        <div className="basis-[30%]"></div>
+        <div className="lg:basis-[30%] md:basis-[10%]"></div>
       </div>
     </>
   );

@@ -902,11 +902,11 @@ form {
   justify-content: center;
 }
 /* Login */
-.cl-internal-1dauvpw {
+/* .cl-internal-1dauvpw {
   all: unset;
 
   display: none !important;
-}
+} */
 
 .SignInContainer {
   box-sizing: border-box;
@@ -914,7 +914,7 @@ form {
   font-family: inherit;
   font-style: normal;
 }
-.cl-formButtonPrimary {
+/* .cl-formButtonPrimary {
   background-color: blueviolet !important;
   font-weight: bold !important;
   border: none !important;
@@ -927,17 +927,6 @@ form {
   background-color: rgba(137, 43, 226, 0.803) !important;
 }
 
-.btn-continue {
-  padding: 10px 20px;
-  background-color: blueviolet;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  box-shadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px 0px";
-  position: relative;
-  transition: all 0.5s;
-}
 .cl-internal-1odp14a[data-variant="solid"]::after {
   display: none !important;
 }
@@ -971,6 +960,6 @@ form {
     width: 1.3rem !important;
     height: 1.3rem !important;
   }
-}
+} */
 
 /* Login */

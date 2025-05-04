@@ -121,7 +121,7 @@ button {
 }
 .card {
   background-color: #fff !important;
-  width: 200px !important;
+  /* width: 200px !important; */
   /* height: 373px; */
   /* height: 100%; */
   overflow: visible !important;
@@ -144,7 +144,7 @@ figure img {
   padding: 16px 8px !important;
   width: 100%;
   /* height: 200px; */
-  height: 180px;
+  /* height: 180px; */
 }
 .card-content .card-title {
   margin: 0;
@@ -156,7 +156,7 @@ figure img {
   /* margin-bottom: 0.35em; */
   color: #aa8cee;
   font-weight: bold;
-  height: 50px; /*this to ensure that all description on all cards start from same line like not a descriptoon in first card is above the one in the second card*/
+  /* height: 50px;  */ /*this to ensure that all description on all cards start from same line like not a descriptoon in first card is above the one in the second card*/
 }
 .description p {
   margin: 0;
@@ -441,6 +441,7 @@ footer .foot .icons svg:hover {
 .min-caption {
   background-color: blueviolet !important;
 }
+
 /* MainCategory */
 
 /* :root {

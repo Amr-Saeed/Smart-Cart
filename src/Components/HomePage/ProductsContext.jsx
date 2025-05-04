@@ -11,7 +11,7 @@ function ProductsProvider({ children }) {
       try {
         // setIsLoading(true);
         const res = await fetch(
-          "https://smartcart.tryasp.net/api/TodoItems/showAll" //https://nutrigeen.com/api/products
+          "https://smartcart.tryasp.net/api/TodoItems/showAll" //https://nutrigeen.com/api/products  //https://smartcart.tryasp.net/api/TodoItems/showAll
         );
         const data = await res.json();
         setProducts(data);
@@ -25,7 +25,7 @@ function ProductsProvider({ children }) {
     fetchProducts();
   }, []); // Only run on mount
 
-  const contextValue = useMemo(() => ({ products }), [products]);
+  const contextValue = useMemo(() => ({ products, setProducts }), [products]);
 
   return (
     <ProductsContext.Provider value={contextValue}>

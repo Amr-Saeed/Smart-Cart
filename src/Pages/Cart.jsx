@@ -9,12 +9,13 @@ import { ListofCartProducts } from "../Components/Cart/ListofCartProducts";
 import { set } from "react-hook-form";
 import { useTotalQuantity } from "../Components/HomePage/TotalQuantityContext";
 import { useQuantity } from "../Components/HomePage/useQuantity";
+import { useUser } from "@clerk/clerk-react";
 
 function Cart() {
   const { products } = useProductsContext();
   const [cartProducts, setCartProducts] = useState([]);
   const { setTotalQuantity, totalQuantity } = useTotalQuantity();
-
+  const { user } = useUser();
   console.log("Total Quantity in Cart:", products); // Log the total quantity for debugging
 
   // const [cartProducts, setCartProducts] = useState(products.slice(0, 5));
@@ -31,6 +32,8 @@ function Cart() {
   //   const quantity = Number(localStorage.getItem(`quantity-${product.id}`));
   //   return quantity > 0;
   // });
+
+  user ? console.log("User ID:", user.id) : console.log("No user logged in");
 
   // UseEffect to initialize the state with products from localStorage
   useEffect(() => {

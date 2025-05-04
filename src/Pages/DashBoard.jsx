@@ -16,7 +16,6 @@ const defaultProduct = {
   name: "",
   price: "",
   unit: "",
-  category: "",
   stockAvailability: true, // assuming default is true, can change based on logic
   inStock: 0, // assuming default is 0, can change based on logic
   description: "",
@@ -30,13 +29,14 @@ const defaultProduct = {
 };
 function DashBoard() {
   const [product, setProduct] = useState(defaultProduct);
-  const [selectedCategory, setSelectedCategory] = useState("");
-  function handleCategoryChange(category) {
-    console.log("Selected categorssssssssssssy:", category);
-    setSelectedCategory(category);
-  }
+  const [selectedCategory, setSelectedCategory] = useState(
+    product.category || ""
+  ); // function handleCategoryChange(category) {
+  //   console.log("Selected categorssssssssssssy:", category);
+  //   setSelectedCategory(category);
+  // }
 
-  const { products } = useProductsContext();
+  const { products, setProducts } = useProductsContext();
 
   return (
     <div className="flex ">
@@ -44,17 +44,21 @@ function DashBoard() {
         product={product}
         products={products}
         selectedCategory={selectedCategory}
-        handleCategoryChange={handleCategoryChange}
+        // handleCategoryChange={handleCategoryChange}
+        setSelectedCategory={setSelectedCategory}
         setProduct={setProduct}
         defaultProduct={defaultProduct}
+        setProducts={setProducts}
       />
       <DashHome
         product={product}
         products={products}
         selectedCategory={selectedCategory}
-        handleCategoryChange={handleCategoryChange}
+        // handleCategoryChange={handleCategoryChange}
+        setSelectedCategory={setSelectedCategory}
         defaultProduct={defaultProduct}
         setProduct={setProduct}
+        setProducts={setProducts}
       />
     </div>
   );

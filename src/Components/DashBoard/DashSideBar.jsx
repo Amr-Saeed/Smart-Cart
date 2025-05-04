@@ -8,6 +8,9 @@ import InputField from "./InputField";
 import SelectMenu from "./SelectMenu";
 import { useAuth } from "@clerk/clerk-react";
 import ImgDropZone from "./ImgDropZone";
+import { useEffect } from "react";
+import { useToken } from "../TokenContext";
+import axios from "axios";
 
 function DashSideBar({
   product,
@@ -16,10 +19,18 @@ function DashSideBar({
   selectedCategory,
   handleCategoryChange,
   defaultProduct,
+  setSelectedCategory,
 }) {
   const [activeTab, setActiveTab] = useState("Home");
   const [isOpen, setIsOpen] = useState(false);
-  const { getToken } = useAuth();
+  // const { getToken } = useAuth();
+  const { token } = useToken(); // Assuming you're using a custom hook to get the token
+  // Update selectedCategory whenever productToEdit changes
+  useEffect(() => {
+    if (product && product.category !== selectedCategory) {
+      setSelectedCategory(product.category);
+    }
+  }, [product]);
 
   console.log("productsssssssss", product);
   //Add Modal
@@ -55,7 +66,9 @@ function DashSideBar({
     console.log(product); // Confirm it contains id and other fields
 
     try {
-      const token = await getToken();
+      // const token = await getToken();
+
+      console.log("Token:", token); // Check if token is retrieved
 
       // Create FormData to simulate a form submission
       const formData = new FormData();
@@ -124,20 +137,6 @@ function DashSideBar({
     }));
   }
 
-  // function handleChange(e) {
-  //   const { name, type, checked, value, files } = e.target;
-
-  //   setProduct((product) => ({
-  //     ...product,
-  //     [name]:
-  //       type === "checkbox"
-  //         ? checked
-  //         : type === "file"
-  //         ? files[0] // 👈 take the first uploaded file
-  //         : value,
-  //     category: selectedCategory, // keep your logic here
-  //   }));
-  // }
   return (
     <div className="bg-[#ededed] flex flex-col  basis-[20%] place-items-center ">
       <Logo

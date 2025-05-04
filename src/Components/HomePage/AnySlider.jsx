@@ -4,6 +4,7 @@ import SwiperComponent from "./Swiper";
 function AnySlider({ title }) {
   return (
     <section
+      id={title === "Best Deals" ? "best-deals" : "everyDayNeeds"}
       className={title === "Best Deals" ? "best-deals" : "everyDayNeeds"}
     >
       <h2 className="main-title text-2xl font-bold text-center">

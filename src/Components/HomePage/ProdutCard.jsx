@@ -14,10 +14,15 @@ function ProductCard({
   id,
   prodCtegory = false,
   offers,
+  comingFromSmScreensCategoryPage = false,
 }) {
   return (
     <>
-      <div className={`card h-[399px] ${prodCtegory ? "relative" : ""}`}>
+      <div
+        className={`card ${
+          comingFromSmScreensCategoryPage ? "!w-[143px]" : "!w-[200px]"
+        } h-[399px] ${prodCtegory ? "relative" : ""}`}
+      >
         <FavBtn id={id} prodCtegory={prodCtegory} />
         {offers > 0 && <Offer offers={offers} prodCtegory={prodCtegory} />}
 
@@ -25,11 +30,19 @@ function ProductCard({
           {stockAvailability === false && <OutOfStock />}
           <img loading="lazy" src={productImg} alt={name} />
         </figure>
-        <div className="card-content flex flex-col justify-between items-start">
+        <div
+          className={`card-content ${
+            comingFromSmScreensCategoryPage ? "h-[190px]" : "h-[180px]"
+          }  flex flex-col justify-between items-start`}
+        >
           {children}
         </div>
         <CardActions>
-          <Quantity id={id} stockAvailability={stockAvailability} />
+          <Quantity
+            id={id}
+            stockAvailability={stockAvailability}
+            comingFromSmScreensCategoryPage={comingFromSmScreensCategoryPage}
+          />
         </CardActions>
       </div>
     </>

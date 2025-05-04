@@ -19,6 +19,7 @@ export default function BottomDrawer({
   children,
   searchQuery2,
   searchedProducts2,
+  filterMode,
 }) {
   console.log("BottomDrawer re-rendered");
   return (

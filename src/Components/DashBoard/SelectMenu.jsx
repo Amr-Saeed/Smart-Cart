@@ -88,7 +88,7 @@ export default function SelectMenu({ products, value, onValueChange }) {
         <SelectValue placeholder={"Select Category"} />
       </SelectTrigger>
       <SelectContent>
-        <SelectGroup className="!p-2.5 flex flex-col gap-1.5">
+        <SelectGroup className="!p-2.5 border-1 border-[blueviolet] flex flex-col gap-1.5">
           {allCategories.map((category) => (
             <SelectItem
               key={category}

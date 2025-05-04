@@ -922,13 +922,14 @@ form {
   border-radius: 5px !important;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px 0px !important;
   transition: all 0.5s !important;
+  padding: 0.375rem 0.75rem !important;
 }
 .cl-formButtonPrimary:hover {
   background-color: rgba(137, 43, 226, 0.803) !important;
 }
 
 .btn-continue {
-  padding: 10px 20px;
+  padding: 0.375rem 0.75rem;
   background-color: blueviolet;
   color: white;
   border: none;
@@ -937,6 +938,7 @@ form {
   box-shadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px 0px";
   position: relative;
   transition: all 0.5s;
+  width: 320px;
 }
 .cl-internal-1odp14a[data-variant="solid"]::after {
   display: none !important;

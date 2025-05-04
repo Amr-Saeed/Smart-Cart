@@ -8,6 +8,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import MultiSlider from "./MultiRangeSlider";
 import FilterDropDown from "./FilterDropDown";
 import MainProducts from "./MainProducts";
+import BottomDrawer from "../HomePage/BottomDrawer";
 const initialState = {
   hasDeal: null,
   stores: null,
@@ -51,15 +52,6 @@ function MainCategory({ category, categoryProducts }) {
   function handleDropDown(filterName) {
     setOpenDropDown((pervKey) => (pervKey === filterName ? null : filterName));
   }
-  // const filteredProducts = useMemo(() => {
-  //   return categoryProducts.filter((product) => {
-  //     if (hasDeal === "Yes") {
-  //       return product.bestDeal === true; // Only products with bestDeal true
-  //     } else {
-  //       return true; // All products (no filtering)
-  //     }
-  //   });
-  // }, [categoryProducts, hasDeal]);
 
   const filteredProducts = useMemo(() => {
     let result = categoryProducts.filter((product) => {
@@ -101,48 +93,64 @@ function MainCategory({ category, categoryProducts }) {
 
       <section className="!mt-[30px] !mb-[15px]">
         <div className="filters  flex gap-[30px]">
-          <FilterDropDown
-            label="Has Deal"
-            name="deal"
-            options={filterOptions.deal}
-            isOpen={openDropDown === "deal"}
-            onToggle={handleDropDown}
-            onSelect={(option) => {
-              dispatch({ type: "SET_DEAL", payload: option });
-              setOpenDropDown(false);
-            }}
-          />
-
-          <FilterDropDown
-            label="Available Stores"
-            name="store"
-            options={filterOptions.store}
-            isOpen={openDropDown === "store"}
-            onToggle={handleDropDown}
-            onSelect={(option) => {
-              dispatch({ type: "SET_STORE", payload: option });
-              setOpenDropDown(false);
-            }}
-          />
-
-          <div className="priceFilter h-[50px] relative">
-            <PriceBtn
-              openDropDown={openDropDown}
-              handleDropDown={handleDropDown}
+          <div className="md:flex gap-[30px] hidden">
+            <FilterDropDown
+              label="Has Deal"
+              name="deal"
+              options={filterOptions.deal}
+              isOpen={openDropDown === "deal"}
+              onToggle={handleDropDown}
+              onSelect={(option) => {
+                dispatch({ type: "SET_DEAL", payload: option });
+                setOpenDropDown(false);
+              }}
             />
 
-            <PriceList
-              openDropDown={openDropDown}
-              minValue={minPrice}
-              maxValue={maxPrice}
-              setMinValue={setMinPrice}
-              setMaxValue={setMaxPrice}
+            <FilterDropDown
+              label="Available Stores"
+              name="store"
+              options={filterOptions.store}
+              isOpen={openDropDown === "store"}
+              onToggle={handleDropDown}
+              onSelect={(option) => {
+                dispatch({ type: "SET_STORE", payload: option });
+                setOpenDropDown(false);
+              }}
             />
+
+            <div className="priceFilter h-[50px] relative">
+              <PriceBtn
+                openDropDown={openDropDown}
+                handleDropDown={handleDropDown}
+              />
+
+              <PriceList
+                openDropDown={openDropDown}
+                minValue={minPrice}
+                maxValue={maxPrice}
+                setMinValue={setMinPrice}
+                setMaxValue={setMaxPrice}
+              />
+            </div>
+
+            <OnsaleReset dispatch={dispatch}>
+              <MyToggle hasDeal={hasDeal} dispatch={dispatch} />
+            </OnsaleReset>
           </div>
 
-          <OnsaleReset dispatch={dispatch}>
-            <MyToggle hasDeal={hasDeal} dispatch={dispatch} />
-          </OnsaleReset>
+          <div className="filtersDrawer md:hidden flex">
+            <FilterDropDown
+              label="Filters"
+              name="filters"
+              options={filterOptions.deal}
+              isOpen={openDropDown === "filters"}
+              onToggle={handleDropDown}
+              onSelect={(option) => {
+                dispatch({ type: "SET_DEAL", payload: option });
+                setOpenDropDown(false);
+              }}
+            />
+          </div>
 
           <FilterDropDown
             label="Default Sort"

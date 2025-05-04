@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useProductsContext } from "../HomePage/ProductsContext";
 import ProdutCard from "../HomePage/ProdutCard";
 import Price from "../HomePage/Price";
@@ -10,19 +10,24 @@ import OverView from "./OverView";
 import SearchDashBoard from "./SearchDashBoard";
 import SelectMenu from "./SelectMenu";
 import { useAuth } from "@clerk/clerk-react";
+import axios from "axios";
+import { SignIn, useUser, SignUp } from "@clerk/clerk-react";
+import { useToken } from "../TokenContext";
 
 function DashHome({
   product,
   handleChange,
   products,
+  defaultProduct,
   selectedCategory,
   setSelectedCategory,
-  handleCategoryChange,
-  defaultProduct,
+  setProducts,
 }) {
   const [searchDashQuery, setDashSearchQuery] = useState("");
   //start Modal control
   const { getToken } = useAuth();
+  const { user, isLoaded } = useUser(); // Get the current user
+  const { token } = useToken(); // Get the token from context
 
   // State for selected category
 
@@ -30,52 +35,27 @@ function DashHome({
 
   const [productToEdit, setProductToEdit] = useState(defaultProduct);
 
-  //Edit Modal
-  // function handlEditeSubmit(e) {
-  //   e.preventDefault();
-  //   console.log(productToEdit); //HERE WE WILL POST TO THE API
-  // }
-  // async function handlEditeSubmit(e) {
-  //   e.preventDefault();
-
-  //   console.log(productToEdit); // Confirm it contains id and other fields
-
-  //   try {
-  //     const token = await getToken();
-
-  //     const response = await fetch(
-  //       `https://nutrigeen.com/api/products/${productToEdit.id}`,
-  //       {
-  //         method: "PUT", // or 'PATCH' depending on your API
-  //         headers: {
-  //           // "Content-Type": "application/json",
-  //           // Add authorization headers if needed
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //         body: JSON.stringify(productToEdit),
-  //       }
-  //     );
-
-  //     if (!response.ok) {
-  //       throw new Error("Failed to update product");
-  //     }
-
-  //     const updatedProduct = await response.json();
-  //     console.log("Product updated successfully:", updatedProduct);
-  //     // Optionally, close modal and refresh the product list
-  //     CloseEditModal();
-  //   } catch (error) {
-  //     console.error("Error updating product:", error);
-  //   }
-  // }
+  // Update selectedCategory whenever productToEdit changes
+  useEffect(() => {
+    if (productToEdit && productToEdit.category !== selectedCategory) {
+      setSelectedCategory(productToEdit.category);
+    }
+  }, [productToEdit]);
 
   async function handlEditeSubmit(e) {
     e.preventDefault();
+    if (!productToEdit.id) {
+      console.error("No product ID provided");
+      return;
+    }
 
     console.log(productToEdit); // Confirm it contains id and other fields
 
     try {
-      const token = await getToken();
+      // const token = await getToken();
+      // const token = "ONyAiXVOgAbW8qTmVeObDAQglMcf5IZQuOPx5K9A5b7f9818";
+
+      console.log("dash home token", token);
 
       // Create FormData to simulate a form submission
       const formData = new FormData();
@@ -88,49 +68,137 @@ function DashHome({
       }
 
       // Add the authorization token to headers
-      const response = await fetch(`https://nutrigeen.com/api/products/id`, {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          // 'Content-Type' should NOT be set here when using FormData
-          // The browser will automatically set it correctly
-        },
-        body: formData,
-      });
+      console.log("Token:", token); // Debug token
 
-      if (!response.ok) {
+      const response = await axios.put(
+        `https://nutrigeen.com/api/products/${productToEdit.id}`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            // Do NOT set 'Content-Type' when sending FormData
+          },
+          withCredentials: true,
+        }
+      );
+
+      if (response.status !== 200) {
         throw new Error("Failed to update product");
       }
 
-      const updatedProduct = await response.json();
-      console.log("Product updated successfully:", updatedProduct);
+      // const updatedProduct = await response.json();
+      // console.log("Product updated successfully:", updatedProduct);
+
+      console.log("Product updated successfully:", response.data);
+
       // Optionally, close modal and refresh the product list
+      setProducts((prevProducts) =>
+        prevProducts.map((p) =>
+          p.id === productToEdit.id ? { ...p, ...productToEdit } : p
+        )
+      );
       CloseEditModal();
     } catch (error) {
       console.error("Error updating product:", error);
     }
   }
 
-  console.log("productToEdit", productToEdit);
+  // async function handlEditeSubmit(e) {
+  //   e.preventDefault();
 
-  async function handleDeleteProduct() {
+  //   if (!productToEdit.id) {
+  //     console.error("No product ID provided");
+  //     return;
+  //   }
+
+  //   console.log("Product to edit:", productToEdit);
+
+  //   try {
+  //     const token = localStorage.getItem("auth_token");
+  //     if (!token) {
+  //       console.error("No token found. Please log in again.");
+  //       return;
+  //     }
+
+  //     console.log("Token from localStorage:", token);
+
+  //     const formData = new FormData();
+  //     for (const key in productToEdit) {
+  //       if (productToEdit.hasOwnProperty(key)) {
+  //         formData.append(key, productToEdit[key]);
+  //       }
+  //     }
+
+  //     const response = await axios.put(
+  //       `https://nutrigeen.com/api/products/${productToEdit.id}`,
+  //       formData,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       }
+  //     );
+
+  //     if (response.status !== 200) {
+  //       throw new Error(`Failed to update product: ${response.statusText}`);
+  //     }
+
+  //     console.log("Product updated successfully:", response.data);
+  //     // ✅ Update local products list
+  //     setProducts((prevProducts) =>
+  //       prevProducts.map((p) =>
+  //         p.id === productToEdit.id ? { ...p, ...productToEdit } : p
+  //       )
+  //     );
+  //     CloseEditModal();
+  //   } catch (error) {
+  //     console.error(
+  //       "Error updating product:",
+  //       error.response?.data || error.message
+  //     );
+  //   }
+  // }
+
+  async function handleDeleteProduct(e) {
+    e.preventDefault();
+
+    if (!productToEdit.id) {
+      console.error("No product ID provided");
+      return;
+    }
+
     try {
-      const token = await getToken();
-      console.log("token", token);
-      const response = await fetch(`https://nutrigeen.com/api/products/id`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to delete product");
+      // const token = localStorage.getItem("auth_token");
+      if (!token) {
+        console.error("No token found. Please log in again.");
+        return;
       }
 
-      console.log("Product deleted successfully");
-      // Optionally, refresh the product list or update state
-    } catch (error) {}
+      console.log("Token from localStorage:", token);
+
+      const response = await axios.delete(
+        `https://nutrigeen.com/api/products/${productToEdit.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status !== 200) {
+        throw new Error(`Failed to update product: ${response.statusText}`);
+      }
+      // ✅ Remove the product from local state
+      setProducts((prevProducts) =>
+        prevProducts.filter((p) => p.id !== productToEdit.id)
+      );
+      CloseEditModal();
+    } catch (error) {
+      console.error(
+        "Error updating product:",
+        error.response?.data || error.message
+      );
+    }
   }
 
   function openEditModal() {
@@ -156,6 +224,17 @@ function DashHome({
       ...product,
       [name]: value,
       category: selectedCategory,
+    }));
+  }
+
+  function handleCategoryChange(category) {
+    console.log("Selected category:", category);
+    setSelectedCategory(category);
+
+    // Update the product immediately when the category changes
+    setProductToEdit((product) => ({
+      ...product,
+      category: category, // Directly set the category here
     }));
   }
 
@@ -225,14 +304,14 @@ function DashHome({
                 </label>
                 <InputField
                   input={input}
-                  value={productToEdit[input.name]}
+                  value={productToEdit[input.name] || ""}
                   onChange={handleEditChange}
                 />
               </div>
             ))}
             <SelectMenu
               products={products}
-              value={productToEdit.category}
+              value={selectedCategory || ""}
               onValueChange={handleCategoryChange}
             />
             <div className="flex gap-2 !mt-[20px]">
@@ -279,7 +358,7 @@ function DashProducts({
     description,
   } = product;
   return (
-    <div className="card bg-base-100 w-96 shadow-sm   relative h-[400px]">
+    <div className="card bg-base-100 w-[200px] shadow-sm   relative h-[400px]">
       <figure>
         <img src={img} alt={name} />
       </figure>
@@ -300,7 +379,10 @@ function DashProducts({
           </button>
           <button
             className="text-white font-bold rounded-[10px] bg-[#ff3333] !p-[10px]  text-center w-[50%]"
-            onClick={handleDeleteProduct}
+            onClick={(e) => {
+              setProductToEdit(product);
+              handleDeleteProduct(e);
+            }}
           >
             Delete
           </button>

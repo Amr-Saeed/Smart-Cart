@@ -1,12 +1,57 @@
 import { useState } from "react";
 import { useTotalQuantity } from "./TotalQuantityContext";
 import { useLocalStorage } from "./useLocalStorage";
+import { useUser } from "@clerk/clerk-react";
+import axios from "axios";
+import { useAuth } from "@clerk/clerk-react";
+import { useToken } from "../TokenContext";
 export function useQuantity(productID) {
   //   const [quantity, setQuantity] = useState(0);
   const [quantity, setQuantity] = useLocalStorage(0, `quantity-${productID}`);
   const [isFirstChange, setIsFirstChange] = useState(true);
 
   const { setTotalQuantity, totalQuantity } = useTotalQuantity();
+
+  const { user } = useUser();
+  const { getToken } = useAuth(); // use getToken from Clerk
+
+  // async function handleAdd(e) {
+  //   const newQuantity = quantity === "" ? 1 : Number(quantity) + 1;
+  //   const currentQuantity = quantity;
+
+  //   if (user) {
+  //     try {
+  //       const { token } = await getToken();
+  //       const res = await axios.post(
+  //         "https://nutrigeen.com/api/cart",
+  //         {
+  //           user_id: user.id,
+  //           product_id: productID,
+  //           quantity: newQuantity,
+  //         },
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${token}`, // Use user.token if available
+  //           },
+  //         }
+  //       );
+  //       console.log("Product added to cart:", res.data);
+  //     } catch (error) {
+  //       console.error("Error adding product to cart:", error);
+  //     }
+  //   } else {
+  //     // Not authenticated: Save to localStorage
+  //     setQuantity((prevQuantity) => {
+  //       const newQuantity = prevQuantity === "" ? 1 : Number(prevQuantity) + 1;
+  //       return newQuantity;
+  //     });
+
+  //     if (isFirstChange && currentQuantity === 0) {
+  //       setTotalQuantity((prev) => prev + 1);
+  //       setIsFirstChange(false);
+  //     }
+  //   }
+  // }
 
   function handleAdd(e) {
     // Save the current quantity value before updating

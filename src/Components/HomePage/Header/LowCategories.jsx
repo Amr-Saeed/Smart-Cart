@@ -50,7 +50,10 @@ function LowCategories({ children, setIsSideBarOpen, products }) {
           ))}
 
           <li className="min-w-max flex justify-center items-center text-[#b8a6e3] font-bold">
-            <a href="#" className="flex justify-center items-center gap-1">
+            <a
+              href="#best-deals"
+              className="flex justify-center items-center gap-1"
+            >
               {/* <i className="bx bxs-offer "></i> */}
               <BiSolidOffer className="bxs-offer" />
               Deals
