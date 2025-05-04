@@ -8,12 +8,8 @@ import { useProductsContext } from "../Components/HomePage/ProductsContext";
 // import MayAlsoLike from "./MayAlsoLike";
 // import ProductInfo from "./ProductInfo";
 
-const ProductInfo = lazy(() =>
-  import("../Components/HomePage/Product/ProductInfo")
-);
-const MayAlsoLike = lazy(() =>
-  import("../Components/HomePage/Product/MayAlsoLike")
-);
+const ProductInfo = lazy(() => import("../Components/Product/ProductInfo"));
+const MayAlsoLike = lazy(() => import("../Components/Product/MayAlsoLike"));
 const Footer = lazy(() => import("../Components/HomePage/Footer"));
 
 function Product() {

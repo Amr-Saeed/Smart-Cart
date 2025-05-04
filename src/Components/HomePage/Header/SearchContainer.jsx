@@ -113,6 +113,7 @@ function SearchContainer({ children, open, setOpen }) {
                     offers={product.offers}
                     id={product.id}
                     handleDrawer={handleDrawer}
+                    setOpen={setOpen}
                   />
                 ))
               )}

@@ -1,7 +1,7 @@
 import { CategoriesItems } from "./CategoriesItems";
 import { useMemo, useState } from "react";
 
-export function SideCategories({ category, categoryProducts }) {
+export function SideCategories({ category, categoryProducts, setIsOpen }) {
   const [accordionOpen, setAccordionOpen] = useState(null); //Keeps track of which category is currently open.
 
   const isOpen = accordionOpen === category.category;
@@ -39,7 +39,11 @@ export function SideCategories({ category, categoryProducts }) {
         (productsList.length > 0 ? (
           <ul className=" shadow-2xl !p-4 rounded-2xl flex flex-col">
             {productsList.map((product) => (
-              <CategoriesItems key={product.id} product={product} />
+              <CategoriesItems
+                key={product.id}
+                product={product}
+                setIsOpen={setIsOpen}
+              />
             ))}
           </ul>
         ) : (

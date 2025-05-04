@@ -1,10 +1,14 @@
 import { Link } from "react-router-dom";
 
-export function CategoriesItems({ product }) {
+export function CategoriesItems({ product, setIsOpen }) {
   return (
     <button aria-label="open-product">
       <li key={product.id}>
-        <Link to={`/product/${product.id}`} className="flex items-center gap-3">
+        <Link
+          to={`/product/${product.id}`}
+          className="flex items-center gap-3"
+          onClick={() => setIsOpen(false)}
+        >
           <img
             loading="lazy"
             src={product.imageUrl}

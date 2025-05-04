@@ -104,6 +104,7 @@ function SideBar({ isOpen, setIsOpen, products }) {
                   key={category.category}
                   category={category}
                   categoryProducts={categoryProducts}
+                  setIsOpen={setIsOpen}
                 />
               ))}
             </ul>

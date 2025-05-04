@@ -1,5 +1,5 @@
 import { memo } from "react";
-import SwiperComponent from "../Swiper";
+import SwiperComponent from "../HomePage/Swiper";
 
 function MayAlsoLike({ relatedProducts }) {
   return (

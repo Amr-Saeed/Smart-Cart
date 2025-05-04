@@ -1,8 +1,8 @@
-import FavBtn from "../FavBtn";
-import { OutOfStock } from "../OutOfStock";
-import Price from "../Price";
-import { CardActions } from "../CardActions";
-import { Quantity } from "../Quantity";
+import FavBtn from "../HomePage/FavBtn";
+import { OutOfStock } from "../HomePage/OutOfStock";
+import Price from "../HomePage/Price";
+import { CardActions } from "../HomePage/CardActions";
+import { Quantity } from "../HomePage/Quantity";
 import { memo } from "react";
 function ProductInfo({ currentProduct, id }) {
   const {
