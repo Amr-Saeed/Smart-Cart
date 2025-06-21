@@ -21,6 +21,10 @@ import CustomSignUp from "./Pages/CustomSignUp";
 import Category from "./Pages/Category";
 import AppLayout from "./Components/AppLayout";
 import { TokenProvider } from "./Components/TokenContext";
+import { CartProvider } from "./Components/Cart/CartContext";
+import { WishListProvider } from "./Components/WishList/WishListContext";
+import QRCode from "./Pages/QRCode";
+import ControlPage from "./Pages/Control";
 
 const Product = lazy(() => import("./Pages/Product"));
 
@@ -65,6 +69,14 @@ function App() {
           path: "/category/:category",
           element: <Category />,
         },
+        {
+          path: "/scan",
+          element: <QRCode />,
+        },
+        {
+          path: "/control",
+          element: <ControlPage />,
+        },
       ],
     },
     {
@@ -90,17 +102,21 @@ function App() {
   ]);
 
   return (
-    <TokenProvider>
-      <WishProvider>
-        <QunatityProvider>
-          <ProductsProvider>
-            <Suspense fallback={<div>Loading...</div>}>
-              <RouterProvider router={router} />
-            </Suspense>
-          </ProductsProvider>
-        </QunatityProvider>
-      </WishProvider>
-    </TokenProvider>
+    <CartProvider>
+      <TokenProvider>
+        <WishListProvider>
+          <WishProvider>
+            <QunatityProvider>
+              <ProductsProvider>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <RouterProvider router={router} />
+                </Suspense>
+              </ProductsProvider>
+            </QunatityProvider>
+          </WishProvider>
+        </WishListProvider>
+      </TokenProvider>
+    </CartProvider>
   );
 
   // <HomePage />;

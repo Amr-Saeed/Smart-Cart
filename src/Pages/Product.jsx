@@ -24,9 +24,9 @@ function Product() {
   async function getProduct(id) {
     try {
       setIsLoading(true);
-      const res = await fetch(
-        `https://smartcart.tryasp.net/api/TodoItems/get-by-id/${id}`
-      );
+      const res = await fetch();
+      // `https://smartcart.tryasp.net/api/TodoItems/get-by-id/${id}`
+      `https://nutrigeen.com/api/cart/products/${id}`;
       const data = await res.json();
       setCurrentProduct(data);
     } catch {

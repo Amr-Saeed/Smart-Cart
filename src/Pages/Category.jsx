@@ -11,7 +11,8 @@ function Category() {
   async function getCategoryProducts(category) {
     try {
       const res = await fetch(
-        `https://smartcart.tryasp.net/api/TodoItems/get-by-category/${category}`
+        // `https://smartcart.tryasp.net/api/TodoItems/get-by-category/${category}`
+        `https://nutrigeen.com/api/cart/products/category/${category}`
       );
 
       const data = await res.json();

@@ -255,7 +255,7 @@ figure img {
   color: #7c4aed;
 }
 .QuantityInput .inc {
-  background-color: var(--main-color-2);
+  /* background-color: var(--main-color-2); */
 }
 .MuiCardContent-root {
   padding: 16px 8px !important;
@@ -440,6 +440,10 @@ footer .foot .icons svg:hover {
 }
 .min-caption {
   background-color: blueviolet !important;
+}
+body.scanner-active {
+  background: transparent !important;
+  backdrop-filter: none !important;
 }
 
 /* MainCategory */

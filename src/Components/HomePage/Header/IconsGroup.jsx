@@ -8,12 +8,22 @@ import { memo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { UserButton } from "@clerk/clerk-react";
 import { useUser } from "@clerk/clerk-react";
+import { useCartContext } from "../../Cart/CartContext";
+import { useWishListContext } from "../../WishList/WishlistContext";
 
 function IconsGroup({ className, navigate }) {
   const { totalQuantity } = useTotalQuantity();
   const { totalWish } = useTotalWish();
+  const { cart, cartItems, count, cartQuantity } = useCartContext();
+  const { countWish } = useWishListContext();
+
+  console.log("countWish", countWish);
+
+  console.log("Carsddddssst", cart);
 
   console.log(totalQuantity);
+
+  console.log("cartQuantitycartQuantitycartQuantity", cartQuantity);
 
   const location = useLocation();
   const { user } = useUser();
@@ -21,6 +31,8 @@ function IconsGroup({ className, navigate }) {
   // console.log(totalWish, totalQuantity);
 
   const isWishListPage = location.pathname === "/wishlist";
+
+  console.log("cartItems", cartItems);
 
   function handleWishlistClick() {
     if (!isWishListPage) {
@@ -33,6 +45,8 @@ function IconsGroup({ className, navigate }) {
     }
   }
 
+  const totalCount = user ? count || 0 : totalQuantity;
+
   return (
     <div
       className={` ${className} icons  flex justify-end items-center  gap-2.5`}
@@ -42,7 +56,7 @@ function IconsGroup({ className, navigate }) {
           <UserButton />
         ) : (
           <UserIcon
-            onClick={() => navigate(-1)}
+            onClick={() => navigate("/")}
             className="w-[1.3rem] md:w-[1.875rem] cursor-pointer text-[var(--main-color)]"
           />
         )}
@@ -54,7 +68,7 @@ function IconsGroup({ className, navigate }) {
           onClick={handleWishlistClick}
           disabled={isWishListPage}
         />
-        {totalWish > 0 && <Value value={totalWish} />}
+        {countWish > 0 && <Value value={countWish} />}
       </div>
       <div className="relative cart text-center">
         <ShoppingCartIcon
@@ -62,7 +76,7 @@ function IconsGroup({ className, navigate }) {
           onClick={handleClick}
           disabled={isCartPage}
         />
-        {totalQuantity > 0 && <Value value={totalQuantity} />}
+        {totalCount > 0 && <Value value={totalCount} />}
       </div>
     </div>
   );

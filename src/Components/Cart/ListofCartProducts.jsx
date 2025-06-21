@@ -10,7 +10,8 @@ export function ListofCartProducts({
       <ul>
         {cartProducts.map((product) => (
           <ProductCart
-            key={product.id}
+            // برضو هنا عايزين نسأل جيبتي علي الحوار بتاع || والاسم التاني بتاع البرودكت(اي دي ) دا
+            key={product.id || product.product_id}
             product={product}
             setQuantityChangeTrigger={setQuantityChangeTrigger}
             handleDelete={handleDelete}

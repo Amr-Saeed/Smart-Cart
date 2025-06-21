@@ -2,17 +2,29 @@ import { useQuantityWish } from "./useQuantityWish";
 import { useTotalWish } from "./TotalWishQuantity";
 import { HiOutlineHeart } from "react-icons/hi";
 import { memo } from "react";
+import { useWishListContext } from "../WishList/WishlistContext";
+import { useUser } from "@clerk/clerk-react";
 
-function FavBtn({ id, prod = false, prodCtegory, handleDeleteWish }) {
+function FavBtn({ id, prod = false, prodCtegory }) {
   const { wishQuan, handleAdd, handleDec } = useQuantityWish(id);
   const { totalWish } = useTotalWish();
+  const { countWish, wishListItems } = useWishListContext();
+  const { user } = useUser();
 
-  const isLiked = wishQuan > 0;
+  console.log("wishListItemswishListItems", wishListItems);
+  const wishListItem = wishListItems.find((item) => item.product_id === id);
+  const newWishQuan = wishListItem ? wishListItem.quantity : 0;
+
+  const isLiked = newWishQuan > 0;
+  // const isLiked = wishListItem !== undefined; // if it exists, it’s liked
+
+  console.log("isLiked", isLiked);
+  console.log("wishQuan", newWishQuan);
 
   function handleToggle() {
     if (isLiked) {
       handleDec();
-      if (handleDeleteWish) handleDeleteWish(id); // <<< Call handleDeleteWish here when unliking
+      // if (handleDeleteWish) handleDeleteWish(id); // <<< Call handleDeleteWish here when unliking
     } else {
       handleAdd();
     }

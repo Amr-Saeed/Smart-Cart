@@ -1,10 +1,10 @@
 import { IoIosArrowDown } from "react-icons/io";
-import { IoIosArrowUp } from "react-icons/io";
+// import { IoIosArrowUp } from "react-icons/io";
 import { FaArrowRight } from "react-icons/fa6";
 import { useMemo, useState } from "react";
 import { RiVisaFill } from "react-icons/ri";
 
-function CartCheckout({ cartProducts }) {
+function CartCheckout({ cartProducts, user, APIToialPrice }) {
   const [isPromoCodeVisible, setIsPromoCodeVisible] = useState(false);
 
   // const pricesafterOffers = useMemo(() => {
@@ -28,7 +28,8 @@ function CartCheckout({ cartProducts }) {
     return pricesafterOffers.reduce((acc, price) => acc + price, 0);
   }, [pricesafterOffers]);
   // useMemo is used to memoize the total price to avoid recalculating on every render
-
+  // Final total price based on whether user is logged in
+  const finalTotalPrice = user ? APIToialPrice : totalPrice;
   function handlePromoCodeToggle() {
     setIsPromoCodeVisible((isPromoCodeVisible) => !isPromoCodeVisible);
   }
@@ -40,7 +41,7 @@ function CartCheckout({ cartProducts }) {
         </h2>
         <div className="subTotal flex justify-between text-[#000000b3] !mt-[15px]">
           <p>SubTotal</p>
-          <span>{`${totalPrice.toFixed(2)}EGP`}</span>
+          <span>{`${finalTotalPrice.toFixed(2)}EGP`}</span>
         </div>
         <div className="promoCode flex justify-between  !mt-[15px] items-center">
           <p className="text-[blueviolet] font-bold text-[1.3rem]">
@@ -96,7 +97,7 @@ function CartCheckout({ cartProducts }) {
         }
         <div className="Total flex justify-between  !mt-[15px] items-center">
           <p className="text-[blueviolet] font-bold text-[2rem]">Total</p>
-          <span className="text-[1.5rem] text-black font-bold">{`${totalPrice.toFixed(
+          <span className="text-[1.5rem] text-black font-bold">{`${finalTotalPrice.toFixed(
             2
           )}EGP`}</span>
         </div>

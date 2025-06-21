@@ -5,98 +5,116 @@ import { useUser } from "@clerk/clerk-react";
 import axios from "axios";
 import { useAuth } from "@clerk/clerk-react";
 import { useToken } from "../TokenContext";
+import { useCartContext } from "../Cart/CartContext";
 export function useQuantity(productID) {
   //   const [quantity, setQuantity] = useState(0);
   const [quantity, setQuantity] = useLocalStorage(0, `quantity-${productID}`);
   const [isFirstChange, setIsFirstChange] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { setTotalQuantity, totalQuantity } = useTotalQuantity();
 
   const { user } = useUser();
   const { getToken } = useAuth(); // use getToken from Clerk
 
-  // async function handleAdd(e) {
-  //   const newQuantity = quantity === "" ? 1 : Number(quantity) + 1;
-  //   const currentQuantity = quantity;
-
-  //   if (user) {
-  //     try {
-  //       const { token } = await getToken();
-  //       const res = await axios.post(
-  //         "https://nutrigeen.com/api/cart",
-  //         {
-  //           user_id: user.id,
-  //           product_id: productID,
-  //           quantity: newQuantity,
-  //         },
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${token}`, // Use user.token if available
-  //           },
-  //         }
-  //       );
-  //       console.log("Product added to cart:", res.data);
-  //     } catch (error) {
-  //       console.error("Error adding product to cart:", error);
-  //     }
-  //   } else {
-  //     // Not authenticated: Save to localStorage
-  //     setQuantity((prevQuantity) => {
-  //       const newQuantity = prevQuantity === "" ? 1 : Number(prevQuantity) + 1;
-  //       return newQuantity;
-  //     });
-
-  //     if (isFirstChange && currentQuantity === 0) {
-  //       setTotalQuantity((prev) => prev + 1);
-  //       setIsFirstChange(false);
-  //     }
-  //   }
-  // }
-
-  function handleAdd(e) {
-    // Save the current quantity value before updating
+  const { fetchCart, setCart, cartItems } = useCartContext();
+  const cartItem = cartItems.find((item) => item.product_id === productID);
+  const newQuantity = user ? cartItem?.quantity ?? 0 : quantity;
+  async function handleAdd(e) {
+    const newQuantity = quantity === "" ? 1 : Number(quantity) + 1;
     const currentQuantity = quantity;
 
-    setQuantity((prevQuantity) => {
-      const newQuantity = prevQuantity === "" ? 1 : Number(prevQuantity) + 1;
-      return newQuantity;
-    });
+    if (user) {
+      try {
+        setIsLoading(true);
+        const { token } = await getToken();
+        const res = await axios.post(
+          "https://nutrigeen.com/api/cart",
+          {
+            user_id: user.id,
+            product_id: productID,
+            quantity: newQuantity,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, // Use user.token if available
+            },
+          }
+        );
+        // console.log("Product added to cart:", res.data.product.quantity);
 
-    // Update total separately using the current known values, not in a nested callback
-    // Update total quantity only if it's the first change (new product)
-    if (isFirstChange && currentQuantity === 0) {
-      setTotalQuantity((prev) => prev + 1);
-      setIsFirstChange(false); // Mark that this product has been added at least once
-    }
-  }
+        await fetchCart({ userId: user.id }); // Fetch the updated cart after adding the product
 
-  // function handleDec() {
-  //   // Only proceed if we have a positive quantity
-  //   if (quantity > 0) {
-  //     setQuantity(Number(quantity) - 1);
-  //     setTotalQuantity((prev) => prev - 1);
-  //     // Decrease total quantity only if the product quantity becomes 0
-  //     if (quantity === 1) {
-  //       setTotalQuantity((prev) => prev - 1);
-  //       setIsFirstChange(true); // Reset isFirstChange since the product is removed
-  //     }
-  //   }
-  // }
-
-  function handleDec() {
-    // Only proceed if we have a positive quantity
-    if (quantity > 0) {
+        //another methid to update the quantity in the input field after pressing + but this only work if the post api returns the quantity to u
+        // setCart((prev) => ({
+        //   ...prev,
+        //   cart: prev.cart.map((item) =>
+        //     item.product_id === productID
+        //       ? { ...item, quantity: res.data.product.quantity }
+        //       : item
+        //   ),
+        // }));
+      } catch (error) {
+        console.error("Error adding product to cart:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    } else {
+      // Not authenticated: Save to localStorage
       setQuantity((prevQuantity) => {
-        const newQuantity = Number(prevQuantity) - 1;
-        // Decrease total quantity only if the product quantity becomes 0
-        if (newQuantity === 0) {
-          setTotalQuantity((prev) => prev - 1);
-          setIsFirstChange(true); // Reset isFirstChange since the product is removed
-        }
+        const newQuantity = prevQuantity === "" ? 1 : Number(prevQuantity) + 1;
         return newQuantity;
       });
+
+      if (isFirstChange && currentQuantity === 0) {
+        setTotalQuantity((prev) => prev + 1);
+        setIsFirstChange(false);
+      }
     }
   }
+
+  async function handleDec(productID) {
+    if (newQuantity > 0) {
+      const newQuantity = Number(quantity) - 1;
+      const currentQuantity = quantity;
+
+      if (user) {
+        try {
+          setIsLoading(true);
+          const token = await getToken();
+
+          const res = await axios.put(
+            `https://nutrigeen.com/api/cart/${user.id}/${productID}`,
+            {
+              quantity: newQuantity,
+            },
+
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          await fetchCart({ userId: user.id }); // Refresh the cart after update
+        } catch (error) {
+          console.error("Error updating product quantity in cart:", error);
+        } finally {
+          setIsLoading(false);
+        }
+      } else {
+        // Not authenticated: update localStorage
+        setQuantity(newQuantity);
+
+        // If product quantity becomes 0, update totalQuantity
+        if (newQuantity === 0) {
+          setTotalQuantity((prev) => prev - 1);
+          setIsFirstChange(true);
+        }
+      }
+    }
+  }
+
   function handleFocus(e) {
     e.preventDefault();
     if (quantity === 0) setQuantity("");
@@ -130,5 +148,51 @@ export function useQuantity(productID) {
     handleChange,
     handleFocus,
     handleBlur,
+    isLoading,
   };
 }
+
+// function handleAdd(e) {
+//   // Save the current quantity value before updating
+//   const currentQuantity = quantity;
+
+//   setQuantity((prevQuantity) => {
+//     const newQuantity = prevQuantity === "" ? 1 : Number(prevQuantity) + 1;
+//     return newQuantity;
+//   });
+
+//   // Update total separately using the current known values, not in a nested callback
+//   // Update total quantity only if it's the first change (new product)
+//   if (isFirstChange && currentQuantity === 0) {
+//     setTotalQuantity((prev) => prev + 1);
+//     setIsFirstChange(false); // Mark that this product has been added at least once
+//   }
+// }
+
+// function handleDec() {
+//   // Only proceed if we have a positive quantity
+//   if (quantity > 0) {
+//     setQuantity(Number(quantity) - 1);
+//     setTotalQuantity((prev) => prev - 1);
+//     // Decrease total quantity only if the product quantity becomes 0
+//     if (quantity === 1) {
+//       setTotalQuantity((prev) => prev - 1);
+//       setIsFirstChange(true); // Reset isFirstChange since the product is removed
+//     }
+//   }
+// }
+
+// function handleDec() {
+//   // Only proceed if we have a positive quantity
+//   if (quantity > 0) {
+//     setQuantity((prevQuantity) => {
+//       const newQuantity = Number(prevQuantity) - 1;
+//       // Decrease total quantity only if the product quantity becomes 0
+//       if (newQuantity === 0) {
+//         setTotalQuantity((prev) => prev - 1);
+//         setIsFirstChange(true); // Reset isFirstChange since the product is removed
+//       }
+//       return newQuantity;
+//     });
+//   }
+// }

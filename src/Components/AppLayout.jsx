@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Header from "./HomePage/Header/Header";
 import Footer from "./HomePage/Footer";
+import BottomBar from "./Mobile/BottomBar";
 
 function AppLayout() {
   return (
@@ -10,6 +11,7 @@ function AppLayout() {
         <Outlet />
       </main>
       <Footer />
+      <BottomBar />
     </>
   );
 }
