@@ -44,7 +44,7 @@ function DrawerContent({ className, children, ...props }) {
     <DrawerPrimitive.Content
       data-slot="drawer-content"
       className={cn(
-        "group/drawer-content fixed z-50 flex flex-col bg-[var(--main-color-alt)]",
+        "group/drawer-content fixed z-50 flex flex-col bg-white",
         "inset-x-0 bottom-0  shadow-lg",
         "h-[100dvh] max-h-[100dvh] overflow-hidden", // 🚀 Keeps drawer full height
         "translate-y-0", // 🚀 Prevents it from moving when keyboard opens
@@ -76,15 +76,15 @@ function DrawerContent({ className, children, ...props }) {
 //   );
 // }
 
-// function DrawerFooter({ className, ...props }) {
-//   return (
-//     <div
-//       data-slot="drawer-footer"
-//       className={cn("mt-auto flex flex-col gap-2 p-4", className)}
-//       {...props}
-//     />
-//   );
-// }
+function DrawerFooter({ className, ...props }) {
+  return (
+    <div
+      data-slot="drawer-footer"
+      className={cn("mt-auto flex flex-col gap-2 p-4", className)}
+      {...props}
+    />
+  );
+}
 
 function DrawerTitle({ className, ...props }) {
   return (
@@ -106,4 +106,11 @@ function DrawerDescription({ className, ...props }) {
   );
 }
 
-export { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerTitle };
+export {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerTitle,
+  DrawerFooter,
+};

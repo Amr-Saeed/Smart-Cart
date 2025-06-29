@@ -6,6 +6,8 @@ import { Quantity } from "../HomePage/Quantity";
 import Price from "../HomePage/Price";
 import { Link } from "react-router-dom";
 import { ListofCartProducts } from "./ListofCartProducts";
+import { useState } from "react";
+import { CgSpinner } from "react-icons/cg";
 
 function CartProducts({ cartProducts, children }) {
   return (
@@ -24,15 +26,22 @@ function CartProducts({ cartProducts, children }) {
 }
 
 export function ProductCart({ product, handleDelete }) {
+  const [isDeleting, setIsDeleting] = useState(false); // 👈 new state
+
   const { id, name, price, imageUrl, stockAvailability, unit, offers } =
     product;
+  async function onDeleteClick() {
+    setIsDeleting(true); // Start loading
+    await handleDelete(product.product_id || id);
+    setIsDeleting(false); // Done
+  }
 
   return (
     <li key={id}>
       <div className="cartData border-b border-b-[var(--main-color)] relative flex-col md:flex-row flex md:gap-[30px]">
         <div>
           <figure className="relative w-[200px]">
-            <FavBtn id={id} prod={true} />{" "}
+            <FavBtn id={product.product_id || product.id} prod={true} />{" "}
             <img
               loading="lazy"
               src={imageUrl}
@@ -49,7 +58,10 @@ export function ProductCart({ product, handleDelete }) {
           </Link>
           <div className="flex items-center justify-between">
             <CardActions commingfromcartProd={true}>
-              <Quantity id={id} stockAvailability={stockAvailability} />
+              <Quantity
+                id={product.product_id || product.id}
+                stockAvailability={true}
+              />
             </CardActions>
             <Price
               showContent={true}
@@ -62,9 +74,15 @@ export function ProductCart({ product, handleDelete }) {
         </div>
         <button
           className="absolute text-[2rem] lg:text-[1.3rem] top-0 right-0 !mt-[20px]"
-          onClick={() => handleDelete(id)}
+          onClick={onDeleteClick}
+          disabled={isDeleting} // Disable button while deleting
+          aria-label="delete-product"
         >
-          <RiDeleteBin6Line color="#ff3333" />
+          {isDeleting ? (
+            <CgSpinner className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-spin text-[blueviolet]" />
+          ) : (
+            <RiDeleteBin6Line color="#ff3333" />
+          )}
         </button>
       </div>
     </li>

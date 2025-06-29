@@ -25,6 +25,11 @@ import { CartProvider } from "./Components/Cart/CartContext";
 import { WishListProvider } from "./Components/WishList/WishListContext";
 import QRCode from "./Pages/QRCode";
 import ControlPage from "./Pages/Control";
+import { useEffect, useState } from "react";
+import { setupScannerListener } from "./WebSockets/Sockethandler"; // Import the setup function
+import ScanPopup from "./WebSockets/ScanPopUp"; // Import the setup function
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Product = lazy(() => import("./Pages/Product"));
 
@@ -33,7 +38,18 @@ const Cart = lazy(() => import("./Pages/Cart"));
 // export const ProductsContext = createContext();
 function App() {
   const { user, isLoaded } = useUser(); // Get the current user
+  const [scannedProduct, setScannedProduct] = useState(null);
 
+  // 👇 Setup global WebSocket listener
+  useEffect(() => {
+    setupScannerListener();
+  }, []);
+
+  useEffect(() => {
+    setupScannerListener((data) => {
+      setScannedProduct(data); // open popup with product
+    });
+  }, []);
   // If the user data is not loaded yet, you can show a loading spinner or something else
   if (!isLoaded) {
     return <div>Loading...</div>;
@@ -110,6 +126,22 @@ function App() {
               <ProductsProvider>
                 <Suspense fallback={<div>Loading...</div>}>
                   <RouterProvider router={router} />
+                  <ToastContainer
+                    position="top-right"
+                    autoClose={4000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="light"
+                  />
+                  {/* <ScanPopup
+                    product={scannedProduct}
+                    onClose={() => setScannedProduct(null)}
+                  /> */}
                 </Suspense>
               </ProductsProvider>
             </QunatityProvider>

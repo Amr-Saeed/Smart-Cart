@@ -5,12 +5,13 @@ const CartContext = createContext();
 
 function CartProvider({ children }) {
   const [cart, setCart] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const { user } = useUser();
 
   async function fetchCart({ userId }) {
     try {
-      //   setIsLoading(true);
+      setIsLoading(true);
       const res = await fetch(
         `https://nutrigeen.com/api/cart/${userId}` //https://nutrigeen.com/api/Cart  //https://smartcart.tryasp.net/api/TodoItems/showAll
       );
@@ -19,7 +20,7 @@ function CartProvider({ children }) {
     } catch {
       console.log("Error fetching Cart");
     } finally {
-      //   setIsLoading(false);
+      setIsLoading(false);
       // hasFetched.current = true; // Mark fetch as complete
     }
   }

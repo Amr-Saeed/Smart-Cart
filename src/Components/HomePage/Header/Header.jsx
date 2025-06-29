@@ -7,6 +7,7 @@ import LowCategories from "./LowCategories";
 import { lazy, Suspense } from "react";
 import { useProductsContext } from "../ProductsContext";
 import { useAuth } from "@clerk/clerk-react";
+// import ScannerData from "../../../WebSockets/ScannerData";
 
 const SideBar = lazy(() => import("../SideBar"));
 function Header() {

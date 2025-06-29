@@ -22,6 +22,8 @@ import { Offer } from "./Offer";
 export default function SwiperComponent({ content, title, relatedProducts }) {
   const { products } = useProductsContext();
 
+  console.log("Products in SwiperComponent:", products); // Log products for debugging
+
   const bestDealsProducts = useMemo(() => {
     if (!products || products.length === 0) return []; // Don't compute categories if products are null
 

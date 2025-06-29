@@ -10,7 +10,7 @@ function WishListProvider({ children }) {
 
   async function fetchWishList({ userId }) {
     try {
-      //   setIsLoading(true);
+      // setIsLoading(true);
       const res = await fetch(
         `https://nutrigeen.com/api/wishlist/${userId}` //https://nutrigeen.com/api/Cart  //https://smartcart.tryasp.net/api/TodoItems/showAll
       );
@@ -21,7 +21,7 @@ function WishListProvider({ children }) {
     } catch {
       console.log("Error fetching WishList");
     } finally {
-      //   setIsLoading(false);
+      // setIsLoading(false);
       // hasFetched.current = true; // Mark fetch as complete
     }
   }

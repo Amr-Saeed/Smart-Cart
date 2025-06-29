@@ -1,7 +1,9 @@
 import Footer from "../HomePage/Footer";
 import { Link } from "react-router-dom";
+import { useUser } from "@clerk/clerk-react";
 
 function WishListEmpty() {
+  const { user } = useUser();
   return (
     <>
       <section className="cart-empty containerr !mt-[25px]">
@@ -16,11 +18,17 @@ function WishListEmpty() {
           </picture>
           <h2 className="text-[1.5rem] text-[blueviolet] font-bold">
             {/* Your WishList is empty */}
-            Sign in to view your saved items
+            {user
+              ? "Your WishList is empty"
+              : "Sign in to view your saved items"}
           </h2>
 
           <button className="w-[250px] !mt-[15px] bg-[blueviolet] text-white font-bold text-[1.4rem] h-12 rounded-[20px] hover:bg-[#aa8cee] transition duration-300">
-            <Link to="/">Sign In</Link>
+            {user ? (
+              <Link to="/HomePage">Browse Products</Link>
+            ) : (
+              <Link to="/">Sign In</Link>
+            )}
           </button>
         </div>
       </section>

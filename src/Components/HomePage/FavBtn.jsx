@@ -4,8 +4,11 @@ import { HiOutlineHeart } from "react-icons/hi";
 import { memo } from "react";
 import { useWishListContext } from "../WishList/WishlistContext";
 import { useUser } from "@clerk/clerk-react";
+import { useState } from "react";
+import { CgSpinner } from "react-icons/cg";
 
 function FavBtn({ id, prod = false, prodCtegory }) {
+  const [isLoading, setIsLoading] = useState(false);
   const { wishQuan, handleAdd, handleDec } = useQuantityWish(id);
   const { totalWish } = useTotalWish();
   const { countWish, wishListItems } = useWishListContext();
@@ -21,14 +24,30 @@ function FavBtn({ id, prod = false, prodCtegory }) {
   console.log("isLiked", isLiked);
   console.log("wishQuan", newWishQuan);
 
-  function handleToggle() {
-    if (isLiked) {
-      handleDec();
-      // if (handleDeleteWish) handleDeleteWish(id); // <<< Call handleDeleteWish here when unliking
-    } else {
-      handleAdd();
+  // function handleToggle() {
+  //   if (isLiked) {
+  //     handleDec();
+  //     // if (handleDeleteWish) handleDeleteWish(id); // <<< Call handleDeleteWish here when unliking
+  //   } else {
+  //     handleAdd();
+  //   }
+  // }
+
+  async function handleToggle() {
+    setIsLoading(true);
+    try {
+      if (isLiked) {
+        await handleDec();
+      } else {
+        await handleAdd();
+      }
+    } catch (err) {
+      console.error("Error toggling favorite:", err);
+    } finally {
+      setIsLoading(false);
     }
   }
+
   return (
     <div
       className={` favoriteButton  absolute flex align-middle justify-center w-[50px] h-[50px] rounded-[50%] ${
@@ -43,7 +62,9 @@ function FavBtn({ id, prod = false, prodCtegory }) {
         {/* <i
             className={isLiked ? "bx bxs-heart text-2xl" : "bx bx-heart text-2xl"}
           ></i> */}
-        {isLiked ? (
+        {isLoading ? (
+          <CgSpinner className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-spin text-[blueviolet]" />
+        ) : isLiked ? (
           <HiOutlineHeart className="heart text-2xl  bxs-heart fill-[var(--main-color)]" />
         ) : (
           <HiOutlineHeart className="text-2xl heart bx-heart" />

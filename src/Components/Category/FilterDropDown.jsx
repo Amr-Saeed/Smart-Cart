@@ -2,7 +2,15 @@ import { IoIosArrowDown } from "react-icons/io";
 import { useState } from "react";
 import BottomDrawer from "../HomePage/BottomDrawer";
 import BottomDrawerFilters from "./BottomDrawerFilters";
-function FilterDropDown({ label, name, options, isOpen, onToggle, onSelect }) {
+function FilterDropDown({
+  label,
+  name,
+  options,
+  isOpen,
+  onToggle,
+  onSelect,
+  children,
+}) {
   const [selectedOption, setSelectedOption] = useState(null);
   function handleSeletedOption(option) {
     setSelectedOption(option);
@@ -39,7 +47,11 @@ function FilterDropDown({ label, name, options, isOpen, onToggle, onSelect }) {
           ))}
         </ul>
       ) : (
-        <BottomDrawerFilters open={isOpen} />
+        // <BottomDrawerFilters
+        //   open={isOpen}
+        //   onClose={() => onToggle(null)} // Close the drawer by resetting openDropDown
+        // />
+        children
       )}
     </div>
   );

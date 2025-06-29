@@ -18,6 +18,8 @@ export function Quantity({
     handleFocus,
     handleBlur,
     isLoading,
+    inputValue,
+    handleEnter,
   } = useQuantity(id);
 
   const { cartItems } = useCartContext();
@@ -26,6 +28,8 @@ export function Quantity({
   // const newQuantity = user ? cartQuantity : quantity; // Assuming 'example' stores the role
   const cartItem = cartItems.find((item) => item.product_id === id);
   const newQuantity = user ? cartItem?.quantity ?? 0 : quantity;
+
+  console.log("Quantity about to send:", cartItem?.quantity, "id:", id);
 
   // const newQuantity = user ? quantityByProductId[id] || 0 : quantity;
   return (
@@ -59,10 +63,20 @@ export function Quantity({
                 type="number"
                 step={1}
                 min={1}
-                value={isLoading ? "" : newQuantity}
+                value={isLoading ? "" : inputValue}
                 onChange={handleChange}
                 onFocus={handleFocus}
-                onBlur={handleBlur}
+                onBlur={(e) => {
+                  // Delay to let visibilityState settle
+                  setTimeout(() => {
+                    if (document.visibilityState === "visible") {
+                      handleBlur(e);
+                    }
+                  }, 100); // 100ms delay to allow for tab switching
+                }}
+                onKeyDown={(e) => {
+                  handleEnter(e, id);
+                }}
                 className="w-[100%] font-bold  h-10 rounded-[15px] input outline-none text-center"
               />
               {isLoading && (

@@ -10,8 +10,10 @@ import { UserButton } from "@clerk/clerk-react";
 import { useUser } from "@clerk/clerk-react";
 import { useCartContext } from "../../Cart/CartContext";
 import { useWishListContext } from "../../WishList/WishlistContext";
+import { useDistinctProductCountFromLocalStorage } from "../useDistinctProductCountFromLocalStorage";
 
 function IconsGroup({ className, navigate }) {
+  const localStorageCount = useDistinctProductCountFromLocalStorage();
   const { totalQuantity } = useTotalQuantity();
   const { totalWish } = useTotalWish();
   const { cart, cartItems, count, cartQuantity } = useCartContext();
@@ -20,8 +22,6 @@ function IconsGroup({ className, navigate }) {
   console.log("countWish", countWish);
 
   console.log("Carsddddssst", cart);
-
-  console.log(totalQuantity);
 
   console.log("cartQuantitycartQuantitycartQuantity", cartQuantity);
 
@@ -45,7 +45,10 @@ function IconsGroup({ className, navigate }) {
     }
   }
 
-  const totalCount = user ? count || 0 : totalQuantity;
+  const totalCount = user
+    ? count ?? 0 // use count from API if logged in
+    : localStorageCount; // use localStorage-based value if not
+  console.log("totalCount", totalCount);
 
   return (
     <div

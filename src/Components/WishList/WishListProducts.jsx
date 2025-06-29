@@ -7,12 +7,15 @@ import Price from "../HomePage/Price";
 import { Link } from "react-router-dom";
 import { Children } from "react";
 import { useQuantityWish } from "../HomePage/useQuantityWish";
+import { useWishListContext } from "./WishlistContext";
 
-function WishListProducts({ wishListProducts, handleDeleteWish }) {
+function WishListProducts({ handleDeleteWish }) {
+  const { wishListItems } = useWishListContext();
+
   return (
     <div className="cartProduct flex flex-col w-full lg:!w-[80%] containerr">
       <ul className="flex flex-col justify-center items-center w-full">
-        {wishListProducts.map((product) => (
+        {wishListItems.map((product) => (
           // <ProductCart
           //   key={product.id}
           //   product={product}
@@ -40,6 +43,8 @@ export function ProductCart({ product, handleDeleteWish }) {
   const { id, name, price, imageUrl, stockAvailability, unit, offers } =
     product;
 
+  console.log("ProductCart product", product);
+
   return (
     <li key={id} className="w-full flex justify-center items-center">
       <div className="cartData border-b border-b-[var(--main-color)] w-[80%] relative flex-col md:flex-row flex md:gap-[30px]">
@@ -62,7 +67,10 @@ export function ProductCart({ product, handleDeleteWish }) {
           </Link>
           <div className="flex items-center justify-between">
             <CardActions commingfromcartProd={true}>
-              <Quantity id={id} stockAvailability={stockAvailability} />
+              <Quantity
+                id={product.product_id || product.id}
+                stockAvailability={product.stockAvailability}
+              />
             </CardActions>
             <Price
               showContent={true}

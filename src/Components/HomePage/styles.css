@@ -356,8 +356,9 @@ footer .foot .icons svg:hover {
   font-weight: 700;
 }
 .searchMenu {
-  background-color: var(--main-color-alt);
+  /* background-color: var(--main-color-alt); */
   /* transition: all 5s; */
+  background-color: white;
 }
 /* Search */
 
@@ -446,6 +447,9 @@ body.scanner-active {
   backdrop-filter: none !important;
 }
 
+/* bottomdrawer category */
+
+/* bottomdrawer category */
 /* MainCategory */
 
 /* :root {

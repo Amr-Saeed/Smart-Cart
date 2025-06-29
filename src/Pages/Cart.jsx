@@ -26,6 +26,8 @@ function Cart() {
 
   user ? console.log("User ID:", user.id) : console.log("No user logged in");
 
+  const cartItems = cart.cart || [];
+
   useEffect(() => {
     if (!user) {
       // Not logged in → get cart products from localStorage
@@ -36,16 +38,19 @@ function Cart() {
       setCartProducts(savedCartProducts);
     } else {
       // Logged in → get cart products from backend/context
-      setCartProducts(cart.cart || []);
+      setCartProducts(cartItems);
     }
   }, [products, cart, user]);
 
   console.log("Cart Products:", cart); // Log the cart products for debugging
+  console.log("cartProducts Products:", cartProducts); // Log the cart products for debugging
 
   const APIToialPrice = cart.total_price || 0;
 
   console.log("API Total Price:", APIToialPrice); // Log the total price for debugging
+
   async function handleDelete(id) {
+    console.log("Deleting item with ID:", id); // Log the ID of the item being deleted
     if (!user) {
       localStorage.removeItem(`quantity-${id}`);
       console.log("Item removed from cart:", id);

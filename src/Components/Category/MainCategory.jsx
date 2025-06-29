@@ -1,14 +1,16 @@
 import BreadcrumbDemo from "./BreadCrumb";
 import MyToggle from "./ToggleSwitch";
-import { IoClose } from "react-icons/io5";
 import { useMemo, useReducer } from "react";
 
 import { useState } from "react";
-import { IoIosArrowDown } from "react-icons/io";
 import MultiSlider from "./MultiRangeSlider";
 import FilterDropDown from "./FilterDropDown";
 import MainProducts from "./MainProducts";
 import BottomDrawer from "../HomePage/BottomDrawer";
+import BottomDrawerFilters from "./BottomDrawerFilters";
+import { PriceBtn } from "./PriceBtn";
+import { CloseFilters } from "./CloseFilters";
+import PriceList from "./PriceList";
 const initialState = {
   hasDeal: null,
   stores: null,
@@ -142,14 +144,21 @@ function MainCategory({ category, categoryProducts }) {
             <FilterDropDown
               label="Filters"
               name="filters"
-              options={filterOptions.deal}
-              isOpen={openDropDown === "filters"}
               onToggle={handleDropDown}
-              onSelect={(option) => {
-                dispatch({ type: "SET_DEAL", payload: option });
-                setOpenDropDown(false);
-              }}
-            />
+            >
+              <BottomDrawerFilters
+                onClose={() => handleDropDown(null)}
+                open={openDropDown === "filters"}
+                dispatch={dispatch}
+                hasDeal={hasDeal}
+                stores={stores}
+                minPrice={minPrice}
+                maxPrice={maxPrice}
+                setMinPrice={setMinPrice}
+                setMaxPrice={setMaxPrice}
+                filterOptions={filterOptions}
+              />
+            </FilterDropDown>
           </div>
 
           <FilterDropDown
@@ -177,134 +186,6 @@ function MainCategory({ category, categoryProducts }) {
       </section>
       <MainProducts filteredProducts={filteredProducts} />
     </section>
-  );
-}
-
-function PriceBtn({ openDropDown, handleDropDown }) {
-  return (
-    <button
-      className={`flex lg:h-auto h-[70.6px] items-center justify-center gap-1.5 border-1 border-[blueviolet] !p-2.5 rounded-[8px] text-[var(--main-color)] ${
-        openDropDown === "price" ? "bg-white" : ""
-      } font-semibold`}
-      onClick={() => handleDropDown("price")}
-    >
-      <span>Price</span>
-      <span
-        className={`transition-transform ${
-          openDropDown === "price" ? "rotate-180" : ""
-        }`}
-      >
-        <IoIosArrowDown />
-      </span>
-    </button>
-  );
-}
-
-function PriceList({
-  openDropDown,
-  minValue,
-  maxValue,
-  setMinValue,
-  setMaxValue,
-}) {
-  return (
-    openDropDown === "price" && (
-      <div className="priceList z-[42] absolute border-1 border-[blueviolet] !p-2.5 bg-white w-[250px] border-t-0 rounded-br-[8px] rounded-bl-[8px]">
-        <div className="absolute top-0 left-[33%] w-[67%] h-[0.5px] bg-[blueviolet]"></div>
-
-        <div className="sliderr">
-          <MultiSlider
-            minValue={minValue}
-            maxValue={maxValue}
-            setMaxValue={setMaxValue}
-            setMinValue={setMinValue}
-          />
-        </div>
-        <div className="minmax flex justify-between">
-          <div className="min flex flex-col gap-1 w-[48%]">
-            <label className="text-[blueviolet] font-extrabold">Min</label>
-            <input
-              type="text"
-              placeholder="0"
-              className="w-[100%] text-[blueviolet] outline-0 border-1 border-[blueviolet] rounded-[8px] !p-2.5"
-              value={minValue}
-              onChange={(e) => setMinValue(+e.target.value)}
-            />
-          </div>
-          <div className="min flex flex-col gap-1 w-[48%]">
-            <label className="text-[blueviolet] font-extrabold">Max</label>
-            <input
-              type="text"
-              placeholder="100"
-              className="w-[100%] text-[blueviolet] border-1 outline-0 border-[blueviolet] rounded-[8px] !p-2.5"
-              value={maxValue}
-              onChange={(e) => setMaxValue(+e.target.value)}
-            />
-          </div>
-        </div>
-      </div>
-    )
-  );
-}
-
-function CloseFilters({
-  hasDeal,
-  stores,
-  sort,
-  minPrice,
-  maxPrice,
-  dispatch,
-  setMinPrice,
-  setMaxPrice,
-}) {
-  const filters = useMemo(() => {
-    const filters = [];
-
-    if (hasDeal === "Yes" || hasDeal === "No") {
-      filters.push({ value: hasDeal, type: "SET_DEAL" });
-    }
-    if (stores) {
-      filters.push({ value: stores, type: "SET_STORE" });
-    }
-    if (sort && sort !== "Default") {
-      filters.push({ value: sort, type: "SET_SORT" });
-    }
-    if (minPrice !== 0 || maxPrice !== 1000) {
-      filters.push({
-        value: `Min:${minPrice}EGP | Max:${maxPrice}EGP`,
-        type: "SET_PRICE",
-      });
-    }
-
-    return filters;
-  }, [hasDeal, stores, sort, minPrice, maxPrice]);
-  console.log(filters);
-  return (
-    <div className="closeFilters !mt-[15px] flex gap-[10px] ">
-      {filters.length > 0
-        ? filters.map((filter, index) => (
-            <div
-              className="bg-[#b076e78a] flex w-fit !py-1.5 !px-2.5 rounded-[8px] text-[#6208b6] font-semibold"
-              key={index}
-            >
-              <span>{filter.value}</span>
-              <IoClose
-                className="text-2xl cursor-pointer"
-                onClick={() => {
-                  dispatch({
-                    type: filter.type,
-                    payload: null,
-                  });
-                  if (filter.type === "SET_PRICE") {
-                    setMinPrice(0);
-                    setMaxPrice(1000);
-                  }
-                }}
-              />
-            </div>
-          ))
-        : null}
-    </div>
   );
 }
 

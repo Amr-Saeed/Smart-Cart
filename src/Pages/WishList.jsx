@@ -9,13 +9,13 @@ import { useWishListContext } from "../Components/WishList/WishlistContext";
 import useQuantityWish from "../Components/HomePage/useQuantityWish";
 function WishList() {
   const { products } = useProductsContext();
-  const [wishListProducts, setWishListProducts] = useState([]);
+  // const [wishListProducts, setWishListProducts] = useState([]);
   const { totalWish, setTotalWish } = useTotalWish();
   const { wishListItems } = useWishListContext();
 
-  useEffect(() => {
-    setWishListProducts(wishListItems || []); // Use wishListItems from context or an empty array if undefined
-  }, [products]); // Re-run when 'products' changes
+  // useEffect(() => {
+  //   setWishListProducts(wishListItems || []); // Use wishListItems from context or an empty array if undefined
+  // }, [products]); // Re-run when 'products' changes
 
   // function handleDeleteWish(id) {
   //   handleDec(id);
@@ -23,10 +23,10 @@ function WishList() {
   return (
     <>
       <LowCategories />
-      {wishListProducts.length > 0 ? (
+      {wishListItems.length > 0 ? (
         <WishListProducts
-          wishListProducts={wishListProducts}
-          // handleDeleteWish={handleDeleteWish}
+        // wishListProducts={wishListProducts}
+        // handleDeleteWish={handleDeleteWish}
         />
       ) : (
         <WishListEmpty />
