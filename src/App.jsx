@@ -30,6 +30,8 @@ import { setupScannerListener } from "./WebSockets/Sockethandler"; // Import the
 import ScanPopup from "./WebSockets/ScanPopUp"; // Import the setup function
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import SocketManager from "./WebSockets/SocketManager"; // Import the SocketManager
+import { GuestCartProvider } from "./Components/HomePage/GuestCartContext";
 
 const Product = lazy(() => import("./Pages/Product"));
 
@@ -38,18 +40,13 @@ const Cart = lazy(() => import("./Pages/Cart"));
 // export const ProductsContext = createContext();
 function App() {
   const { user, isLoaded } = useUser(); // Get the current user
-  const [scannedProduct, setScannedProduct] = useState(null);
+  // const [scannedProduct, setScannedProduct] = useState(null);
 
-  // 👇 Setup global WebSocket listener
-  useEffect(() => {
-    setupScannerListener();
-  }, []);
-
-  useEffect(() => {
-    setupScannerListener((data) => {
-      setScannedProduct(data); // open popup with product
-    });
-  }, []);
+  // useEffect(() => {
+  //   setupScannerListener((data) => {
+  //     setScannedProduct(data); // open popup with product
+  //   });
+  // }, []);
   // If the user data is not loaded yet, you can show a loading spinner or something else
   if (!isLoaded) {
     return <div>Loading...</div>;
@@ -118,37 +115,40 @@ function App() {
   ]);
 
   return (
-    <CartProvider>
-      <TokenProvider>
-        <WishListProvider>
-          <WishProvider>
-            <QunatityProvider>
-              <ProductsProvider>
-                <Suspense fallback={<div>Loading...</div>}>
-                  <RouterProvider router={router} />
-                  <ToastContainer
-                    position="top-right"
-                    autoClose={4000}
-                    hideProgressBar={false}
-                    newestOnTop={false}
-                    closeOnClick
-                    rtl={false}
-                    pauseOnFocusLoss
-                    draggable
-                    pauseOnHover
-                    theme="light"
-                  />
-                  {/* <ScanPopup
-                    product={scannedProduct}
-                    onClose={() => setScannedProduct(null)}
-                  /> */}
-                </Suspense>
-              </ProductsProvider>
-            </QunatityProvider>
-          </WishProvider>
-        </WishListProvider>
-      </TokenProvider>
-    </CartProvider>
+    <GuestCartProvider>
+      <CartProvider>
+        <TokenProvider>
+          <WishListProvider>
+            <WishProvider>
+              <QunatityProvider>
+                <ProductsProvider>
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <RouterProvider router={router} />
+                    {/* <SocketManager />
+                    <ScanPopup
+                      product={scannedProduct}
+                      onClose={() => setScannedProduct(null)}
+                    /> */}
+                    <ToastContainer
+                      position="top-right"
+                      autoClose={4000}
+                      hideProgressBar={false}
+                      newestOnTop={false}
+                      closeOnClick
+                      rtl={false}
+                      pauseOnFocusLoss
+                      draggable
+                      pauseOnHover
+                      theme="light"
+                    />
+                  </Suspense>
+                </ProductsProvider>
+              </QunatityProvider>
+            </WishProvider>
+          </WishListProvider>
+        </TokenProvider>
+      </CartProvider>
+    </GuestCartProvider>
   );
 
   // <HomePage />;

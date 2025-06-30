@@ -7,7 +7,12 @@ import { useUser } from "@clerk/clerk-react";
 import { useState } from "react";
 import { CgSpinner } from "react-icons/cg";
 
-function FavBtn({ id, prod = false, prodCtegory }) {
+function FavBtn({
+  id,
+  prod = false,
+  prodCtegory,
+  commingFromScanPopUp = false,
+}) {
   const [isLoading, setIsLoading] = useState(false);
   const { wishQuan, handleAdd, handleDec } = useQuantityWish(id);
   const { totalWish } = useTotalWish();
@@ -51,8 +56,12 @@ function FavBtn({ id, prod = false, prodCtegory }) {
   return (
     <div
       className={` favoriteButton  absolute flex align-middle justify-center w-[50px] h-[50px] rounded-[50%] ${
-        !prod && !prodCtegory ? " top-[-44px] z-40" : " z-0"
-      } right-[-12px] top-[-16px] ${prodCtegory ? "top-[-16px] z-40" : "z-0"}`}
+        !prod && !prodCtegory && !commingFromScanPopUp
+          ? " top-[-44px] z-40"
+          : " z-0"
+      } right-[-12px] top-[-16px] ${prodCtegory ? "top-[-16px] z-40" : "z-0"} ${
+        commingFromScanPopUp ? "top-[-14px] z-40" : ""
+      }`}
     >
       <button
         aria-label="add-to-Cart"

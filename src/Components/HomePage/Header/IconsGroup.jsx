@@ -11,6 +11,7 @@ import { useUser } from "@clerk/clerk-react";
 import { useCartContext } from "../../Cart/CartContext";
 import { useWishListContext } from "../../WishList/WishlistContext";
 import { useDistinctProductCountFromLocalStorage } from "../useDistinctProductCountFromLocalStorage";
+import { useGuestCart } from "../GuestCartContext";
 
 function IconsGroup({ className, navigate }) {
   const localStorageCount = useDistinctProductCountFromLocalStorage();
@@ -18,6 +19,7 @@ function IconsGroup({ className, navigate }) {
   const { totalWish } = useTotalWish();
   const { cart, cartItems, count, cartQuantity } = useCartContext();
   const { countWish } = useWishListContext();
+  const { guestTotalCount } = useGuestCart();
 
   console.log("countWish", countWish);
 
@@ -47,7 +49,7 @@ function IconsGroup({ className, navigate }) {
 
   const totalCount = user
     ? count ?? 0 // use count from API if logged in
-    : localStorageCount; // use localStorage-based value if not
+    : guestTotalCount; // use localStorage-based value if not
   console.log("totalCount", totalCount);
 
   return (

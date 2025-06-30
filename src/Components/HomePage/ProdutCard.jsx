@@ -15,15 +15,22 @@ function ProductCard({
   prodCtegory = false,
   offers,
   comingFromSmScreensCategoryPage = false,
+  commingFromScanPopUp = false,
 }) {
   return (
     <>
       <div
         className={`card ${
           comingFromSmScreensCategoryPage ? "!w-[143px]" : "!w-[200px]"
-        } h-[399px] ${prodCtegory ? "relative" : ""}`}
+        } h-[399px] ${prodCtegory ? "relative" : ""} ${
+          commingFromScanPopUp ? "relative" : ""
+        }`}
       >
-        <FavBtn id={id} prodCtegory={prodCtegory} />
+        <FavBtn
+          id={id}
+          prodCtegory={prodCtegory}
+          commingFromScanPopUp={commingFromScanPopUp}
+        />
         {offers > 0 && <Offer offers={offers} prodCtegory={prodCtegory} />}
 
         <figure className="relative flex items-center justify-center">
