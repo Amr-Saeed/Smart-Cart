@@ -39,6 +39,7 @@ function ScanPopup({ product, onClose }) {
                 unit={product.unit}
                 description={product.description}
                 id={product.id}
+                onCardClick={onClose} // ✅ Add this line
               />
               <Price price={product.price} offers={product.offers} />
             </ProdutCard>

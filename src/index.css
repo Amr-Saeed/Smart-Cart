@@ -70,3 +70,6 @@ body.scanner-active {
   background: transparent !important;
   backdrop-filter: none !important;
 }
+.scanner-active {
+  visibility: hidden;
+}

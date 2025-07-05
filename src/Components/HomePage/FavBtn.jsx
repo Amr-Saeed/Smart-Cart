@@ -12,6 +12,7 @@ function FavBtn({
   prod = false,
   prodCtegory,
   commingFromScanPopUp = false,
+  onCardClick, // ✅ Add this
 }) {
   const [isLoading, setIsLoading] = useState(false);
   const { wishQuan, handleAdd, handleDec } = useQuantityWish(id);
@@ -74,9 +75,15 @@ function FavBtn({
         {isLoading ? (
           <CgSpinner className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-spin text-[blueviolet]" />
         ) : isLiked ? (
-          <HiOutlineHeart className="heart text-2xl  bxs-heart fill-[var(--main-color)]" />
+          <HiOutlineHeart
+            className="heart text-2xl  bxs-heart fill-[var(--main-color)]"
+            onClick={onCardClick}
+          />
         ) : (
-          <HiOutlineHeart className="text-2xl heart bx-heart" />
+          <HiOutlineHeart
+            className="text-2xl heart bx-heart"
+            onClick={onCardClick}
+          />
         )}
         {/* <i class="bx bxs-heart"></i> */}
       </button>

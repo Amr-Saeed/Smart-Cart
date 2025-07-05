@@ -1,4 +1,385 @@
+// // // src/pages/ControlPage.js
+// // import React, { useEffect, useState } from "react";
+// // import { useNavigate } from "react-router-dom";
+// // import { BluetoothLe } from "@capacitor-community/bluetooth-le";
+// // import { Capacitor } from "@capacitor/core";
+
+// // export default function ControlPage() {
+// //   const [connected, setConnected] = useState(false);
+// //   const [deviceId, setDeviceId] = useState(null);
+// //   const navigate = useNavigate();
+
+// //   useEffect(() => {
+// //     const connectToDevice = async () => {
+// //       const espName = localStorage.getItem("esp32-mac");
+
+// //       if (!espName) {
+// //         alert("No device name found. Please scan again.");
+// //         navigate("/connect");
+// //         return;
+// //       }
+
+// //       try {
+// //         const result = await BluetoothLe.requestDevice({
+// //           filters: [{ name: espName }],
+// //         });
+
+// //         await BluetoothLe.connect({ deviceId: result.deviceId });
+// //         setDeviceId(result.deviceId);
+// //         setConnected(true);
+// //         console.log("✅ Connected to", result.deviceId);
+// //       } catch (err) {
+// //         console.error("❌ Connection failed:", err);
+// //         alert("Failed to connect to ESP32.");
+// //         navigate("/connect");
+// //       }
+// //     };
+
+// //     if (Capacitor.getPlatform() !== "web") {
+// //       connectToDevice();
+// //     }
+// //   }, [navigate]);
+
+// //   const sendCommand = async (command) => {
+// //     if (!deviceId) {
+// //       alert("Not connected.");
+// //       return;
+// //     }
+
+// //     try {
+// //       const encoder = new TextEncoder();
+// //       const value = encoder.encode(command);
+
+// //       await BluetoothLe.write({
+// //         deviceId,
+// //         service: "your-service-uuid", // Replace this
+// //         characteristic: "your-characteristic-uuid", // Replace this
+// //         value: Buffer.from(value).toString("base64"),
+// //       });
+
+// //       console.log("Command sent:", command);
+// //     } catch (err) {
+// //       console.error("Send error:", err);
+// //       alert("Failed to send command.");
+// //     }
+// //   };
+
+// //   return (
+// //     <div style={{ padding: 20, color: "white" }}>
+// //       <h2 className="text-center text-[blueviolet] font-bold">
+// //         {connected ? "Connected ✅" : "Connecting..."}
+// //       </h2>
+
+// //       <div className="grid grid-cols-2 gap-4 mt-8">
+// //         <button onClick={() => sendCommand("F")} className="btn-control">
+// //           Forward
+// //         </button>
+// //         <button onClick={() => sendCommand("B")} className="btn-control">
+// //           Backward
+// //         </button>
+// //         <button onClick={() => sendCommand("L")} className="btn-control">
+// //           Left
+// //         </button>
+// //         <button onClick={() => sendCommand("R")} className="btn-control">
+// //           Right
+// //         </button>
+// //       </div>
+// //     </div>
+// //   );
+// // }
+
 // // src/pages/ControlPage.js
+// // import React, { useEffect, useState } from "react";
+// // import { useNavigate } from "react-router-dom";
+// // import { BluetoothLe } from "@capacitor-community/bluetooth-le";
+// // import { Capacitor } from "@capacitor/core";
+
+// // export default function ControlPage() {
+// //   const [connected, setConnected] = useState(false);
+// //   const [deviceId, setDeviceId] = useState(null);
+// //   const navigate = useNavigate();
+
+// //   const SERVICE_UUID = "6E400001-B5A3-F393-E0A9-E50E24DCCA9E";
+// //   const CHARACTERISTIC_UUID_RX = "6E400002-B5A3-F393-E0A9-E50E24DCCA9E";
+
+// //   // const espName = "SMARTCART-94B5552CBB4E"; // ✅ use const
+
+// //   useEffect(() => {
+// //     const connectToDevice = async () => {
+// //       try {
+// //         // const result = await BluetoothLe.requestDevice({
+// //         //   acceptAllDevices: true, // ✅ more compatible on Android 8
+// //         // });
+
+// //         console.log("Discovered Device:", result.name);
+
+// //         if (result.name !== espName) {
+// //           alert("ESP32 not found.");
+// //           navigate("/HomePage");
+// //           return;
+// //         }
+
+// //         await BluetoothLe.connect({ deviceId: "94:B5:55:2C:BB:4E" });
+// //         setDeviceId("94:B5:55:2C:BB:4E");
+// //         setConnected(true);
+// //         console.log("✅ Connected to", "94:B5:55:2C:BB:4E");
+// //       } catch (err) {
+// //         console.error("❌ Connection failed:", err);
+// //         alert("Failed to connect to ESP32.");
+// //         navigate("/HomePage");
+// //       }
+// //     };
+
+// //     if (Capacitor.getPlatform() !== "web") {
+// //       connectToDevice();
+// //     }
+// //   }, [navigate]);
+
+// //   const sendCommand = async (command) => {
+// //     if (!deviceId) {
+// //       alert("Not connected.");
+// //       return;
+// //     }
+
+// //     try {
+// //       const encoder = new TextEncoder();
+// //       const value = encoder.encode(command);
+
+// //       await BluetoothLe.write({
+// //         deviceId,
+// //         service: SERVICE_UUID,
+// //         characteristic: CHARACTERISTIC_UUID_RX,
+// //         value: Buffer.from(value).toString("base64"),
+// //       });
+
+// //       console.log("✅ Command sent:", command);
+// //     } catch (err) {
+// //       console.error("❌ Send error:", err);
+// //       alert("Failed to send command.");
+// //       navigate("/HomePage");
+// //     }
+// //   };
+
+// //   return (
+// //     <div style={{ padding: 20, color: "white" }}>
+// //       <h2 className="text-center text-[blueviolet] font-bold">
+// //         {connected ? "Connected ✅" : "Connecting..."}
+// //       </h2>
+
+// //       <div className="grid grid-cols-2 gap-4 mt-8">
+// //         <button onClick={() => sendCommand("F")} className="btn-control">
+// //           Forward
+// //         </button>
+// //         <button onClick={() => sendCommand("B")} className="btn-control">
+// //           Backward
+// //         </button>
+// //         <button onClick={() => sendCommand("L")} className="btn-control">
+// //           Left
+// //         </button>
+// //         <button onClick={() => sendCommand("R")} className="btn-control">
+// //           Right
+// //         </button>
+// //       </div>
+// //     </div>
+// //   );
+// // }
+
+// // import React, { useEffect, useState } from "react";
+// // import { useNavigate } from "react-router-dom";
+// // import { BluetoothLe } from "@capacitor-community/bluetooth-le";
+// // import { Capacitor } from "@capacitor/core";
+
+// // export default function ControlPage() {
+// //   const [connected, setConnected] = useState(false);
+// //   const [deviceId, setDeviceId] = useState(null);
+// //   const navigate = useNavigate();
+
+// //   const SERVICE_UUID = "6E400001-B5A3-F393-E0A9-E50E24DCCA9E";
+// //   const CHARACTERISTIC_UUID_RX = "6E400002-B5A3-F393-E0A9-E50E24DCCA9E";
+
+// //   const macAddress = "94:B5:55:2C:BB:4E";
+
+// //   useEffect(() => {
+// //     const setupBluetooth = async () => {
+// //       try {
+// //         await BluetoothLe.requestPermissions();
+// //         await BluetoothLe.requestPermissions({
+// //           permissions: ["location", "bluetooth", "bluetoothConnect"],
+// //         });
+
+// //         await BluetoothLe.initialize();
+// //         await BluetoothLe.connect({ deviceId: macAddress });
+// //         const permResult = await BluetoothLe.checkPermissions();
+// //         console.log("Permission check", permResult);
+
+// //         await BluetoothLe.connect({ deviceId: macAddress });
+// //         setDeviceId(macAddress);
+// //         setConnected(true);
+// //         console.log("✅ Connected to", macAddress);
+// //       } catch (err) {
+// //         console.error("❌ Connection failed:", err);
+// //         alert(
+// //           "Failed to connect to ESP32.\n\n" +
+// //             (err.message || JSON.stringify(err))
+// //         );
+// //         navigate("/HomePage");
+// //       }
+// //     };
+
+// //     if (Capacitor.getPlatform() !== "web") {
+// //       setupBluetooth();
+// //     }
+// //   }, [navigate]);
+
+// //   const sendCommand = async (command) => {
+// //     if (!deviceId) {
+// //       alert("Not connected.");
+// //       return;
+// //     }
+
+// //     try {
+// //       const encoder = new TextEncoder();
+// //       const value = encoder.encode(command);
+
+// //       await BluetoothLe.write({
+// //         deviceId,
+// //         service: SERVICE_UUID,
+// //         characteristic: CHARACTERISTIC_UUID_RX,
+// //         value: Buffer.from(value).toString("base64"),
+// //       });
+
+// //       console.log("✅ Command sent:", command);
+// //     } catch (err) {
+// //       console.error("❌ Send error:", err);
+// //       alert("Failed to send command.");
+// //       navigate("/HomePage");
+// //     }
+// //   };
+
+// //   return (
+// //     <div style={{ padding: 20, color: "white" }}>
+// //       <h2 className="text-center text-[blueviolet] font-bold">
+// //         {connected ? "Connected ✅" : "Connecting..."}
+// //       </h2>
+
+// //       <div className="grid grid-cols-2 gap-4 mt-8">
+// //         <button onClick={() => sendCommand("F")} className="btn-control">
+// //           Forward
+// //         </button>
+// //         <button onClick={() => sendCommand("B")} className="btn-control">
+// //           Backward
+// //         </button>
+// //         <button onClick={() => sendCommand("L")} className="btn-control">
+// //           Left
+// //         </button>
+// //         <button onClick={() => sendCommand("R")} className="btn-control">
+// //           Right
+// //         </button>
+// //       </div>
+// //     </div>
+// //   );
+// // }
+
+// // import React, { useEffect, useState } from "react";
+// // import { useNavigate } from "react-router-dom";
+// // import { BluetoothLe } from "@capacitor-community/bluetooth-le";
+// // import { Capacitor } from "@capacitor/core";
+
+// // export default function ControlPage() {
+// //   const [connected, setConnected] = useState(false);
+// //   const [deviceId, setDeviceId] = useState(null);
+// //   const navigate = useNavigate();
+
+// //   const SERVICE_UUID = "6E400001-B5A3-F393-E0A9-E50E24DCCA9E";
+// //   const CHARACTERISTIC_UUID_RX = "6E400002-B5A3-F393-E0A9-E50E24DCCA9E";
+
+// //   const macAddress = "94:B5:55:2C:BB:4E";
+
+// //   useEffect(() => {
+// //     const setupBluetooth = async () => {
+// //       try {
+// //         // Ask for permissions first
+// //         await BluetoothLe.requestPermissions({
+// //           permissions: ["location", "bluetooth", "bluetoothConnect"],
+// //         });
+
+// //         // Log current permission state
+// //         const permResult = await BluetoothLe.checkPermissions();
+// //         console.log("🔍 Permissions result:", permResult);
+
+// //         // Initialize BLE
+// //         await BluetoothLe.initialize();
+
+// //         // Connect to the ESP32
+// //         await BluetoothLe.connect({ deviceId: macAddress });
+
+// //         setDeviceId(macAddress);
+// //         setConnected(true);
+// //         console.log("✅ Connected to", macAddress);
+// //       } catch (err) {
+// //         console.error("❌ Connection failed:", err);
+// //         alert(
+// //           "Failed to connect to ESP32.\n\n" +
+// //             (err.message || JSON.stringify(err))
+// //         );
+// //         navigate("/HomePage");
+// //       }
+// //     };
+
+// //     if (Capacitor.getPlatform() !== "web") {
+// //       setupBluetooth();
+// //     }
+// //   }, [navigate]);
+
+// //   const sendCommand = async (command) => {
+// //     if (!deviceId) {
+// //       alert("Not connected.");
+// //       return;
+// //     }
+
+// //     try {
+// //       const encoder = new TextEncoder();
+// //       const value = encoder.encode(command);
+
+// //       await BluetoothLe.write({
+// //         deviceId,
+// //         service: SERVICE_UUID,
+// //         characteristic: CHARACTERISTIC_UUID_RX,
+// //         value: Buffer.from(value).toString("base64"),
+// //       });
+
+// //       console.log("✅ Command sent:", command);
+// //     } catch (err) {
+// //       console.error("❌ Send error:", err);
+// //       alert("Failed to send command.");
+// //       navigate("/HomePage");
+// //     }
+// //   };
+
+// //   return (
+// //     <div style={{ padding: 20, color: "white" }}>
+// //       <h2 className="text-center text-[blueviolet] font-bold">
+// //         {connected ? "Connected ✅" : "Connecting..."}
+// //       </h2>
+
+// //       <div className="grid grid-cols-2 gap-4 mt-8">
+// //         <button onClick={() => sendCommand("F")} className="btn-control">
+// //           Forward
+// //         </button>
+// //         <button onClick={() => sendCommand("B")} className="btn-control">
+// //           Backward
+// //         </button>
+// //         <button onClick={() => sendCommand("L")} className="btn-control">
+// //           Left
+// //         </button>
+// //         <button onClick={() => sendCommand("R")} className="btn-control">
+// //           Right
+// //         </button>
+// //       </div>
+// //     </div>
+// //   );
+// // }
+
 // import React, { useEffect, useState } from "react";
 // import { useNavigate } from "react-router-dom";
 // import { BluetoothLe } from "@capacitor-community/bluetooth-le";
@@ -6,138 +387,72 @@
 
 // export default function ControlPage() {
 //   const [connected, setConnected] = useState(false);
-//   const [deviceId, setDeviceId] = useState(null);
-//   const navigate = useNavigate();
-
-//   useEffect(() => {
-//     const connectToDevice = async () => {
-//       const espName = localStorage.getItem("esp32-mac");
-
-//       if (!espName) {
-//         alert("No device name found. Please scan again.");
-//         navigate("/connect");
-//         return;
-//       }
-
-//       try {
-//         const result = await BluetoothLe.requestDevice({
-//           filters: [{ name: espName }],
-//         });
-
-//         await BluetoothLe.connect({ deviceId: result.deviceId });
-//         setDeviceId(result.deviceId);
-//         setConnected(true);
-//         console.log("✅ Connected to", result.deviceId);
-//       } catch (err) {
-//         console.error("❌ Connection failed:", err);
-//         alert("Failed to connect to ESP32.");
-//         navigate("/connect");
-//       }
-//     };
-
-//     if (Capacitor.getPlatform() !== "web") {
-//       connectToDevice();
-//     }
-//   }, [navigate]);
-
-//   const sendCommand = async (command) => {
-//     if (!deviceId) {
-//       alert("Not connected.");
-//       return;
-//     }
-
-//     try {
-//       const encoder = new TextEncoder();
-//       const value = encoder.encode(command);
-
-//       await BluetoothLe.write({
-//         deviceId,
-//         service: "your-service-uuid", // Replace this
-//         characteristic: "your-characteristic-uuid", // Replace this
-//         value: Buffer.from(value).toString("base64"),
-//       });
-
-//       console.log("Command sent:", command);
-//     } catch (err) {
-//       console.error("Send error:", err);
-//       alert("Failed to send command.");
-//     }
-//   };
-
-//   return (
-//     <div style={{ padding: 20, color: "white" }}>
-//       <h2 className="text-center text-[blueviolet] font-bold">
-//         {connected ? "Connected ✅" : "Connecting..."}
-//       </h2>
-
-//       <div className="grid grid-cols-2 gap-4 mt-8">
-//         <button onClick={() => sendCommand("F")} className="btn-control">
-//           Forward
-//         </button>
-//         <button onClick={() => sendCommand("B")} className="btn-control">
-//           Backward
-//         </button>
-//         <button onClick={() => sendCommand("L")} className="btn-control">
-//           Left
-//         </button>
-//         <button onClick={() => sendCommand("R")} className="btn-control">
-//           Right
-//         </button>
-//       </div>
-//     </div>
-//   );
-// }
-
-// src/pages/ControlPage.js
-// import React, { useEffect, useState } from "react";
-// import { useNavigate } from "react-router-dom";
-// import { BluetoothLe } from "@capacitor-community/bluetooth-le";
-// import { Capacitor } from "@capacitor/core";
-
-// export default function ControlPage() {
-//   const [connected, setConnected] = useState(false);
-//   const [deviceId, setDeviceId] = useState(null);
 //   const navigate = useNavigate();
 
 //   const SERVICE_UUID = "6E400001-B5A3-F393-E0A9-E50E24DCCA9E";
 //   const CHARACTERISTIC_UUID_RX = "6E400002-B5A3-F393-E0A9-E50E24DCCA9E";
-
-//   // const espName = "SMARTCART-94B5552CBB4E"; // ✅ use const
+//   const macAddress = "94:B5:55:2C:BB:4E"; // Your ESP32 MAC Address
 
 //   useEffect(() => {
-//     const connectToDevice = async () => {
+//     const setupBluetooth = async () => {
 //       try {
-//         // const result = await BluetoothLe.requestDevice({
-//         //   acceptAllDevices: true, // ✅ more compatible on Android 8
-//         // });
-
-//         console.log("Discovered Device:", result.name);
-
-//         if (result.name !== espName) {
-//           alert("ESP32 not found.");
-//           navigate("/HomePage");
+//         const platform = Capacitor.getPlatform();
+//         if (platform !== "android") {
+//           alert("Bluetooth is only supported on Android.");
 //           return;
 //         }
 
-//         await BluetoothLe.connect({ deviceId: "94:B5:55:2C:BB:4E" });
-//         setDeviceId("94:B5:55:2C:BB:4E");
+//         // Request location permission first
+//         const locPerm = await BluetoothLe.checkPermission({
+//           permission: "location",
+//         });
+//         if (!locPerm) {
+//           const res = await BluetoothLe.requestPermission({
+//             permission: "location",
+//           });
+//           if (!res.result) throw new Error("Location permission denied");
+//         }
+
+//         // Request Bluetooth permissions
+//         const neededPerms = {
+//           permissions: ["bluetooth", "bluetoothScan", "bluetoothConnect"],
+//         };
+//         const permResult = await BluetoothLe.requestPermissions(neededPerms);
+
+//         if (
+//           !permResult.bluetooth ||
+//           !permResult.bluetoothScan ||
+//           !permResult.bluetoothConnect
+//         ) {
+//           throw new Error("Required Bluetooth permissions not granted");
+//         }
+
+//         // Initialize Bluetooth
+//         await BluetoothLe.initialize();
+
+//         // Connect to the device
+//         await BluetoothLe.connect({ deviceId: macAddress });
+
 //         setConnected(true);
-//         console.log("✅ Connected to", "94:B5:55:2C:BB:4E");
+//         console.log("✅ Connected to ESP32:", macAddress);
 //       } catch (err) {
-//         console.error("❌ Connection failed:", err);
-//         alert("Failed to connect to ESP32.");
+//         console.error(
+//           "❌ Connection failed:",
+//           err.message || JSON.stringify(err)
+//         );
+//         alert(
+//           "Failed to connect to ESP32:\n\n" + (err.message || "Unknown error")
+//         );
 //         navigate("/HomePage");
 //       }
 //     };
 
-//     if (Capacitor.getPlatform() !== "web") {
-//       connectToDevice();
-//     }
+//     setupBluetooth();
 //   }, [navigate]);
 
 //   const sendCommand = async (command) => {
-//     if (!deviceId) {
-//       alert("Not connected.");
+//     if (!connected) {
+//       alert("Not connected to a device.");
 //       return;
 //     }
 
@@ -146,7 +461,7 @@
 //       const value = encoder.encode(command);
 
 //       await BluetoothLe.write({
-//         deviceId,
+//         deviceId: macAddress,
 //         service: SERVICE_UUID,
 //         characteristic: CHARACTERISTIC_UUID_RX,
 //         value: Buffer.from(value).toString("base64"),
@@ -154,15 +469,25 @@
 
 //       console.log("✅ Command sent:", command);
 //     } catch (err) {
-//       console.error("❌ Send error:", err);
-//       alert("Failed to send command.");
+//       console.error(
+//         "❌ Failed to send command:",
+//         err.message || JSON.stringify(err)
+//       );
+//       alert("Error sending command. Please reconnect.");
 //       navigate("/HomePage");
 //     }
 //   };
 
 //   return (
-//     <div style={{ padding: 20, color: "white" }}>
-//       <h2 className="text-center text-[blueviolet] font-bold">
+//     <div
+//       style={{
+//         padding: 20,
+//         color: "white",
+//         backgroundColor: "#1e1e2f",
+//         minHeight: "100vh",
+//       }}
+//     >
+//       <h2 className="text-center text-[blueviolet] font-bold text-xl mb-4">
 //         {connected ? "Connected ✅" : "Connecting..."}
 //       </h2>
 
@@ -183,91 +508,3 @@
 //     </div>
 //   );
 // }
-
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { BluetoothLe } from "@capacitor-community/bluetooth-le";
-import { Capacitor } from "@capacitor/core";
-
-export default function ControlPage() {
-  const [connected, setConnected] = useState(false);
-  const [deviceId, setDeviceId] = useState(null);
-  const navigate = useNavigate();
-
-  const SERVICE_UUID = "6E400001-B5A3-F393-E0A9-E50E24DCCA9E";
-  const CHARACTERISTIC_UUID_RX = "6E400002-B5A3-F393-E0A9-E50E24DCCA9E";
-
-  const macAddress = "94:B5:55:2C:BB:4E";
-
-  useEffect(() => {
-    const setupBluetooth = async () => {
-      try {
-        await BluetoothLe.requestPermissions();
-
-        await BluetoothLe.connect({ deviceId: macAddress });
-        setDeviceId(macAddress);
-        setConnected(true);
-        console.log("✅ Connected to", macAddress);
-      } catch (err) {
-        console.error("❌ Connection failed:", err);
-        alert(
-          "Failed to connect to ESP32.\n\n" +
-            (err.message || JSON.stringify(err))
-        );
-        navigate("/HomePage");
-      }
-    };
-
-    if (Capacitor.getPlatform() !== "web") {
-      setupBluetooth();
-    }
-  }, [navigate]);
-
-  const sendCommand = async (command) => {
-    if (!deviceId) {
-      alert("Not connected.");
-      return;
-    }
-
-    try {
-      const encoder = new TextEncoder();
-      const value = encoder.encode(command);
-
-      await BluetoothLe.write({
-        deviceId,
-        service: SERVICE_UUID,
-        characteristic: CHARACTERISTIC_UUID_RX,
-        value: Buffer.from(value).toString("base64"),
-      });
-
-      console.log("✅ Command sent:", command);
-    } catch (err) {
-      console.error("❌ Send error:", err);
-      alert("Failed to send command.");
-      navigate("/HomePage");
-    }
-  };
-
-  return (
-    <div style={{ padding: 20, color: "white" }}>
-      <h2 className="text-center text-[blueviolet] font-bold">
-        {connected ? "Connected ✅" : "Connecting..."}
-      </h2>
-
-      <div className="grid grid-cols-2 gap-4 mt-8">
-        <button onClick={() => sendCommand("F")} className="btn-control">
-          Forward
-        </button>
-        <button onClick={() => sendCommand("B")} className="btn-control">
-          Backward
-        </button>
-        <button onClick={() => sendCommand("L")} className="btn-control">
-          Left
-        </button>
-        <button onClick={() => sendCommand("R")} className="btn-control">
-          Right
-        </button>
-      </div>
-    </div>
-  );
-}

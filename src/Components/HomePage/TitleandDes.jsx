@@ -6,6 +6,7 @@ function TitleandDes({
   description,
   id,
   comingFromSmScreensCategoryPage = false,
+  onCardClick, // ✅ Add this
 }) {
   return (
     <>
@@ -17,6 +18,7 @@ function TitleandDes({
         <Link
           className="card-title"
           to={`/product/${id}`}
+          onClick={onCardClick} // ✅ Add this line
         >{`${name} - Per ${unit}`}</Link>
       </span>
       <div className="description overflow-hidden ">

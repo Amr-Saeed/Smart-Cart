@@ -1,0 +1,1 @@
+import{r as s,j as e,S as o}from"./index-_dVvynX1.js";function a({relatedProducts:t}){return e.jsxs("section",{className:"relatedProducts containerr",children:[e.jsx("h2",{className:"main-title text-2xl font-bold text-center",children:"You May Also Like"}),e.jsx(o,{title:"You May Also Like",relatedProducts:t})]})}const i=s.memo(a);export{i as default};

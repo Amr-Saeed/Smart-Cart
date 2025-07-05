@@ -16,6 +16,7 @@ function ProductCard({
   offers,
   comingFromSmScreensCategoryPage = false,
   commingFromScanPopUp = false,
+  onCardClick, // ✅ Add this
 }) {
   return (
     <>
@@ -30,6 +31,7 @@ function ProductCard({
           id={id}
           prodCtegory={prodCtegory}
           commingFromScanPopUp={commingFromScanPopUp}
+          onCardClick={onCardClick} // ✅ Add this line
         />
         {offers > 0 && <Offer offers={offers} prodCtegory={prodCtegory} />}
 
