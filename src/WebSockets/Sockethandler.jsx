@@ -15,7 +15,9 @@
 //   });
 // }
 
-import socket from "./scannerSocket";
+// import socket from "./scannerSocket";
+import socket from "./ScannerSocket";
+
 import { toast } from "react-toastify";
 import axios from "axios";
 
