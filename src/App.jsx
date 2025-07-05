@@ -22,7 +22,7 @@ import Category from "./Pages/Category";
 import AppLayout from "./Components/AppLayout";
 import { TokenProvider } from "./Components/TokenContext";
 import { CartProvider } from "./Components/Cart/CartContext";
-import { WishListProvider } from "./Components/WishList/WishListContext";
+import { WishListProvider } from "./Components/WishList/WishlistContext";
 // import QRCode from "./Pages/QRCode";
 // import ControlPage from "./Pages/Control";
 import { useEffect, useState } from "react";
