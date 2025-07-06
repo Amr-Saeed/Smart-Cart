@@ -1043,28 +1043,130 @@
 //   );
 // }
 
-import React, { useEffect, useState } from "react";
+// import React, { useEffect, useState } from "react";
+// import { useNavigate } from "react-router-dom";
+// import { Html5Qrcode } from "html5-qrcode";
+
+// export default function QRCode() {
+//   const [scanner, setScanner] = useState(null);
+//   const [scanning, setScanning] = useState(false);
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     const qrScanner = new Html5Qrcode("qr-reader");
+//     setScanner(qrScanner);
+
+//     return () => {
+//       if (scanner?.isScanning) {
+//         scanner.stop().catch(() => {});
+//       }
+//       scanner?.clear().catch(() => {});
+//     };
+//     // eslint-disable-next-line
+//   }, []);
+
+//   const startScanning = async () => {
+//     try {
+//       const devices = await Html5Qrcode.getCameras();
+//       if (!devices || devices.length === 0) {
+//         alert("No camera found.");
+//         return;
+//       }
+
+//       const backCamera =
+//         devices.find(
+//           (d) =>
+//             d.label.toLowerCase().includes("back") ||
+//             d.label.toLowerCase().includes("rear") ||
+//             d.label.toLowerCase().includes("environment")
+//         ) ||
+//         devices[1] ||
+//         devices[0];
+
+//       setScanning(true);
+
+//       await scanner.start(
+//         { deviceId: { exact: backCamera.id } },
+//         {
+//           fps: 10,
+//           qrbox: { width: 250, height: 250 }, // 👈 QR box same as container
+//           aspectRatio: 1.0,
+//         },
+//         (decodedText) => {
+//           console.log("✅ QR Code:", decodedText);
+//           localStorage.setItem("esp32-mac", decodedText);
+//           scanner
+//             .stop()
+//             .then(() => {
+//               scanner.clear();
+//               setScanning(false);
+//               navigate("/control");
+//             })
+//             .catch(() => {});
+//         },
+//         (errorMessage) => {
+//           // Do nothing on minor scan failures
+//         }
+//       );
+//     } catch (err) {
+//       console.error("Camera access error:", err);
+//       alert("Could not access camera.");
+//     }
+//   };
+
+//   return (
+//     <div className="text-white !p-4  flex flex-col items-center justify-center">
+//       <h2 className="text-center text-[blueviolet] font-bold !mb-4 text-xl">
+//         Scan QR Code
+//       </h2>
+
+//       <div
+//         className="relative h-[250px] w-[250px] !mb-6 rounded-lg border-4 border-[var(--main-color)] overflow-hidden"
+//         style={{ position: "relative" }}
+//       >
+//         {!scanning && (
+//           <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-[blueviolet] text-center font-bold z-10">
+//             Camera View
+//           </p>
+//         )}
+//         <div
+//           id="qr-reader"
+//           className="w-full h-full absolute top-0 left-0"
+//           style={{ zIndex: 5 }}
+//         />
+//       </div>
+
+//       {!scanning && (
+//         <button
+//           onClick={startScanning}
+//           className="!p-3 !px-6 bg-[blueviolet] text-white font-bold rounded-lg"
+//         >
+//           Start Scanning
+//         </button>
+//       )}
+//     </div>
+//   );
+// }
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Html5Qrcode } from "html5-qrcode";
 
 export default function QRCode() {
-  const [scanner, setScanner] = useState(null);
+  const scannerRef = useRef(null);
   const [scanning, setScanning] = useState(false);
   const [inputValue, setInputValue] = useState("");
-
   const navigate = useNavigate();
 
   useEffect(() => {
-    const qrScanner = new Html5Qrcode("qr-reader");
-    setScanner(qrScanner);
+    scannerRef.current = new Html5Qrcode("qr-reader");
 
     return () => {
+      const scanner = scannerRef.current;
       if (scanner?.isScanning) {
         scanner.stop().catch(() => {});
       }
       scanner?.clear().catch(() => {});
     };
-    // eslint-disable-next-line
   }, []);
 
   const startScanning = async () => {
@@ -1076,45 +1178,44 @@ export default function QRCode() {
       }
 
       const backCamera =
-        devices.find(
-          (d) =>
-            d.label.toLowerCase().includes("back") ||
-            d.label.toLowerCase().includes("rear") ||
-            d.label.toLowerCase().includes("environment")
+        devices.find((d) =>
+          ["back", "rear", "environment"].some((kw) =>
+            d.label.toLowerCase().includes(kw)
+          )
         ) ||
         devices[1] ||
         devices[0];
 
       setScanning(true);
 
-      await scanner.start(
+      await scannerRef.current.start(
         { deviceId: { exact: backCamera.id } },
         {
           fps: 10,
-          qrbox: { width: 250, height: 250 }, // 👈 QR box same as container
+          qrbox: { width: 250, height: 250 },
           aspectRatio: 1.0,
         },
         (decodedText) => {
           console.log("✅ QR Code:", decodedText);
           localStorage.setItem("esp32-mac", decodedText);
-          scanner
+
+          scannerRef.current
             .stop()
             .then(() => {
-              scanner.clear();
+              scannerRef.current.clear();
               setScanning(false);
               navigate("/control");
             })
             .catch(() => {});
         },
-        (errorMessage) => {
-          // Do nothing on minor scan failures
-        }
+        (err) => {}
       );
     } catch (err) {
-      console.error("Camera access error:", err);
+      console.error("Camera error:", err);
       alert("Could not access camera.");
     }
   };
+
   const handleConnect = () => {
     if (!inputValue.trim()) {
       alert("Please enter a device name or MAC address.");
@@ -1124,13 +1225,13 @@ export default function QRCode() {
     localStorage.setItem("esp32-mac", inputValue.trim());
     navigate("/control");
   };
+
   return (
     <div className="text-white !p-4 flex flex-col items-center">
       <h2 className="text-center text-[blueviolet] font-bold !mb-4">
         Connect to ESP32
       </h2>
 
-      {/* Camera View */}
       <div className="relative h-[250px] w-[250px] !mb-6 rounded-lg border-4 border-[var(--main-color)] flex items-center justify-center">
         {!scanning && (
           <p className="absolute text-[blueviolet] font-bold text-center">
@@ -1142,7 +1243,7 @@ export default function QRCode() {
           style={{ width: scanning ? "100%" : "0", height: "100%" }}
         />
       </div>
-      {/* Input Field */}
+
       <input
         type="text"
         placeholder="Enter ESP32 Name or MAC"
@@ -1151,7 +1252,6 @@ export default function QRCode() {
         className="text-2xl font-bold text-[blueviolet] w-full max-w-md !p-2.5 !mb-4 outline-0 border-b-2 border-[blueviolet] bg-transparent caret-inherit"
       />
 
-      {/* Connect Button */}
       <button
         onClick={handleConnect}
         className="w-full max-w-md !p-3 !mb-3 bg-[blueviolet] text-white font-bold rounded-lg"
@@ -1159,10 +1259,9 @@ export default function QRCode() {
         Connect
       </button>
 
-      {/* Scan Button */}
       {!scanning && (
         <button
-          onClick={() => setScanning(true)}
+          onClick={startScanning}
           className="w-full max-w-md !p-3 bg-[blueviolet] text-white font-bold rounded-lg"
         >
           Start Scanning
