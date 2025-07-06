@@ -32,6 +32,8 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import SocketManager from "./WebSockets/SocketManager"; // Import the SocketManager
 import { GuestCartProvider } from "./Components/HomePage/GuestCartContext";
+import Loader from "./Components/Loader"; // Import the Loader component
+import Arrows from "./Pages/Arrows";
 
 const Product = lazy(() => import("./Pages/Product"));
 
@@ -49,7 +51,9 @@ function App() {
   // }, []);
   // If the user data is not loaded yet, you can show a loading spinner or something else
   if (!isLoaded) {
-    return <div>Loading...</div>;
+    return (
+      <Loader /> // You can replace this with your own loading component
+    );
   }
   console.log(user);
 
@@ -90,6 +94,10 @@ function App() {
           path: "/control",
           element: <ControlPage />,
         },
+        {
+          path: "/arrows",
+          element: <Arrows />,
+        },
       ],
     },
     {
@@ -122,7 +130,7 @@ function App() {
             <WishProvider>
               <QunatityProvider>
                 <ProductsProvider>
-                  <Suspense fallback={<div>Loading...</div>}>
+                  <Suspense fallback={<Loader />}>
                     <RouterProvider router={router} />
                     {/* <SocketManager />
                     <ScanPopup

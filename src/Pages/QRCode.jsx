@@ -1050,6 +1050,8 @@ import { Html5Qrcode } from "html5-qrcode";
 export default function QRCode() {
   const [scanner, setScanner] = useState(null);
   const [scanning, setScanning] = useState(false);
+  const [inputValue, setInputValue] = useState("");
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -1113,33 +1115,55 @@ export default function QRCode() {
       alert("Could not access camera.");
     }
   };
+  const handleConnect = () => {
+    if (!inputValue.trim()) {
+      alert("Please enter a device name or MAC address.");
+      return;
+    }
 
+    localStorage.setItem("esp32-mac", inputValue.trim());
+    navigate("/control");
+  };
   return (
-    <div className="text-white !p-4  flex flex-col items-center justify-center">
-      <h2 className="text-center text-[blueviolet] font-bold !mb-4 text-xl">
-        Scan QR Code
+    <div className="text-white !p-4 flex flex-col items-center">
+      <h2 className="text-center text-[blueviolet] font-bold !mb-4">
+        Connect to ESP32
       </h2>
 
-      <div
-        className="relative h-[250px] w-[250px] !mb-6 rounded-lg border-4 border-[var(--main-color)] overflow-hidden"
-        style={{ position: "relative" }}
-      >
+      {/* Camera View */}
+      <div className="relative h-[250px] w-[250px] !mb-6 rounded-lg border-4 border-[var(--main-color)] flex items-center justify-center">
         {!scanning && (
-          <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-[blueviolet] text-center font-bold z-10">
+          <p className="absolute text-[blueviolet] font-bold text-center">
             Camera View
           </p>
         )}
         <div
           id="qr-reader"
-          className="w-full h-full absolute top-0 left-0"
-          style={{ zIndex: 5 }}
+          style={{ width: scanning ? "100%" : "0", height: "100%" }}
         />
       </div>
+      {/* Input Field */}
+      <input
+        type="text"
+        placeholder="Enter ESP32 Name or MAC"
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        className="text-2xl font-bold text-[blueviolet] w-full max-w-md !p-2.5 !mb-4 outline-0 border-b-2 border-[blueviolet] bg-transparent caret-inherit"
+      />
 
+      {/* Connect Button */}
+      <button
+        onClick={handleConnect}
+        className="w-full max-w-md !p-3 !mb-3 bg-[blueviolet] text-white font-bold rounded-lg"
+      >
+        Connect
+      </button>
+
+      {/* Scan Button */}
       {!scanning && (
         <button
-          onClick={startScanning}
-          className="!p-3 !px-6 bg-[blueviolet] text-white font-bold rounded-lg"
+          onClick={() => setScanning(true)}
+          className="w-full max-w-md !p-3 bg-[blueviolet] text-white font-bold rounded-lg"
         >
           Start Scanning
         </button>

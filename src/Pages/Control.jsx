@@ -693,6 +693,12 @@
 // src/Pages/Control.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  FaArrowRight,
+  FaArrowLeft,
+  FaArrowUp,
+  FaArrowDown,
+} from "react-icons/fa";
 
 export default function ControlPage() {
   const [connected, setConnected] = useState(false);
@@ -772,18 +778,37 @@ export default function ControlPage() {
       )}
 
       {connected && (
-        <div className="grid grid-cols-2 gap-4 mt-8">
-          <button onClick={() => sendCommand("F")} className="btn-control">
-            Forward
+        <div className="h-screen w-screen flex flex-col items-center justify-center bg-black text-white gap-6 !p-6">
+          {/* Up Arrow */}
+          <button
+            onClick={() => sendCommand("F")}
+            className="w-64 h-24 flex items-center justify-center bg-[blueviolet] border border-gray-600 text-6xl hover:bg-[blueviolet]/90 transition-colors duration-300"
+          >
+            <FaArrowUp />
           </button>
-          <button onClick={() => sendCommand("B")} className="btn-control">
-            Backward
-          </button>
-          <button onClick={() => sendCommand("L")} className="btn-control">
-            Left
-          </button>
-          <button onClick={() => sendCommand("R")} className="btn-control">
-            Right
+
+          {/* Left and Right Arrows */}
+          <div className="flex justify-between w-64 gap-6">
+            <button
+              onClick={() => sendCommand("L")}
+              className="w-64 h-24 flex items-center justify-center bg-[blueviolet] border border-gray-600 text-6xl hover:bg-[blueviolet]/90 transition-colors duration-300"
+            >
+              <FaArrowLeft />
+            </button>
+            <button
+              onClick={() => sendCommand("R")}
+              className="w-64 h-24 flex items-center justify-center bg-[blueviolet] border border-gray-600 text-6xl hover:bg-[blueviolet]/90 transition-colors duration-300"
+            >
+              <FaArrowRight />
+            </button>
+          </div>
+
+          {/* Down Arrow */}
+          <button
+            onClick={() => sendCommand("B")}
+            className="w-64 h-24 flex items-center justify-center bg-[blueviolet] border border-gray-600 text-6xl hover:bg-[blueviolet]/90 transition-colors duration-300"
+          >
+            <FaArrowDown />
           </button>
         </div>
       )}
