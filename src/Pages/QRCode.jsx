@@ -1092,20 +1092,40 @@ export default function QRCode() {
           qrbox: { width: 250, height: 250 }, // 👈 QR box same as container
           aspectRatio: 1.0,
         },
-        (decodedText) => {
+        async (decodedText) => {
           console.log("✅ QR Code:", decodedText);
           localStorage.setItem("esp32-mac", decodedText);
-          scanner
-            .stop()
-            .then(() => {
-              scanner.clear();
-              setScanning(false);
-              navigate("/control");
-            })
-            .catch(() => {});
-        },
-        (errorMessage) => {
-          // Do nothing on minor scan failures
+
+          try {
+            const SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
+
+            const device = await navigator.bluetooth.requestDevice({
+              acceptAllDevices: true,
+              optionalServices: [SERVICE_UUID],
+            });
+
+            const server = await device.gatt.connect();
+
+            // Optionally, store or use service/characteristic here
+            const service = await server.getPrimaryService(SERVICE_UUID);
+            await service.getCharacteristic(
+              "6e400002-b5a3-f393-e0a9-e50e24dcca9e"
+            );
+
+            console.log("✅ Bluetooth connected:", device.name);
+
+            await scanner.stop();
+            await scanner.clear();
+            setScanning(false);
+
+            navigate("/control");
+          } catch (err) {
+            console.error("❌ Bluetooth connection failed:", err);
+            alert("Failed to connect to ESP32. Please try again.");
+            setScanning(false);
+            await scanner.stop().catch(() => {});
+            await scanner.clear().catch(() => {});
+          }
         }
       );
     } catch (err) {

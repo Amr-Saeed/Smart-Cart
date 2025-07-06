@@ -691,7 +691,7 @@
 // }
 
 // src/Pages/Control.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   FaArrowRight,
@@ -709,15 +709,13 @@ export default function ControlPage() {
   const SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
   const CHARACTERISTIC_UUID_RX = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
 
+  useEffect(() => {
+    connectToDevice();
+    // eslint-disable-next-line
+  }, []);
+
   const connectToDevice = async () => {
     try {
-      const mac = localStorage.getItem("esp32-mac") || "94:B5:55:2C:BB:4E";
-
-      //   const device = await navigator.bluetooth.requestDevice({
-      //     filters: [{ name: "SmartCart-ESP32" }],
-      //     optionalServices: [SERVICE_UUID],
-      //   });
-
       const device = await navigator.bluetooth.requestDevice({
         acceptAllDevices: true,
         optionalServices: [SERVICE_UUID],
@@ -765,20 +763,11 @@ export default function ControlPage() {
       }}
     >
       <h2 className="text-center text-[blueviolet] font-bold text-xl mb-4">
-        {connected ? "Connected ✅" : "Tap Connect to Start"}
+        {connected ? "Connected ✅" : "Connecting..."}
       </h2>
 
-      {!connected && (
-        <button
-          onClick={connectToDevice}
-          className="w-full p-3 bg-[blueviolet] text-white font-bold rounded-lg"
-        >
-          Connect to ESP32
-        </button>
-      )}
       {connected && (
         <div className="h-screen w-screen flex flex-col items-center justify-center bg-black text-white gap-6 !p-6">
-          {/* Up Arrow */}
           <button
             onMouseDown={() => sendCommand("F")}
             onTouchStart={() => sendCommand("F")}
@@ -789,7 +778,6 @@ export default function ControlPage() {
             <FaArrowUp />
           </button>
 
-          {/* Left and Right Arrows */}
           <div className="flex justify-between w-64 gap-6">
             <button
               onMouseDown={() => sendCommand("L")}
@@ -811,7 +799,6 @@ export default function ControlPage() {
             </button>
           </div>
 
-          {/* Down Arrow */}
           <button
             onMouseDown={() => sendCommand("B")}
             onTouchStart={() => sendCommand("B")}
