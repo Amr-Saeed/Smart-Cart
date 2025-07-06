@@ -983,58 +983,159 @@
 //   );
 // }
 // src/Pages/QRCode.jsx
+// import React, { useEffect, useState } from "react";
+// import { useNavigate } from "react-router-dom";
+// import { Html5QrcodeScanner } from "html5-qrcode";
+
+// export default function QRCode() {
+//   const [scanning, setScanning] = useState(false);
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     if (!scanning) return;
+
+//     const scanner = new Html5QrcodeScanner("qr-reader", {
+//       fps: 10,
+//       qrbox: 250,
+//     });
+
+//     scanner.render(
+//       (decodedText) => {
+//         console.log("✅ QR Code:", decodedText);
+//         localStorage.setItem("esp32-mac", decodedText);
+//         scanner.clear();
+//         setScanning(false);
+//         navigate("/control");
+//       },
+//       (error) => {
+//         console.warn("Scan error", error);
+//       }
+//     );
+
+//     return () => scanner.clear().catch(() => {});
+//   }, [scanning, navigate]);
+
+//   return (
+//     <div className="text-white p-4">
+//       <h2 className="text-center text-[blueviolet] font-bold mb-4">
+//         Scan QR Code
+//       </h2>
+
+//       <div className="h-[250px] w-[250px] mx-auto my-[20px] rounded-lg border-4 border-[var(--main-color)] flex items-center justify-center">
+//         {!scanning && (
+//           <p className="text-[blueviolet] text-center font-bold">Camera View</p>
+//         )}
+//         <div
+//           id="qr-reader"
+//           style={{ width: scanning ? "100%" : "0", height: "100%" }}
+//         />
+//       </div>
+
+//       {!scanning && (
+//         <button
+//           onClick={() => setScanning(true)}
+//           className="w-full p-3 bg-[blueviolet] text-white font-bold rounded-lg"
+//         >
+//           Start Scanning
+//         </button>
+//       )}
+//     </div>
+//   );
+// }
+
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Html5QrcodeScanner } from "html5-qrcode";
+import { Html5Qrcode } from "html5-qrcode";
 
 export default function QRCode() {
+  const [scanner, setScanner] = useState(null);
   const [scanning, setScanning] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!scanning) return;
+    const qrScanner = new Html5Qrcode("qr-reader");
+    setScanner(qrScanner);
 
-    const scanner = new Html5QrcodeScanner("qr-reader", {
-      fps: 10,
-      qrbox: 250,
-    });
-
-    scanner.render(
-      (decodedText) => {
-        console.log("✅ QR Code:", decodedText);
-        localStorage.setItem("esp32-mac", decodedText);
-        scanner.clear();
-        setScanning(false);
-        navigate("/control");
-      },
-      (error) => {
-        console.warn("Scan error", error);
+    return () => {
+      if (
+        qrScanner &&
+        qrScanner.getState() === Html5QrcodeScannerState.SCANNING
+      ) {
+        qrScanner.stop().catch(() => {});
       }
-    );
 
-    return () => scanner.clear().catch(() => {});
-  }, [scanning, navigate]);
+      qrScanner.clear().catch(() => {});
+    };
+  }, []);
+
+  const startScanning = async () => {
+    try {
+      const devices = await Html5Qrcode.getCameras();
+
+      if (devices && devices.length) {
+        const backCamera =
+          devices.find(
+            (device) =>
+              device.label.toLowerCase().includes("back") ||
+              device.label.toLowerCase().includes("rear") ||
+              device.id.includes("2")
+          ) || devices[0];
+
+        setScanning(true);
+
+        await scanner.start(
+          { deviceId: { exact: backCamera.id } },
+          {
+            fps: 10,
+            qrbox: 250,
+          },
+          (decodedText) => {
+            console.log("✅ QR Code:", decodedText);
+            localStorage.setItem("esp32-mac", decodedText);
+
+            scanner.stop().then(() => {
+              scanner.clear().then(() => {
+                setScanning(false);
+                navigate("/control");
+              });
+            });
+          },
+          (error) => {
+            console.warn("Scan error", error);
+          }
+        );
+      } else {
+        alert("No camera found on this device.");
+      }
+    } catch (err) {
+      console.error("Camera error:", err);
+      alert("Could not start camera. Please grant permission.");
+    }
+  };
 
   return (
-    <div className="text-white p-4">
-      <h2 className="text-center text-[blueviolet] font-bold mb-4">
+    <div className="text-white !p-4  flex flex-col items-center justify-center">
+      <h2 className="text-center text-[blueviolet] font-bold !mb-4 text-xl">
         Scan QR Code
       </h2>
 
-      <div className="h-[250px] w-[250px] mx-auto my-[20px] rounded-lg border-4 border-[var(--main-color)] flex items-center justify-center">
+      <div className="relative h-[250px] w-[250px] !mb-6 rounded-lg border-4 border-[var(--main-color)] flex items-center justify-center">
         {!scanning && (
-          <p className="text-[blueviolet] text-center font-bold">Camera View</p>
+          <p className="absolute text-[blueviolet] text-center font-bold">
+            Camera View
+          </p>
         )}
         <div
           id="qr-reader"
-          style={{ width: scanning ? "100%" : "0", height: "100%" }}
+          className="w-full h-full"
+          style={{ display: scanning ? "block" : "none" }}
         />
       </div>
 
       {!scanning && (
         <button
-          onClick={() => setScanning(true)}
-          className="w-full p-3 bg-[blueviolet] text-white font-bold rounded-lg"
+          onClick={startScanning}
+          className="!p-3 !px-6 bg-[blueviolet] text-white font-bold rounded-lg"
         >
           Start Scanning
         </button>
