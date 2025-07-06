@@ -1147,25 +1147,25 @@
 //     </div>
 //   );
 // }
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Html5Qrcode } from "html5-qrcode";
 
 export default function QRCode() {
-  const scannerRef = useRef(null);
+  const [scanner, setScanner] = useState(null);
   const [scanning, setScanning] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
-    scannerRef.current = new Html5Qrcode("qr-reader");
+    const qrScanner = new Html5Qrcode("qr-reader");
+    setScanner(qrScanner);
 
     return () => {
-      const scanner = scannerRef.current;
-      if (scanner?.isScanning) {
-        scanner.stop().catch(() => {});
+      if (qrScanner?.isScanning) {
+        qrScanner.stop().catch(() => {});
       }
-      scanner?.clear().catch(() => {});
+      qrScanner.clear().catch(() => {});
     };
   }, []);
 
@@ -1178,17 +1178,18 @@ export default function QRCode() {
       }
 
       const backCamera =
-        devices.find((d) =>
-          ["back", "rear", "environment"].some((kw) =>
-            d.label.toLowerCase().includes(kw)
-          )
+        devices.find(
+          (d) =>
+            d.label.toLowerCase().includes("back") ||
+            d.label.toLowerCase().includes("rear") ||
+            d.label.toLowerCase().includes("environment")
         ) ||
         devices[1] ||
         devices[0];
 
       setScanning(true);
 
-      await scannerRef.current.start(
+      await scanner.start(
         { deviceId: { exact: backCamera.id } },
         {
           fps: 10,
@@ -1198,27 +1199,28 @@ export default function QRCode() {
         (decodedText) => {
           console.log("✅ QR Code:", decodedText);
           localStorage.setItem("esp32-mac", decodedText);
-
-          scannerRef.current
+          scanner
             .stop()
             .then(() => {
-              scannerRef.current.clear();
+              scanner.clear();
               setScanning(false);
               navigate("/control");
             })
             .catch(() => {});
         },
-        (err) => {}
+        (errorMessage) => {
+          // Silent fail
+        }
       );
     } catch (err) {
-      console.error("Camera error:", err);
+      console.error("Camera access error:", err);
       alert("Could not access camera.");
     }
   };
 
   const handleConnect = () => {
     if (!inputValue.trim()) {
-      alert("Please enter a device name or MAC address.");
+      alert("Please enter a MAC address or device name.");
       return;
     }
 
@@ -1227,31 +1229,38 @@ export default function QRCode() {
   };
 
   return (
-    <div className="text-white !p-4 flex flex-col items-center">
-      <h2 className="text-center text-[blueviolet] font-bold !mb-4">
+    <div className="text-white !p-4 flex flex-col items-center justify-center">
+      <h2 className="text-center text-[blueviolet] font-bold !mb-4 text-xl">
         Connect to ESP32
       </h2>
 
-      <div className="relative h-[250px] w-[250px] !mb-6 rounded-lg border-4 border-[var(--main-color)] flex items-center justify-center">
+      {/* QR Scanner Box */}
+      <div
+        className="relative h-[250px] w-[250px] !mb-6 rounded-lg border-4 border-[var(--main-color)] overflow-hidden"
+        style={{ position: "relative" }}
+      >
         {!scanning && (
-          <p className="absolute text-[blueviolet] font-bold text-center">
+          <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-[blueviolet] text-center font-bold z-10">
             Camera View
           </p>
         )}
         <div
           id="qr-reader"
-          style={{ width: scanning ? "100%" : "0", height: "100%" }}
+          className="w-full h-full absolute top-0 left-0"
+          style={{ zIndex: 5 }}
         />
       </div>
 
+      {/* Manual MAC Input */}
       <input
         type="text"
-        placeholder="Enter ESP32 Name or MAC"
+        placeholder="Enter ESP32 MAC address"
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
         className="text-2xl font-bold text-[blueviolet] w-full max-w-md !p-2.5 !mb-4 outline-0 border-b-2 border-[blueviolet] bg-transparent caret-inherit"
       />
 
+      {/* Connect Button */}
       <button
         onClick={handleConnect}
         className="w-full max-w-md !p-3 !mb-3 bg-[blueviolet] text-white font-bold rounded-lg"
@@ -1259,6 +1268,7 @@ export default function QRCode() {
         Connect
       </button>
 
+      {/* Start QR Scan Button */}
       {!scanning && (
         <button
           onClick={startScanning}

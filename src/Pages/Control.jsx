@@ -776,12 +776,14 @@ export default function ControlPage() {
           Connect to ESP32
         </button>
       )}
-
       {connected && (
         <div className="h-screen w-screen flex flex-col items-center justify-center bg-black text-white gap-6 !p-6">
           {/* Up Arrow */}
           <button
-            onClick={() => sendCommand("F")}
+            onMouseDown={() => sendCommand("F")}
+            onTouchStart={() => sendCommand("F")}
+            onMouseUp={() => sendCommand("S")}
+            onTouchEnd={() => sendCommand("S")}
             className="w-64 h-24 flex items-center justify-center bg-[blueviolet] border border-gray-600 text-6xl hover:bg-[blueviolet]/90 transition-colors duration-300"
           >
             <FaArrowUp />
@@ -790,13 +792,19 @@ export default function ControlPage() {
           {/* Left and Right Arrows */}
           <div className="flex justify-between w-64 gap-6">
             <button
-              onClick={() => sendCommand("L")}
+              onMouseDown={() => sendCommand("L")}
+              onTouchStart={() => sendCommand("L")}
+              onMouseUp={() => sendCommand("S")}
+              onTouchEnd={() => sendCommand("S")}
               className="w-64 h-24 flex items-center justify-center bg-[blueviolet] border border-gray-600 text-6xl hover:bg-[blueviolet]/90 transition-colors duration-300"
             >
               <FaArrowLeft />
             </button>
             <button
-              onClick={() => sendCommand("R")}
+              onMouseDown={() => sendCommand("R")}
+              onTouchStart={() => sendCommand("R")}
+              onMouseUp={() => sendCommand("S")}
+              onTouchEnd={() => sendCommand("S")}
               className="w-64 h-24 flex items-center justify-center bg-[blueviolet] border border-gray-600 text-6xl hover:bg-[blueviolet]/90 transition-colors duration-300"
             >
               <FaArrowRight />
@@ -805,7 +813,10 @@ export default function ControlPage() {
 
           {/* Down Arrow */}
           <button
-            onClick={() => sendCommand("B")}
+            onMouseDown={() => sendCommand("B")}
+            onTouchStart={() => sendCommand("B")}
+            onMouseUp={() => sendCommand("S")}
+            onTouchEnd={() => sendCommand("S")}
             className="w-64 h-24 flex items-center justify-center bg-[blueviolet] border border-gray-600 text-6xl hover:bg-[blueviolet]/90 transition-colors duration-300"
           >
             <FaArrowDown />
