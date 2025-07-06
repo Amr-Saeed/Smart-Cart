@@ -707,8 +707,13 @@ export default function ControlPage() {
     try {
       const mac = localStorage.getItem("esp32-mac") || "94:B5:55:2C:BB:4E";
 
+      //   const device = await navigator.bluetooth.requestDevice({
+      //     filters: [{ name: "SmartCart-ESP32" }],
+      //     optionalServices: [SERVICE_UUID],
+      //   });
+
       const device = await navigator.bluetooth.requestDevice({
-        filters: [{ name: mac }],
+        acceptAllDevices: true,
         optionalServices: [SERVICE_UUID],
       });
 
