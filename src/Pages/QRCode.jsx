@@ -812,15 +812,233 @@
 // //**************************************************** */
 
 // export default QRCode;
+// import React, { useEffect, useState } from "react";
+// import { useNavigate } from "react-router-dom";
+
+// function QRCode() {
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     navigate("/control");
+//   }, []);
+
+//   return <div></div>;
+// }
+
+// ✅ ConnectPage.jsx using PWA-compatible QR scanner and Web Bluetooth
+// import React, { useEffect, useState } from "react";
+// import { useNavigate } from "react-router-dom";
+// import { Html5QrcodeScanner } from "html5-qrcode";
+
+// export default function ConnectPage() {
+//   const [inputValue, setInputValue] = useState("");
+//   const [scanning, setScanning] = useState(false);
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     if (!scanning) return;
+
+//     const scanner = new Html5QrcodeScanner("qr-reader", {
+//       fps: 10,
+//       qrbox: 250,
+//     });
+
+//     scanner.render(
+//       (decodedText) => {
+//         setInputValue(decodedText);
+//         localStorage.setItem("esp32-mac", decodedText);
+//         scanner.clear();
+//         setScanning(false);
+//         navigate("/control");
+//       },
+//       (error) => console.warn("Scan error", error)
+//     );
+
+//     return () => scanner.clear();
+//   }, [scanning, navigate]);
+
+//   const handleConnect = async () => {
+//     try {
+//       const device = await navigator.bluetooth.requestDevice({
+//         filters: [{ name: inputValue }],
+//         optionalServices: ["6e400001-b5a3-f393-e0a9-e50e24dcca9e"],
+//       });
+
+//       const server = await device.gatt.connect();
+//       localStorage.setItem("ble-device-id", device.id);
+//       alert("Connected to: " + device.name);
+//       navigate("/control");
+//     } catch (err) {
+//       console.error("Connection error:", err);
+//       alert("Failed to connect to device.");
+//     }
+//   };
+
+//   return (
+//     <div
+//       style={{
+//         padding: "20px",
+//         backgroundColor: "transparent",
+//         color: "white",
+//       }}
+//     >
+//       <h2 className="text-center text-[blueviolet] font-bold">
+//         Connect to ESP32
+//       </h2>
+
+//       <div className="h-[250px] w-[250px] !mx-auto !my-[20px] rounded-lg border-4 border-[var(--main-color)] flex items-center justify-center">
+//         {!scanning && (
+//           <p className="text-[blueviolet] text-center font-bold">Camera View</p>
+//         )}
+//         <div
+//           id="qr-reader"
+//           style={{ width: scanning ? "100%" : "0", height: "100%" }}
+//         ></div>
+//       </div>
+
+//       <input
+//         type="text"
+//         placeholder="Enter BLE MAC Address"
+//         value={inputValue}
+//         onChange={(e) => setInputValue(e.target.value)}
+//         className="text-2xl font-bold text-[blueviolet] w-full !p-2.5 !m-2.5 outline-0 border-b-[1px] border-[blueviolet] caret-inherit"
+//       />
+
+//       <button
+//         onClick={handleConnect}
+//         className="w-full !p-3 !mb-2.5 bg-[blueviolet] text-white font-bold rounded-lg"
+//       >
+//         Connect
+//       </button>
+
+//       {!scanning && (
+//         <button
+//           onClick={() => setScanning(true)}
+//           className="w-full !p-3 bg-[blueviolet] text-white font-bold rounded-lg"
+//         >
+//           Scan
+//         </button>
+//       )}
+//     </div>
+//   );
+// }
+
+// import React, { useEffect, useState } from "react";
+// import { useNavigate } from "react-router-dom";
+// import { Html5QrcodeScanner } from "html5-qrcode";
+
+// export default function QRCode() {
+//   const [scanning, setScanning] = useState(false);
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     if (!scanning) return;
+
+//     const scanner = new Html5QrcodeScanner("qr-reader", {
+//       fps: 10,
+//       qrbox: 250,
+//     });
+
+//     scanner.render(
+//       (decodedText) => {
+//         console.log("✅ QR Code:", decodedText);
+//         localStorage.setItem("esp32-mac", decodedText);
+//         scanner.clear();
+//         setScanning(false);
+//         navigate("/control"); // ⬅️ Navigate only after scan
+//       },
+//       (error) => {
+//         console.warn("Scan error", error);
+//       }
+//     );
+
+//     return () => scanner.clear().catch(() => {});
+//   }, [scanning, navigate]);
+
+//   return (
+//     <div className="text-white p-4">
+//       <h2 className="text-center text-[blueviolet] font-bold mb-4">
+//         Scan QR Code
+//       </h2>
+
+//       <div className="h-[250px] w-[250px] mx-auto my-[20px] rounded-lg border-4 border-[var(--main-color)] flex items-center justify-center">
+//         {!scanning && (
+//           <p className="text-[blueviolet] text-center font-bold">Camera View</p>
+//         )}
+//         <div
+//           id="qr-reader"
+//           style={{ width: scanning ? "100%" : "0", height: "100%" }}
+//         />
+//       </div>
+
+//       {!scanning && (
+//         <button
+//           onClick={() => setScanning(true)}
+//           className="w-full p-3 bg-[blueviolet] text-white font-bold rounded-lg"
+//         >
+//           Start Scanning
+//         </button>
+//       )}
+//     </div>
+//   );
+// }
+// src/Pages/QRCode.jsx
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Html5QrcodeScanner } from "html5-qrcode";
 
-function QRCode() {
+export default function QRCode() {
+  const [scanning, setScanning] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    navigate("/control");
-  }, []);
+    if (!scanning) return;
 
-  return <div></div>;
+    const scanner = new Html5QrcodeScanner("qr-reader", {
+      fps: 10,
+      qrbox: 250,
+    });
+
+    scanner.render(
+      (decodedText) => {
+        console.log("✅ QR Code:", decodedText);
+        localStorage.setItem("esp32-mac", decodedText);
+        scanner.clear();
+        setScanning(false);
+        navigate("/control");
+      },
+      (error) => {
+        console.warn("Scan error", error);
+      }
+    );
+
+    return () => scanner.clear().catch(() => {});
+  }, [scanning, navigate]);
+
+  return (
+    <div className="text-white p-4">
+      <h2 className="text-center text-[blueviolet] font-bold mb-4">
+        Scan QR Code
+      </h2>
+
+      <div className="h-[250px] w-[250px] mx-auto my-[20px] rounded-lg border-4 border-[var(--main-color)] flex items-center justify-center">
+        {!scanning && (
+          <p className="text-[blueviolet] text-center font-bold">Camera View</p>
+        )}
+        <div
+          id="qr-reader"
+          style={{ width: scanning ? "100%" : "0", height: "100%" }}
+        />
+      </div>
+
+      {!scanning && (
+        <button
+          onClick={() => setScanning(true)}
+          className="w-full p-3 bg-[blueviolet] text-white font-bold rounded-lg"
+        >
+          Start Scanning
+        </button>
+      )}
+    </div>
+  );
 }

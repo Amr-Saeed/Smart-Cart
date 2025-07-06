@@ -508,3 +508,280 @@
 //     </div>
 //   );
 // }
+
+// ✅ ControlPage.jsx using Web Bluetooth API
+// import React, { useEffect, useState } from "react";
+// import { useNavigate } from "react-router-dom";
+
+// export default function ControlPage() {
+//   const [connected, setConnected] = useState(false);
+//   const [device, setDevice] = useState(null);
+//   const [characteristic, setCharacteristic] = useState(null);
+//   const navigate = useNavigate();
+
+//   const SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
+//   const CHARACTERISTIC_UUID_RX = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
+
+//   useEffect(() => {
+//     const connectToDevice = async () => {
+//       try {
+//         const mac = localStorage.getItem("esp32-mac") || "";
+
+//         const device = await navigator.bluetooth.requestDevice({
+//           filters: [{ name: mac }],
+//           optionalServices: [SERVICE_UUID],
+//         });
+
+//         const server = await device.gatt.connect();
+//         const service = await server.getPrimaryService(SERVICE_UUID);
+//         const char = await service.getCharacteristic(CHARACTERISTIC_UUID_RX);
+
+//         setDevice(device);
+//         setCharacteristic(char);
+//         setConnected(true);
+//         console.log("✅ Connected to ESP32:", device.name);
+//       } catch (err) {
+//         console.error("❌ Connection failed:", err);
+//         alert(
+//           "Failed to connect to ESP32: " + (err.message || "Unknown error")
+//         );
+//         navigate("/HomePage");
+//       }
+//     };
+
+//     connectToDevice();
+//   }, [navigate]);
+
+//   const sendCommand = async (command) => {
+//     if (!connected || !characteristic) {
+//       alert("Not connected to a device.");
+//       return;
+//     }
+
+//     try {
+//       const encoder = new TextEncoder();
+//       await characteristic.writeValue(encoder.encode(command));
+//       console.log("✅ Command sent:", command);
+//     } catch (err) {
+//       console.error("❌ Failed to send command:", err);
+//       alert("Error sending command. Please reconnect.");
+//       navigate("/HomePage");
+//     }
+//   };
+
+//   return (
+//     <div
+//       style={{
+//         padding: 20,
+//         color: "white",
+//         backgroundColor: "#1e1e2f",
+//         minHeight: "100vh",
+//       }}
+//     >
+//       <h2 className="text-center text-[blueviolet] font-bold text-xl mb-4">
+//         {connected ? "Connected ✅" : "Connecting..."}
+//       </h2>
+
+//       <div className="grid grid-cols-2 gap-4 mt-8">
+//         <button onClick={() => sendCommand("F")} className="btn-control">
+//           Forward
+//         </button>
+//         <button onClick={() => sendCommand("B")} className="btn-control">
+//           Backward
+//         </button>
+//         <button onClick={() => sendCommand("L")} className="btn-control">
+//           Left
+//         </button>
+//         <button onClick={() => sendCommand("R")} className="btn-control">
+//           Right
+//         </button>
+//       </div>
+//     </div>
+//   );
+// }
+
+// import React, { useEffect, useState } from "react";
+// import { useNavigate } from "react-router-dom";
+
+// export default function ControlPage() {
+//   const [connected, setConnected] = useState(false);
+//   const [device, setDevice] = useState(null);
+//   const [characteristic, setCharacteristic] = useState(null);
+//   const navigate = useNavigate();
+
+//   const SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
+//   const CHARACTERISTIC_UUID_RX = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
+
+//   useEffect(() => {
+//     const connectToDevice = async () => {
+//       try {
+//         const mac = localStorage.getItem("esp32-mac") || "94:B5:55:2C:BB:4E";
+
+//         const device = await navigator.bluetooth.requestDevice({
+//           filters: [{ name: mac }],
+//           optionalServices: [SERVICE_UUID],
+//         });
+
+//         const server = await device.gatt.connect();
+//         const service = await server.getPrimaryService(SERVICE_UUID);
+//         const char = await service.getCharacteristic(CHARACTERISTIC_UUID_RX);
+
+//         setDevice(device);
+//         setCharacteristic(char);
+//         setConnected(true);
+//         console.log("✅ Connected to ESP32:", device.name);
+//       } catch (err) {
+//         console.error("❌ Connection failed:", err);
+//         alert(
+//           "Failed to connect to ESP32: " + (err.message || "Unknown error")
+//         );
+//         navigate("/HomePage");
+//       }
+//     };
+
+//     connectToDevice();
+//   }, [navigate]);
+
+//   const sendCommand = async (command) => {
+//     if (!connected || !characteristic) {
+//       alert("Not connected to a device.");
+//       return;
+//     }
+
+//     try {
+//       const encoder = new TextEncoder();
+//       await characteristic.writeValue(encoder.encode(command));
+//       console.log("✅ Command sent:", command);
+//     } catch (err) {
+//       console.error("❌ Failed to send command:", err);
+//       alert("Error sending command. Please reconnect.");
+//       navigate("/HomePage");
+//     }
+//   };
+
+//   return (
+//     <div
+//       style={{
+//         padding: 20,
+//         color: "white",
+//         backgroundColor: "#1e1e2f",
+//         minHeight: "100vh",
+//       }}
+//     >
+//       <h2 className="text-center text-[blueviolet] font-bold text-xl mb-4">
+//         {connected ? "Connected ✅" : "Connecting..."}
+//       </h2>
+
+//       <div className="grid grid-cols-2 gap-4 mt-8">
+//         <button onClick={() => sendCommand("F")} className="btn-control">
+//           Forward
+//         </button>
+//         <button onClick={() => sendCommand("B")} className="btn-control">
+//           Backward
+//         </button>
+//         <button onClick={() => sendCommand("L")} className="btn-control">
+//           Left
+//         </button>
+//         <button onClick={() => sendCommand("R")} className="btn-control">
+//           Right
+//         </button>
+//       </div>
+//     </div>
+//   );
+// }
+
+// src/Pages/Control.jsx
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+export default function ControlPage() {
+  const [connected, setConnected] = useState(false);
+  const [device, setDevice] = useState(null);
+  const [characteristic, setCharacteristic] = useState(null);
+  const navigate = useNavigate();
+
+  const SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
+  const CHARACTERISTIC_UUID_RX = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
+
+  const connectToDevice = async () => {
+    try {
+      const mac = localStorage.getItem("esp32-mac") || "94:B5:55:2C:BB:4E";
+
+      const device = await navigator.bluetooth.requestDevice({
+        filters: [{ name: mac }],
+        optionalServices: [SERVICE_UUID],
+      });
+
+      const server = await device.gatt.connect();
+      const service = await server.getPrimaryService(SERVICE_UUID);
+      const char = await service.getCharacteristic(CHARACTERISTIC_UUID_RX);
+
+      setDevice(device);
+      setCharacteristic(char);
+      setConnected(true);
+      console.log("✅ Connected to ESP32:", device.name);
+    } catch (err) {
+      console.error("❌ Connection failed:", err);
+      alert("Failed to connect to ESP32: " + (err.message || "Unknown error"));
+      navigate("/HomePage");
+    }
+  };
+
+  const sendCommand = async (command) => {
+    if (!connected || !characteristic) {
+      alert("Not connected to a device.");
+      return;
+    }
+
+    try {
+      const encoder = new TextEncoder();
+      await characteristic.writeValue(encoder.encode(command));
+      console.log("✅ Command sent:", command);
+    } catch (err) {
+      console.error("❌ Failed to send command:", err);
+      alert("Error sending command. Please reconnect.");
+      navigate("/HomePage");
+    }
+  };
+
+  return (
+    <div
+      style={{
+        padding: 20,
+        color: "white",
+        backgroundColor: "#1e1e2f",
+        minHeight: "100vh",
+      }}
+    >
+      <h2 className="text-center text-[blueviolet] font-bold text-xl mb-4">
+        {connected ? "Connected ✅" : "Tap Connect to Start"}
+      </h2>
+
+      {!connected && (
+        <button
+          onClick={connectToDevice}
+          className="w-full p-3 bg-[blueviolet] text-white font-bold rounded-lg"
+        >
+          Connect to ESP32
+        </button>
+      )}
+
+      {connected && (
+        <div className="grid grid-cols-2 gap-4 mt-8">
+          <button onClick={() => sendCommand("F")} className="btn-control">
+            Forward
+          </button>
+          <button onClick={() => sendCommand("B")} className="btn-control">
+            Backward
+          </button>
+          <button onClick={() => sendCommand("L")} className="btn-control">
+            Left
+          </button>
+          <button onClick={() => sendCommand("R")} className="btn-control">
+            Right
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
