@@ -1057,58 +1057,56 @@ export default function QRCode() {
     setScanner(qrScanner);
 
     return () => {
-      if (
-        qrScanner &&
-        qrScanner.getState() === Html5QrcodeScannerState.SCANNING
-      ) {
-        qrScanner.stop().catch(() => {});
+      if (scanner?.isScanning) {
+        scanner.stop().catch(() => {});
       }
-
-      qrScanner.clear().catch(() => {});
+      scanner?.clear().catch(() => {});
     };
+    // eslint-disable-next-line
   }, []);
 
   const startScanning = async () => {
     try {
       const devices = await Html5Qrcode.getCameras();
 
-      if (devices && devices.length) {
-        const backCamera =
-          devices.find(
-            (device) =>
-              device.label.toLowerCase().includes("back") ||
-              device.label.toLowerCase().includes("rear") ||
-              device.id.includes("2")
-          ) || devices[0];
-
-        setScanning(true);
-
-        await scanner.start(
-          { deviceId: { exact: backCamera.id } },
-          {
-            fps: 10,
-            qrbox: 250,
-          },
-          (decodedText) => {
-            console.log("✅ QR Code:", decodedText);
-            localStorage.setItem("esp32-mac", decodedText);
-
-            scanner.stop().then(() => {
-              scanner.clear().then(() => {
-                setScanning(false);
-                navigate("/control");
-              });
-            });
-          },
-          (error) => {
-            console.warn("Scan error", error);
-          }
-        );
-      } else {
-        alert("No camera found on this device.");
+      if (!devices || devices.length === 0) {
+        alert("No cameras found.");
+        return;
       }
+
+      // Try to find a back/rear camera based on label or facing mode
+      const backCamera =
+        devices.find(
+          (d) =>
+            d.label.toLowerCase().includes("back") ||
+            d.label.toLowerCase().includes("rear") ||
+            d.label.toLowerCase().includes("environment")
+        ) ||
+        devices[1] ||
+        devices[0];
+
+      setScanning(true);
+
+      await scanner.start(
+        { deviceId: { exact: backCamera.id } },
+        { fps: 10, qrbox: 250 },
+        (decodedText) => {
+          console.log("✅ QR Code:", decodedText);
+          localStorage.setItem("esp32-mac", decodedText);
+
+          scanner
+            .stop()
+            .then(() => {
+              scanner.clear();
+              setScanning(false);
+              navigate("/control");
+            })
+            .catch(() => {});
+        },
+        (error) => console.warn("Scan error", error)
+      );
     } catch (err) {
-      console.error("Camera error:", err);
+      console.error("Camera access error:", err);
       alert("Could not start camera. Please grant permission.");
     }
   };
