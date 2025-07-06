@@ -1,27 +1,19 @@
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import {
   Breadcrumb,
-  BreadcrumbEllipsis,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
-  BreadcrumbPage,
   BreadcrumbSeparator,
 } from "../ui/breadcrumb";
 import { memo } from "react";
-// import {
-//   DropdownMenu,
-//   DropdownMenuContent,
-//   DropdownMenuItem,
-//   DropdownMenuTrigger,
-// } from "../ui/dropdown-menu";
 
-function BreadcrumbDemo() {
-  const { category } = useParams();
+function BreadCrumbCart() {
   const location = useLocation();
 
-  const isCategory = location.pathname === `/${category}`;
-  console.log("categosssssssssssry", category);
+  // Optional: Guard to render only on /cart route
+  if (location.pathname !== "/cart") return null;
+
   return (
     <Breadcrumb>
       <BreadcrumbList>
@@ -35,8 +27,8 @@ function BreadcrumbDemo() {
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
-          <BreadcrumbLink className="cursor-pointer text-[blueviolet]">
-            {category}
+          <BreadcrumbLink className="text-[blueviolet] font-semibold cursor-default">
+            Cart
           </BreadcrumbLink>
         </BreadcrumbItem>
       </BreadcrumbList>
@@ -44,4 +36,4 @@ function BreadcrumbDemo() {
   );
 }
 
-export default memo(BreadcrumbDemo); // Use memo to prevent unnecessary re-renders BreadcrumbDemo;
+export default memo(BreadCrumbCart);

@@ -1,10 +1,13 @@
-import { memo } from "react";
+import { memo, useState } from "react";
 import { OutOfStock } from "./OutOfStock";
 import { Quantity } from "./Quantity";
 import "./styles.css";
 import { CardActions } from "./CardActions";
 import FavBtn from "./FavBtn";
 import { Offer } from "./Offer";
+import { GoArrowUpRight } from "react-icons/go";
+import GoToPopup from "./GoToPopUp";
+import socket from "../../WebSockets/ScannerSocket"; // ✅ Import socket
 
 function ProductCard({
   productImg,
@@ -18,6 +21,8 @@ function ProductCard({
   commingFromScanPopUp = false,
   onCardClick, // ✅ Add this
 }) {
+  const [showGoToPopup, setShowGoToPopup] = useState(false);
+
   return (
     <>
       <div
@@ -35,10 +40,16 @@ function ProductCard({
         />
         {offers > 0 && <Offer offers={offers} prodCtegory={prodCtegory} />}
 
-        <figure className="relative flex items-center justify-center">
-          {stockAvailability === false && <OutOfStock />}
-          <img loading="lazy" src={productImg} alt={name} />
-        </figure>
+        <div>
+          <figure className="relative flex items-center justify-center">
+            {stockAvailability === 0 && <OutOfStock />}
+            <img loading="lazy" src="/logo.webp" alt={name} />
+            <GoArrowUpRight
+              onClick={() => setShowGoToPopup(true)}
+              className="absolute animate-bounce bottom-0 right-0 text-2xl text-white cursor-pointer transition-all  hover:scale-110"
+            />
+          </figure>
+        </div>
         <div
           className={`card-content ${
             comingFromSmScreensCategoryPage ? "h-[190px]" : "h-[180px]"
@@ -54,6 +65,9 @@ function ProductCard({
           />
         </CardActions>
       </div>
+      {showGoToPopup && (
+        <GoToPopup onClose={() => setShowGoToPopup(false)} name={name} />
+      )}
     </>
   );
 }

@@ -7,6 +7,7 @@ import WishListProducts from "../Components/WishList/WishListProducts";
 import { useTotalWish } from "../Components/HomePage/TotalWishQuantity";
 import { useWishListContext } from "../Components/WishList/WishlistContext";
 import useQuantityWish from "../Components/HomePage/useQuantityWish";
+import BreadCrumbWish from "../Components/WishList/BreadCrumbWish";
 function WishList() {
   const { products } = useProductsContext();
   // const [wishListProducts, setWishListProducts] = useState([]);
@@ -23,14 +24,19 @@ function WishList() {
   return (
     <>
       <LowCategories />
-      {wishListItems.length > 0 ? (
-        <WishListProducts
-        // wishListProducts={wishListProducts}
-        // handleDeleteWish={handleDeleteWish}
-        />
-      ) : (
-        <WishListEmpty />
-      )}{" "}
+      <div>
+        <div className="containerr flex flex-col lg:flex-row gap-[40px] w-full h-full">
+          <BreadCrumbWish />
+        </div>{" "}
+        {wishListItems.length > 0 ? (
+          <WishListProducts
+          // wishListProducts={wishListProducts}
+          // handleDeleteWish={handleDeleteWish}
+          />
+        ) : (
+          <WishListEmpty />
+        )}{" "}
+      </div>
     </>
   );
 }

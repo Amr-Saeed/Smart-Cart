@@ -13,6 +13,7 @@ import { useUser } from "@clerk/clerk-react";
 import { useCartContext } from "../Components/Cart/CartContext";
 import { useAuth } from "@clerk/clerk-react";
 import axios from "axios";
+import BreadCrumbCart from "../Components/Cart/BreadCrumbCart";
 
 function Cart() {
   const { products } = useProductsContext();
@@ -91,13 +92,16 @@ function Cart() {
       <LowCategories />
       {cartProducts.length > 0 ? (
         <div className="containerr flex flex-col lg:flex-row gap-[40px] w-full h-full">
-          <CartProducts cartProducts={cartProducts}>
-            <ListofCartProducts
-              key={cartProducts.id}
-              cartProducts={cartProducts}
-              handleDelete={handleDelete}
-            />
-          </CartProducts>
+          <div className="w-full lg:w-[80%]">
+            <BreadCrumbCart />
+            <CartProducts cartProducts={cartProducts}>
+              <ListofCartProducts
+                key={cartProducts.id}
+                cartProducts={cartProducts}
+                handleDelete={handleDelete}
+              />
+            </CartProducts>
+          </div>
           <CartCheckout
             cartProducts={cartProducts}
             APIToialPrice={APIToialPrice}

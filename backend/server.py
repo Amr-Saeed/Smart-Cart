@@ -3,7 +3,8 @@ import uvicorn
 import asyncio
 import threading
 import tkinter as tk
-
+import base64
+import os
 # Create the Socket.IO server
 sio = socketio.AsyncServer(cors_allowed_origins='*', async_mode='asgi')
 app = socketio.ASGIApp(sio)
@@ -24,6 +25,18 @@ async def disconnect(sid):
 @sio.event
 async def product_location(sid, data):
     print(f"Product Location is: {data}")
+    
+    # Read the route.jpg file
+    image_path = os.path.join(os.path.dirname(__file__), "route.jpg")
+    
+    if os.path.exists(image_path):
+        with open(image_path, "rb") as image_file:
+            encoded_image = base64.b64encode(image_file.read()).decode("utf-8")
+        
+        await sio.emit("route-image", {"imageData": encoded_image}, to=sid)
+    else:
+        print("❌ route.jpg not found.")
+
 
 def send_barcode():
     global loop
@@ -51,6 +64,7 @@ def start_gui():
 
 def start_server():
     uvicorn.run(app, host="0.0.0.0", port=3000)
+
 
 if __name__ == "__main__":
     # Set the loop correctly before running server

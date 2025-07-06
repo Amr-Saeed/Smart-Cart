@@ -13,6 +13,7 @@ import { useAuth } from "@clerk/clerk-react";
 import axios from "axios";
 import { SignIn, useUser, SignUp } from "@clerk/clerk-react";
 import { useToken } from "../TokenContext";
+import ImgDropZone from "./ImgDropZone";
 
 function DashHome({
   product,
@@ -256,7 +257,7 @@ function DashHome({
   console.log("productToEdit", productToEdit);
 
   return (
-    <div className="bg-[#f9faf7] basis-[80%]">
+    <div className="bg-[#f9faf7] basis-[100%]">
       <SearchDashBoard
         products={products}
         searchedDashProducts={searchedDashProducts}
@@ -268,7 +269,7 @@ function DashHome({
         <h1 className="!mb-[10px] text-[blueviolet]  font-bold text-[2rem] !m-[auto] w-[90%]">
           Products
         </h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-[100px] gap-x-[5px] h-[400px] md:h-[750px] lg:h-[500px] grid-rows-[350px] overflow-y-scroll w-[90%] !mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-[100px] gap-x-[145px] lg:gap-x-[5px] h-[400px] md:h-[750px] lg:h-[500px] grid-rows-[350px] overflow-y-scroll w-full place-items-center">
           {searchDashQuery.length > 0 && searchedDashProducts.length === 0 ? (
             <p className="col-span-4 bg-[blueviolet] flex items-center justify-center text-white font-bold text-[1.3rem]">
               No results found
@@ -294,30 +295,48 @@ function DashHome({
           title={"Edit Product"}
         >
           <form onSubmit={handlEditeSubmit}>
-            {inputFields.map((input) => (
-              <div className="!mb-[10px] flex flex-col" key={input.id}>
-                <label
-                  htmlFor={input.id}
-                  className="text-[#0000009c] font-bold"
-                >
-                  {input.label}
-                </label>
-                <InputField
-                  input={input}
-                  value={productToEdit[input.name] || ""}
-                  onChange={handleEditChange}
-                />
-              </div>
-            ))}
+            {/* 🆕 Dropzone for uploading the product image (match Add Product layout) */}
+            <div className="!mb-[10px] flex flex-col">
+              <label className="text-[#0000009c] font-bold">Upload Image</label>
+              <ImgDropZone
+                onFileAccepted={(file) =>
+                  setProductToEdit((prev) => ({ ...prev, imageUrl: file }))
+                }
+              />
+            </div>
+
+            {/* 🧾 Input fields layout (same as Add Product) */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {inputFields.map((input) => (
+                <div className="!mb-[10px] flex flex-col" key={input.id}>
+                  <label
+                    htmlFor={input.id}
+                    className="text-[#0000009c] font-bold"
+                  >
+                    {input.label}
+                  </label>
+                  <InputField
+                    input={input}
+                    value={productToEdit[input.name] || ""}
+                    onChange={handleEditChange}
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* 🏷️ Category select menu */}
             <SelectMenu
               products={products}
               value={selectedCategory || ""}
               onValueChange={handleCategoryChange}
             />
+
+            {/* 🔘 Action buttons */}
             <div className="flex gap-2 !mt-[20px]">
               <button
                 className="w-[50%] justify-center inline-flex items-center gap-2 rounded-md bg-gray-700 !py-1.5 !px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[focus]:outline-1 data-[focus]:outline-white data-[open]:bg-gray-700"
                 onClick={handleCancel}
+                type="button"
               >
                 Cancel
               </button>

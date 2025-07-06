@@ -11,6 +11,7 @@ import ImgDropZone from "./ImgDropZone";
 import { useEffect } from "react";
 import { useToken } from "../TokenContext";
 import axios from "axios";
+import { motion } from "framer-motion";
 
 function DashSideBar({
   product,
@@ -23,6 +24,8 @@ function DashSideBar({
 }) {
   const [activeTab, setActiveTab] = useState("Home");
   const [isOpen, setIsOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   // const { getToken } = useAuth();
   const { token } = useToken(); // Assuming you're using a custom hook to get the token
   // Update selectedCategory whenever productToEdit changes
@@ -138,16 +141,22 @@ function DashSideBar({
   }
 
   return (
-    <div className="bg-[#ededed] flex flex-col  basis-[20%] place-items-center ">
+    <motion.div
+      onMouseEnter={() => setSidebarOpen(true)}
+      onMouseLeave={() => setSidebarOpen(false)}
+      animate={{ width: sidebarOpen ? 220 : 70 }}
+      transition={{ duration: 0.3 }}
+      className="bg-[#ededed] flex flex-col overflow-hidden place-items-center"
+    >
       <Logo
         src="/logo.webp"
         alt="Smart-Cart"
-        className="w-24 h-24   logoLG hidden lg:flex   !mb-[30px]"
+        className="w-[58px] h-[58px]   logoLG hidden lg:flex   !mb-[30px]"
       />
       <Logo
         src="/logo.webp"
         alt="Smart-Cart"
-        className="md:w-24 md:h-24 lg:hidden  logo left-[12px] md:left-0 relative   !mb-[30px]"
+        className="w-[58px] h-[58px] lg:hidden  logo   relative   !mb-[30px]"
       />
       <div
         className={`Home transition-all duration-500 cursor-pointer ${
@@ -156,7 +165,18 @@ function DashSideBar({
         onClick={() => handleTabClick("Home")}
       >
         <FaHome />
-        <span>Home</span>
+        <motion.span
+          initial={false}
+          animate={{
+            opacity: sidebarOpen ? 1 : 0,
+            x: sidebarOpen ? 0 : -10,
+            display: sidebarOpen ? "inline-block" : "none",
+          }}
+          transition={{ duration: 0.2 }}
+          className="text-[blueviolet] text-[1.4rem] whitespace-nowrap"
+        >
+          Home
+        </motion.span>
       </div>
       <div
         className={`addProduct transition-all duration-500 cursor-pointer ${
@@ -165,7 +185,18 @@ function DashSideBar({
         onClick={openModal}
       >
         <IoIosAddCircle />
-        <span>Add Product</span>
+        <motion.span
+          initial={false}
+          animate={{
+            opacity: sidebarOpen ? 1 : 0,
+            x: sidebarOpen ? 0 : -10,
+            display: sidebarOpen ? "inline-block" : "none",
+          }}
+          transition={{ duration: 0.2 }}
+          className="text-[blueviolet] text-[1.4rem] whitespace-nowrap"
+        >
+          Add Product
+        </motion.span>
       </div>
       {/* Add Product Modal */}
       <Modal isOpen={isOpen} close={CloseAddModal} title={"Add Product"}>
@@ -213,7 +244,7 @@ function DashSideBar({
         </form>
       </Modal>
       {/* Add Product Modal */}
-    </div>
+    </motion.div>
   );
 }
 
