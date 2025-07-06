@@ -1068,13 +1068,11 @@ export default function QRCode() {
   const startScanning = async () => {
     try {
       const devices = await Html5Qrcode.getCameras();
-
       if (!devices || devices.length === 0) {
-        alert("No cameras found.");
+        alert("No camera found.");
         return;
       }
 
-      // Try to find a back/rear camera based on label or facing mode
       const backCamera =
         devices.find(
           (d) =>
@@ -1089,11 +1087,14 @@ export default function QRCode() {
 
       await scanner.start(
         { deviceId: { exact: backCamera.id } },
-        { fps: 10, qrbox: 250 },
+        {
+          fps: 10,
+          qrbox: { width: 250, height: 250 }, // 👈 QR box same as container
+          aspectRatio: 1.0,
+        },
         (decodedText) => {
           console.log("✅ QR Code:", decodedText);
           localStorage.setItem("esp32-mac", decodedText);
-
           scanner
             .stop()
             .then(() => {
@@ -1103,11 +1104,13 @@ export default function QRCode() {
             })
             .catch(() => {});
         },
-        (error) => console.warn("Scan error", error)
+        (errorMessage) => {
+          // Do nothing on minor scan failures
+        }
       );
     } catch (err) {
       console.error("Camera access error:", err);
-      alert("Could not start camera. Please grant permission.");
+      alert("Could not access camera.");
     }
   };
 
@@ -1117,16 +1120,19 @@ export default function QRCode() {
         Scan QR Code
       </h2>
 
-      <div className="relative h-[250px] w-[250px] !mb-6 rounded-lg border-4 border-[var(--main-color)] flex items-center justify-center">
+      <div
+        className="relative h-[250px] w-[250px] !mb-6 rounded-lg border-4 border-[var(--main-color)] overflow-hidden"
+        style={{ position: "relative" }}
+      >
         {!scanning && (
-          <p className="absolute text-[blueviolet] text-center font-bold">
+          <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-[blueviolet] text-center font-bold z-10">
             Camera View
           </p>
         )}
         <div
           id="qr-reader"
-          className="w-full h-full"
-          style={{ display: scanning ? "block" : "none" }}
+          className="w-full h-full absolute top-0 left-0"
+          style={{ zIndex: 5 }}
         />
       </div>
 
