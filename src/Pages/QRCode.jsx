@@ -1043,6 +1043,143 @@
 //   );
 // }
 
+// import React, { useEffect, useState } from "react";
+// import { useNavigate } from "react-router-dom";
+// import { Html5Qrcode } from "html5-qrcode";
+
+// export default function QRCode() {
+//   const [scanner, setScanner] = useState(null);
+//   const [scanning, setScanning] = useState(false);
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     const qrScanner = new Html5Qrcode("qr-reader");
+//     setScanner(qrScanner);
+
+//     return () => {
+//       if (scanner?.isScanning) {
+//         scanner.stop().catch(() => {});
+//       }
+//       scanner?.clear().catch(() => {});
+//     };
+//     // eslint-disable-next-line
+//   }, []);
+
+//   const startScanning = async () => {
+//     try {
+//       const devices = await Html5Qrcode.getCameras();
+//       if (!devices || devices.length === 0) {
+//         alert("No camera found.");
+//         return;
+//       }
+
+//       const backCamera =
+//         devices.find(
+//           (d) =>
+//             d.label.toLowerCase().includes("back") ||
+//             d.label.toLowerCase().includes("rear") ||
+//             d.label.toLowerCase().includes("environment")
+//         ) ||
+//         devices[1] ||
+//         devices[0];
+
+//       setScanning(true);
+
+//       await scanner.start(
+//         { deviceId: { exact: backCamera.id } },
+//         {
+//           fps: 10,
+//           qrbox: { width: 250, height: 250 }, // 👈 QR box same as container
+//           aspectRatio: 1.0,
+//         },
+//         async (decodedText) => {
+//           console.log("✅ QR Code:", decodedText);
+//           localStorage.setItem("esp32-mac", decodedText);
+
+//           try {
+//             const SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
+
+//             const device = await navigator.bluetooth.requestDevice({
+//               acceptAllDevices: true,
+//               optionalServices: [SERVICE_UUID],
+//             });
+
+//             const server = await device.gatt.connect();
+
+//             // Optionally, store or use service/characteristic here
+//             const service = await server.getPrimaryService(SERVICE_UUID);
+//             await service.getCharacteristic(
+//               "6e400002-b5a3-f393-e0a9-e50e24dcca9e"
+//             );
+
+//             console.log("✅ Bluetooth connected:", device.name);
+
+//             await scanner.stop();
+//             await scanner.clear();
+//             setScanning(false);
+
+//             navigate("/control");
+//           } catch (err) {
+//             console.error("❌ Bluetooth connection failed:", err);
+//             alert("Failed to connect to ESP32. Please try again.");
+//             setScanning(false);
+//             await scanner.stop().catch(() => {});
+//             await scanner.clear().catch(() => {});
+//           }
+//         }
+//       );
+//     } catch (err) {
+//       console.error("Camera access error:", err);
+//       alert("Could not access camera.");
+//     }
+//   };
+
+//   return (
+//     <div className="text-white !p-4  flex flex-col items-center justify-center">
+//       <h2 className="text-center text-[blueviolet] font-bold !mb-4 text-xl">
+//         Scan QR Code
+//       </h2>
+
+//       <div
+//         className="relative h-[250px] w-[250px] !mb-6 rounded-lg border-4 border-[var(--main-color)] overflow-hidden"
+//         style={{ position: "relative" }}
+//       >
+//         {!scanning && (
+//           <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-[blueviolet] text-center font-bold z-10">
+//             Camera View
+//           </p>
+//         )}
+//         <div
+//           id="qr-reader"
+//           className="w-full h-full absolute top-0 left-0"
+//           style={{ zIndex: 5 }}
+//         />
+//       </div>
+
+//       {/* ✅ Added Input Field */}
+//       <input
+//         type="text"
+//         placeholder="Enter MAC address"
+//         className="text-2xl font-bold text-[blueviolet] w-full max-w-md !p-2.5 !mb-4 outline-0 border-b-2 border-[blueviolet] bg-transparent caret-inherit"
+//       />
+
+//       {/* ✅ Added Button (No Functionality Yet) */}
+//       <button className="w-full max-w-md !p-3 !mb-3 bg-[blueviolet] text-white font-bold rounded-lg">
+//         Connect
+//       </button>
+
+//       {!scanning && (
+//         <button
+//           onClick={startScanning}
+//           className="w-full max-w-md !p-3 !mb-3 bg-[blueviolet] text-white font-bold rounded-lg"
+//         >
+//           Start Scanning
+//         </button>
+//       )}
+//     </div>
+//   );
+// }
+
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Html5Qrcode } from "html5-qrcode";
@@ -1050,6 +1187,7 @@ import { Html5Qrcode } from "html5-qrcode";
 export default function QRCode() {
   const [scanner, setScanner] = useState(null);
   const [scanning, setScanning] = useState(false);
+  const [manualMac, setManualMac] = useState(""); // ✅ Track input value
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -1089,7 +1227,7 @@ export default function QRCode() {
         { deviceId: { exact: backCamera.id } },
         {
           fps: 10,
-          qrbox: { width: 250, height: 250 }, // 👈 QR box same as container
+          qrbox: { width: 250, height: 250 },
           aspectRatio: 1.0,
         },
         async (decodedText) => {
@@ -1098,15 +1236,11 @@ export default function QRCode() {
 
           try {
             const SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
-
             const device = await navigator.bluetooth.requestDevice({
-              acceptAllDevices: true,
-              optionalServices: [SERVICE_UUID],
+              filters: [{ services: [SERVICE_UUID] }],
             });
 
             const server = await device.gatt.connect();
-
-            // Optionally, store or use service/characteristic here
             const service = await server.getPrimaryService(SERVICE_UUID);
             await service.getCharacteristic(
               "6e400002-b5a3-f393-e0a9-e50e24dcca9e"
@@ -1134,8 +1268,36 @@ export default function QRCode() {
     }
   };
 
+  // ✅ Manual connect function
+  const handleManualConnect = async () => {
+    if (!manualMac.trim()) {
+      alert("Please enter a MAC address.");
+      return;
+    }
+
+    try {
+      localStorage.setItem("esp32-mac", manualMac);
+      const SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
+
+      const device = await navigator.bluetooth.requestDevice({
+        acceptAllDevices: true,
+        optionalServices: [SERVICE_UUID],
+      });
+
+      const server = await device.gatt.connect();
+      const service = await server.getPrimaryService(SERVICE_UUID);
+      await service.getCharacteristic("6e400002-b5a3-f393-e0a9-e50e24dcca9e");
+
+      console.log("✅ Bluetooth connected manually:", device.name);
+      navigate("/control");
+    } catch (err) {
+      console.error("❌ Manual Bluetooth connection failed:", err);
+      alert("Failed to connect to ESP32. Please try again.");
+    }
+  };
+
   return (
-    <div className="text-white !p-4  flex flex-col items-center justify-center">
+    <div className="text-white !p-4 flex flex-col items-center justify-center">
       <h2 className="text-center text-[blueviolet] font-bold !mb-4 text-xl">
         Scan QR Code
       </h2>
@@ -1156,15 +1318,19 @@ export default function QRCode() {
         />
       </div>
 
-      {/* ✅ Added Input Field */}
+      {/* ✅ Input field and button */}
       <input
         type="text"
+        value={manualMac}
+        onChange={(e) => setManualMac(e.target.value)}
         placeholder="Enter MAC address"
         className="text-2xl font-bold text-[blueviolet] w-full max-w-md !p-2.5 !mb-4 outline-0 border-b-2 border-[blueviolet] bg-transparent caret-inherit"
       />
 
-      {/* ✅ Added Button (No Functionality Yet) */}
-      <button className="w-full max-w-md !p-3 !mb-3 bg-[blueviolet] text-white font-bold rounded-lg">
+      <button
+        onClick={handleManualConnect}
+        className="w-full max-w-md !p-3 !mb-3 bg-[blueviolet] text-white font-bold rounded-lg"
+      >
         Connect
       </button>
 
