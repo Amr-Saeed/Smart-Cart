@@ -699,57 +699,48 @@ import {
   FaArrowUp,
   FaArrowDown,
 } from "react-icons/fa";
+import { bluetoothManager } from "../BluetoothManager";
 
 export default function ControlPage() {
   const [connected, setConnected] = useState(false);
-  const [device, setDevice] = useState(null);
-  const [characteristic, setCharacteristic] = useState(null);
+  // const [device, setDevice] = useState(null);
+  // const [characteristic, setCharacteristic] = useState(null);
   const navigate = useNavigate();
 
-  const SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
-  const CHARACTERISTIC_UUID_RX = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
+  // const SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
+  // const CHARACTERISTIC_UUID_RX = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
 
   useEffect(() => {
-    connectToDevice();
-    // eslint-disable-next-line
-  }, []);
+    const device = bluetoothManager.device;
+    const char = bluetoothManager.characteristic;
 
-  const connectToDevice = async () => {
-    try {
-      const device = await navigator.bluetooth.requestDevice({
-        acceptAllDevices: true,
-        optionalServices: [SERVICE_UUID],
-      });
-
-      const server = await device.gatt.connect();
-      const service = await server.getPrimaryService(SERVICE_UUID);
-      const char = await service.getCharacteristic(CHARACTERISTIC_UUID_RX);
-
-      setDevice(device);
-      setCharacteristic(char);
+    if (device && char && device.gatt.connected) {
       setConnected(true);
-      console.log("✅ Connected to ESP32:", device.name);
-    } catch (err) {
-      console.error("❌ Connection failed:", err);
-      alert("Failed to connect to ESP32: " + (err.message || "Unknown error"));
-      navigate("/HomePage");
+      console.log("✅ Already connected to:", device.name);
+    } else {
+      console.warn("❌ No connection found. Redirecting...");
+      alert("Not connected. Please scan QR code first.");
+      navigate("/scan");
     }
-  };
+  }, [navigate]);
 
   const sendCommand = async (command) => {
-    if (!connected || !characteristic) {
-      alert("Not connected to a device.");
+    const char = bluetoothManager.characteristic;
+
+    if (!char) {
+      alert("No characteristic found. Please reconnect.");
+      navigate("/scan");
       return;
     }
 
     try {
       const encoder = new TextEncoder();
-      await characteristic.writeValue(encoder.encode(command));
+      await char.writeValue(encoder.encode(command));
       console.log("✅ Command sent:", command);
     } catch (err) {
-      console.error("❌ Failed to send command:", err);
-      alert("Error sending command. Please reconnect.");
-      navigate("/HomePage");
+      console.error("❌ Error sending command:", err);
+      alert("Failed to send command. Please reconnect.");
+      navigate("/scan");
     }
   };
 

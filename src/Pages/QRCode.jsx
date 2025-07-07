@@ -1183,6 +1183,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Html5Qrcode } from "html5-qrcode";
+import { bluetoothManager } from "../BluetoothManager";
 
 export default function QRCode() {
   const [scanner, setScanner] = useState(null);
@@ -1190,17 +1191,27 @@ export default function QRCode() {
   const [manualMac, setManualMac] = useState(""); // ✅ Track input value
   const navigate = useNavigate();
 
+  // useEffect(() => {
+  //   const qrScanner = new Html5Qrcode("qr-reader");
+  //   setScanner(qrScanner);
+
+  //   return () => {
+  //     if (scanner?.isScanning) {
+  //       scanner.stop().catch(() => {});
+  //     }
+  //     scanner?.clear().catch(() => {});
+  //   };
+  //   // eslint-disable-next-line
+  // }, []);
+
   useEffect(() => {
     const qrScanner = new Html5Qrcode("qr-reader");
     setScanner(qrScanner);
 
     return () => {
-      if (scanner?.isScanning) {
-        scanner.stop().catch(() => {});
-      }
-      scanner?.clear().catch(() => {});
+      qrScanner.stop().catch(() => {});
+      qrScanner.clear().catch(() => {});
     };
-    // eslint-disable-next-line
   }, []);
 
   const startScanning = async () => {
@@ -1237,14 +1248,23 @@ export default function QRCode() {
           try {
             const SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
             const device = await navigator.bluetooth.requestDevice({
-              filters: [{ services: [SERVICE_UUID] }],
+              filters: [
+                {
+                  name: `SMARTCART-${decodedText}`,
+
+                  services: [SERVICE_UUID],
+                },
+                { namePrefix: "SMARTCART-" }, // ✅ Add prefix filter
+              ],
             });
 
             const server = await device.gatt.connect();
             const service = await server.getPrimaryService(SERVICE_UUID);
-            await service.getCharacteristic(
+            const characteristic = await service.getCharacteristic(
               "6e400002-b5a3-f393-e0a9-e50e24dcca9e"
             );
+            bluetoothManager.device = device;
+            bluetoothManager.characteristic = characteristic;
 
             console.log("✅ Bluetooth connected:", device.name);
 
@@ -1280,13 +1300,23 @@ export default function QRCode() {
       const SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
 
       const device = await navigator.bluetooth.requestDevice({
-        acceptAllDevices: true,
-        optionalServices: [SERVICE_UUID],
+        filters: [
+          {
+            name: `SMARTCART-${manualMac}`,
+            services: [SERVICE_UUID],
+          },
+          { namePrefix: "SMARTCART-" }, // ✅ Add prefix filter
+        ],
       });
 
       const server = await device.gatt.connect();
       const service = await server.getPrimaryService(SERVICE_UUID);
-      await service.getCharacteristic("6e400002-b5a3-f393-e0a9-e50e24dcca9e");
+      const characteristic = await service.getCharacteristic(
+        "6e400002-b5a3-f393-e0a9-e50e24dcca9e"
+      );
+
+      bluetoothManager.device = device;
+      bluetoothManager.characteristic = characteristic;
 
       console.log("✅ Bluetooth connected manually:", device.name);
       navigate("/control");
