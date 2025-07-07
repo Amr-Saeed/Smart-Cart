@@ -1,7 +1,7 @@
 {
   "id": "smart-cart-app",
   "name": "Smart Cart",
-  "short_name": " ",
+  "short_name": "",
   "description": "Smart Cart app for scanning products, navigation, BLE and QR support.",
   "start_url": "/",
   "scope": "/",
