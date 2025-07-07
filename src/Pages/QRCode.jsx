@@ -1218,6 +1218,7 @@ export default function QRCode() {
 
       setScanning(true);
 
+      // Start camera view without reading QR code yet
       await scanner.start(
         { deviceId: { exact: backCamera.id } },
         {
@@ -1225,7 +1226,7 @@ export default function QRCode() {
           qrbox: { width: 250, height: 250 },
           aspectRatio: 1.0,
         },
-        () => {},
+        () => {}, // Do nothing on auto-detect
         (err) => console.warn("QR scan error:", err)
       );
     } catch (err) {
@@ -1244,7 +1245,7 @@ export default function QRCode() {
       }
 
       try {
-        const result = await scanner.scanOnce();
+        const result = await scanner.scanOnce(); // Manual scan
         mac = result;
         console.log("✅ QR Code:", mac);
       } catch (err) {
@@ -1321,8 +1322,9 @@ export default function QRCode() {
       {/* Connect button — works for both manual or QR */}
       <button
         onClick={handleConnect}
-        className={`w-full max-w-md !p-3 !mb-3 bg-[blueviolet] text-white font-bold rounded-lg
-    ${scanning ? "animate-bounce" : ""}`}
+        className={`w-full max-w-md !p-3 !mb-3 bg-[blueviolet] text-white font-bold rounded-lg ${
+          scanning ? "animate-bounce" : ""
+        }`}
       >
         Connect
       </button>
