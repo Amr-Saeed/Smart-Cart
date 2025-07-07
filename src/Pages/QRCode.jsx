@@ -1188,21 +1188,10 @@ import { bluetoothManager } from "../BluetoothManager";
 export default function QRCode() {
   const [scanner, setScanner] = useState(null);
   const [scanning, setScanning] = useState(false);
-  const [manualMac, setManualMac] = useState(""); // ✅ Track input value
+  const [manualMac, setManualMac] = useState("");
+  const [macFromQR, setMacFromQR] = useState(null); // ✅ Store MAC from scan
+  const [showModal, setShowModal] = useState(false); // ✅ Show popup
   const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   const qrScanner = new Html5Qrcode("qr-reader");
-  //   setScanner(qrScanner);
-
-  //   return () => {
-  //     if (scanner?.isScanning) {
-  //       scanner.stop().catch(() => {});
-  //     }
-  //     scanner?.clear().catch(() => {});
-  //   };
-  //   // eslint-disable-next-line
-  // }, []);
 
   useEffect(() => {
     const qrScanner = new Html5Qrcode("qr-reader");
@@ -1223,11 +1212,10 @@ export default function QRCode() {
       }
 
       const backCamera =
-        devices.find(
-          (d) =>
-            d.label.toLowerCase().includes("back") ||
-            d.label.toLowerCase().includes("rear") ||
-            d.label.toLowerCase().includes("environment")
+        devices.find((d) =>
+          ["back", "rear", "environment"].some((keyword) =>
+            d.label.toLowerCase().includes(keyword)
+          )
         ) ||
         devices[1] ||
         devices[0];
@@ -1244,46 +1232,11 @@ export default function QRCode() {
         async (decodedText) => {
           console.log("✅ QR Code:", decodedText);
           localStorage.setItem("esp32-mac", decodedText);
-
-          try {
-            const SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
-            // const device = await navigator.bluetooth.requestDevice({
-            //   filters: [
-            //     {
-            //       name: `SMARTCART-${decodedText}`,
-
-            //       services: [SERVICE_UUID],
-            //     },
-            //     { namePrefix: "SMARTCART-" }, // ✅ Add prefix filter
-            //   ],
-            // });
-            const device = await navigator.bluetooth.requestDevice({
-              acceptAllDevices: true,
-              optionalServices: [SERVICE_UUID], // You can keep services you want to use
-            });
-
-            const server = await device.gatt.connect();
-            const service = await server.getPrimaryService(SERVICE_UUID);
-            const characteristic = await service.getCharacteristic(
-              "6e400002-b5a3-f393-e0a9-e50e24dcca9e"
-            );
-            bluetoothManager.device = device;
-            bluetoothManager.characteristic = characteristic;
-
-            console.log("✅ Bluetooth connected:", device.name);
-
-            await scanner.stop();
-            await scanner.clear();
-            setScanning(false);
-
-            navigate("/control");
-          } catch (err) {
-            console.error("❌ Bluetooth connection failed:", err);
-            alert("Failed to connect to ESP32. Please try again.");
-            setScanning(false);
-            await scanner.stop().catch(() => {});
-            await scanner.clear().catch(() => {});
-          }
+          setMacFromQR(decodedText);
+          setShowModal(true); // ✅ Show modal
+          await scanner.stop();
+          await scanner.clear();
+          setScanning(false);
         }
       );
     } catch (err) {
@@ -1292,7 +1245,39 @@ export default function QRCode() {
     }
   };
 
-  // ✅ Manual connect function
+  const connectToESP = async () => {
+    try {
+      const SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
+
+      const device = await navigator.bluetooth.requestDevice({
+        filters: [
+          {
+            name: `SMARTCART-${macFromQR}`,
+            services: [SERVICE_UUID],
+          },
+          { namePrefix: "SMARTCART-" },
+        ],
+      });
+
+      const server = await device.gatt.connect();
+      const service = await server.getPrimaryService(SERVICE_UUID);
+      const characteristic = await service.getCharacteristic(
+        "6e400002-b5a3-f393-e0a9-e50e24dcca9e"
+      );
+
+      bluetoothManager.device = device;
+      bluetoothManager.characteristic = characteristic;
+
+      console.log("✅ Bluetooth connected manually:", device.name);
+      setShowModal(false);
+      navigate("/control");
+    } catch (err) {
+      console.error("❌ Manual Bluetooth connection failed:", err);
+      alert("Failed to connect to ESP32. Please try again.");
+      setShowModal(false);
+    }
+  };
+
   const handleManualConnect = async () => {
     if (!manualMac.trim()) {
       alert("Please enter a MAC address.");
@@ -1309,7 +1294,7 @@ export default function QRCode() {
             name: `SMARTCART-${manualMac}`,
             services: [SERVICE_UUID],
           },
-          { namePrefix: "SMARTCART-" }, // ✅ Add prefix filter
+          { namePrefix: "SMARTCART-" },
         ],
       });
 
@@ -1331,15 +1316,12 @@ export default function QRCode() {
   };
 
   return (
-    <div className="text-white !p-4 flex flex-col items-center justify-center">
+    <div className="text-white !p-4 flex flex-col items-center justify-center relative">
       <h2 className="text-center text-[blueviolet] font-bold !mb-4 text-xl">
         Scan QR Code
       </h2>
 
-      <div
-        className="relative h-[250px] w-[250px] !mb-6 rounded-lg border-4 border-[var(--main-color)] overflow-hidden"
-        style={{ position: "relative" }}
-      >
+      <div className="relative h-[250px] w-[250px] !mb-6 rounded-lg border-4 border-[var(--main-color)] overflow-hidden">
         {!scanning && (
           <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-[blueviolet] text-center font-bold z-10">
             Camera View
@@ -1352,7 +1334,6 @@ export default function QRCode() {
         />
       </div>
 
-      {/* ✅ Input field and button */}
       <input
         type="text"
         value={manualMac}
@@ -1375,6 +1356,29 @@ export default function QRCode() {
         >
           Start Scanning
         </button>
+      )}
+
+      {/* ✅ Modal popup after scan */}
+      {showModal && (
+        <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-60 flex items-center justify-center z-50">
+          <div className="bg-white text-black p-6 rounded-lg shadow-xl text-center w-[90%] max-w-sm">
+            <h2 className="font-bold text-lg mb-4">
+              Device scanned. Click below to connect.
+            </h2>
+            <button
+              onClick={connectToESP}
+              className="w-full bg-[blueviolet] text-white font-bold rounded-lg px-4 py-2 mb-3"
+            >
+              Connect to ESP32
+            </button>
+            <button
+              onClick={() => setShowModal(false)}
+              className="w-full border border-[blueviolet] text-[blueviolet] font-bold rounded-lg px-4 py-2"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );
