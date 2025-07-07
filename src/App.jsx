@@ -34,6 +34,7 @@ import SocketManager from "./WebSockets/SocketManager"; // Import the SocketMana
 import { GuestCartProvider } from "./Components/HomePage/GuestCartContext";
 import Loader from "./Components/Loader"; // Import the Loader component
 import Arrows from "./Pages/Arrows";
+import { useDynamicTitle } from "../src/useDynamicTitle";
 
 const Product = lazy(() => import("./Pages/Product"));
 
@@ -60,6 +61,7 @@ function App() {
   // Check if the user has an "admin" role
   const isAdmin = user?.publicMetadata?.example === "admin"; // Assuming 'example' stores the role
   // console.log(isAdmin);
+  useDynamicTitle("Smart Cart");
 
   const router = createBrowserRouter([
     {
