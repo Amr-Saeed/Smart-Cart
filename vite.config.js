@@ -12,8 +12,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'robots.txt', 'apple-touch-icon.png'],
       manifest: {
-        name: '',
-        short_name: '',
+        name: "\u200B",
+        short_name: "\u200B",
         description: 'SmartCart mobile app as a Progressive Web App',
         start_url: '/',
         display: 'standalone',
