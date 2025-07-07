@@ -1247,15 +1247,20 @@ export default function QRCode() {
 
           try {
             const SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
-            const device = await navigator.bluetooth.requestDevice({
-              filters: [
-                {
-                  name: `SMARTCART-${decodedText}`,
+            // const device = await navigator.bluetooth.requestDevice({
+            //   filters: [
+            //     {
+            //       name: `SMARTCART-${decodedText}`,
 
-                  services: [SERVICE_UUID],
-                },
-                { namePrefix: "SMARTCART-" }, // ✅ Add prefix filter
-              ],
+            //       services: [SERVICE_UUID],
+            //     },
+            //     { namePrefix: "SMARTCART-" }, // ✅ Add prefix filter
+            //   ],
+            // });
+
+            const device = await navigator.bluetooth.requestDevice({
+              acceptAllDevices: true, // 🟢 Temporarily for testing
+              optionalServices: [SERVICE_UUID],
             });
 
             const server = await device.gatt.connect();
