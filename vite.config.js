@@ -13,7 +13,7 @@ export default defineConfig({
       includeAssets: ['favicon.svg', 'robots.txt', 'apple-touch-icon.png'],
       manifest: {
         name: '',
-        short_name: 'SmartCart',
+        short_name: '',
         description: 'SmartCart mobile app as a Progressive Web App',
         start_url: '/',
         display: 'standalone',
