@@ -1188,21 +1188,8 @@ import { bluetoothManager } from "../BluetoothManager";
 export default function QRCode() {
   const [scanner, setScanner] = useState(null);
   const [scanning, setScanning] = useState(false);
-  const [manualMac, setManualMac] = useState(""); // ✅ Track input value
+  const [manualMac, setManualMac] = useState("");
   const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   const qrScanner = new Html5Qrcode("qr-reader");
-  //   setScanner(qrScanner);
-
-  //   return () => {
-  //     if (scanner?.isScanning) {
-  //       scanner.stop().catch(() => {});
-  //     }
-  //     scanner?.clear().catch(() => {});
-  //   };
-  //   // eslint-disable-next-line
-  // }, []);
 
   useEffect(() => {
     const qrScanner = new Html5Qrcode("qr-reader");
@@ -1223,14 +1210,11 @@ export default function QRCode() {
       }
 
       const backCamera =
-        devices.find(
-          (d) =>
-            d.label.toLowerCase().includes("back") ||
-            d.label.toLowerCase().includes("rear") ||
-            d.label.toLowerCase().includes("environment")
-        ) ||
-        devices[1] ||
-        devices[0];
+        devices.find((d) =>
+          ["back", "rear", "environment"].some((k) =>
+            d.label.toLowerCase().includes(k)
+          )
+        ) || devices[0];
 
       setScanning(true);
 
@@ -1241,51 +1225,8 @@ export default function QRCode() {
           qrbox: { width: 250, height: 250 },
           aspectRatio: 1.0,
         },
-        async (decodedText) => {
-          console.log("✅ QR Code:", decodedText);
-          localStorage.setItem("esp32-mac", decodedText);
-
-          try {
-            const SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
-            // const device = await navigator.bluetooth.requestDevice({
-            //   filters: [
-            //     {
-            //       name: `SMARTCART-${decodedText}`,
-
-            //       services: [SERVICE_UUID],
-            //     },
-            //     { namePrefix: "SMARTCART-" }, // ✅ Add prefix filter
-            //   ],
-            // });
-
-            const device = await navigator.bluetooth.requestDevice({
-              acceptAllDevices: true, // 🟢 Temporarily for testing
-              optionalServices: [SERVICE_UUID],
-            });
-
-            const server = await device.gatt.connect();
-            const service = await server.getPrimaryService(SERVICE_UUID);
-            const characteristic = await service.getCharacteristic(
-              "6e400002-b5a3-f393-e0a9-e50e24dcca9e"
-            );
-            bluetoothManager.device = device;
-            bluetoothManager.characteristic = characteristic;
-
-            console.log("✅ Bluetooth connected:", device.name);
-
-            await scanner.stop();
-            await scanner.clear();
-            setScanning(false);
-
-            navigate("/control");
-          } catch (err) {
-            console.error("❌ Bluetooth connection failed:", err);
-            alert("Failed to connect to ESP32. Please try again.");
-            setScanning(false);
-            await scanner.stop().catch(() => {});
-            await scanner.clear().catch(() => {});
-          }
-        }
+        () => {},
+        (err) => console.warn("QR scan error:", err)
       );
     } catch (err) {
       console.error("Camera access error:", err);
@@ -1293,24 +1234,34 @@ export default function QRCode() {
     }
   };
 
-  // ✅ Manual connect function
-  const handleManualConnect = async () => {
-    if (!manualMac.trim()) {
-      alert("Please enter a MAC address.");
-      return;
+  const handleConnect = async () => {
+    let mac = manualMac.trim();
+
+    if (!mac) {
+      if (!scanner || !scanning) {
+        alert("Start scanning first or enter MAC manually.");
+        return;
+      }
+
+      try {
+        const result = await scanner.scanOnce();
+        mac = result;
+        console.log("✅ QR Code:", mac);
+      } catch (err) {
+        console.error("QR Scan failed:", err);
+        alert("Failed to scan QR code.");
+        return;
+      }
     }
 
     try {
-      localStorage.setItem("esp32-mac", manualMac);
+      localStorage.setItem("esp32-mac", mac);
       const SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
 
       const device = await navigator.bluetooth.requestDevice({
         filters: [
-          {
-            name: `SMARTCART-${manualMac}`,
-            services: [SERVICE_UUID],
-          },
-          { namePrefix: "SMARTCART-" }, // ✅ Add prefix filter
+          { name: `SMARTCART-${mac}`, services: [SERVICE_UUID] },
+          { namePrefix: "SMARTCART-" },
         ],
       });
 
@@ -1323,11 +1274,16 @@ export default function QRCode() {
       bluetoothManager.device = device;
       bluetoothManager.characteristic = characteristic;
 
-      console.log("✅ Bluetooth connected manually:", device.name);
+      console.log("✅ Bluetooth connected:", device.name);
+
+      await scanner?.stop();
+      await scanner?.clear();
+      setScanning(false);
+
       navigate("/control");
     } catch (err) {
-      console.error("❌ Manual Bluetooth connection failed:", err);
-      alert("Failed to connect to ESP32. Please try again.");
+      console.error("❌ Bluetooth connection failed:", err);
+      alert("Failed to connect to ESP32.");
     }
   };
 
@@ -1353,7 +1309,7 @@ export default function QRCode() {
         />
       </div>
 
-      {/* ✅ Input field and button */}
+      {/* Input field for manual MAC */}
       <input
         type="text"
         value={manualMac}
@@ -1362,9 +1318,11 @@ export default function QRCode() {
         className="text-2xl font-bold text-[blueviolet] w-full max-w-md !p-2.5 !mb-4 outline-0 border-b-2 border-[blueviolet] bg-transparent caret-inherit"
       />
 
+      {/* Connect button — works for both manual or QR */}
       <button
-        onClick={handleManualConnect}
-        className="w-full max-w-md !p-3 !mb-3 bg-[blueviolet] text-white font-bold rounded-lg"
+        onClick={handleConnect}
+        className={`w-full max-w-md !p-3 !mb-3 bg-[blueviolet] text-white font-bold rounded-lg
+    ${scanning ? "animate-bounce" : ""}`}
       >
         Connect
       </button>
