@@ -1361,19 +1361,19 @@ export default function QRCode() {
       {/* ✅ Modal popup after scan */}
       {showModal && (
         <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-60 flex items-center justify-center z-50">
-          <div className="bg-white text-black p-6 rounded-lg shadow-xl text-center w-[90%] max-w-sm">
-            <h2 className="font-bold text-lg mb-4">
+          <div className="bg-white text-black !p-6 rounded-lg shadow-xl text-center w-[90%] max-w-sm">
+            <h2 className="font-bold text-lg !mb-4 text-blueviolet">
               Device scanned. Click below to connect.
             </h2>
             <button
               onClick={connectToESP}
-              className="w-full bg-[blueviolet] text-white font-bold rounded-lg px-4 py-2 mb-3"
+              className="w-full bg-[blueviolet] text-white font-bold rounded-lg !px-4 !py-2 !mb-3"
             >
               Connect to ESP32
             </button>
             <button
               onClick={() => setShowModal(false)}
-              className="w-full border border-[blueviolet] text-[blueviolet] font-bold rounded-lg px-4 py-2"
+              className="w-full border border-[blueviolet] text-[blueviolet] font-bold rounded-lg !px-4 !py-2"
             >
               Cancel
             </button>
