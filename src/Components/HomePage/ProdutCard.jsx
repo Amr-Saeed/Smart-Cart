@@ -20,6 +20,8 @@ function ProductCard({
   comingFromSmScreensCategoryPage = false,
   commingFromScanPopUp = false,
   onCardClick, // ✅ Add this
+  x,
+  y,
 }) {
   const [showGoToPopup, setShowGoToPopup] = useState(false);
 
@@ -43,7 +45,7 @@ function ProductCard({
         <div>
           <figure className="relative flex items-center justify-center">
             {stockAvailability === 0 && <OutOfStock />}
-            <img loading="lazy" src="/logo.webp" alt={name} />
+            <img loading="lazy" src={productImg} alt={name} />
             <GoArrowUpRight
               onClick={() => setShowGoToPopup(true)}
               className="absolute animate-bounce bottom-0 right-0 text-2xl text-white cursor-pointer transition-all  hover:scale-110"
@@ -66,7 +68,12 @@ function ProductCard({
         </CardActions>
       </div>
       {showGoToPopup && (
-        <GoToPopup onClose={() => setShowGoToPopup(false)} name={name} />
+        <GoToPopup
+          onClose={() => setShowGoToPopup(false)}
+          name={name}
+          x={x}
+          y={y}
+        />
       )}
     </>
   );

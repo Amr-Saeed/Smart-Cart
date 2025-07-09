@@ -29,7 +29,8 @@ export function setupScannerListener(
   cartItems = [],
   fetchCart,
   getTokenFn,
-  setScannedProduct // ✅ Add this
+  setScannedProduct, // ✅ Add this
+  setRecommendations // ✅ add this
 ) {
   if (!products || products.length === 0) {
     console.warn("⚠️ Products not loaded yet. Listener not set.");
@@ -63,6 +64,20 @@ export function setupScannerListener(
 
     setScannedProduct(matchedProduct);
 
+    // ✅ Fetch and log product recommendations
+    try {
+      const res = await axios.get(
+        `https://nutrigeen.com/api/products/recommendations/${data.code}`
+      );
+      console.log("🧠 Recommendations:", res.data);
+      setRecommendations(res.data); // ✅ set them
+
+      // TODO: Pass to ScanPopup — e.g. via setRecommendations()
+      // Example:
+      // setRecommendations(res.data);
+    } catch (error) {
+      console.error("⚠️ Failed to fetch recommendations:", error);
+    }
     toast.success(
       `✅ Scanned: ${matchedProduct.name} (${matchedProduct.barcode})`,
       {

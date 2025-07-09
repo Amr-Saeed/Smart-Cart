@@ -42,7 +42,7 @@ def send_barcode():
     global loop
     data = {
         "name": "Peplossi",
-        "code": "113541"
+        "code": "11278"
     }
     print(f"Sending scanner_data: {data}")
     if loop:

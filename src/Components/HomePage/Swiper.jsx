@@ -103,6 +103,8 @@ export default function SwiperComponent({ content, title, relatedProducts }) {
                 name={product.name}
                 key={product.id}
                 id={product.id}
+                x={product.x}
+                y={product.y}
                 stockAvailability={product.stockAvailability}
                 offers={product.offers}
               >

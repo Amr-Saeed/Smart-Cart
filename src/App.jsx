@@ -44,6 +44,7 @@ const Cart = lazy(() => import("./Pages/Cart"));
 function App() {
   const { user, isLoaded } = useUser(); // Get the current user
   // const [scannedProduct, setScannedProduct] = useState(null);
+  useDynamicTitle("Smart Cart");
 
   // useEffect(() => {
   //   setupScannerListener((data) => {
@@ -61,7 +62,6 @@ function App() {
   // Check if the user has an "admin" role
   const isAdmin = user?.publicMetadata?.example === "admin"; // Assuming 'example' stores the role
   // console.log(isAdmin);
-  useDynamicTitle("Smart Cart");
 
   const router = createBrowserRouter([
     {

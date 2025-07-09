@@ -31,11 +31,11 @@ function DashBoard() {
   const [product, setProduct] = useState(defaultProduct);
   const [selectedCategory, setSelectedCategory] = useState(
     product.category || ""
-  ); // function handleCategoryChange(category) {
-  //   console.log("Selected categorssssssssssssy:", category);
-  //   setSelectedCategory(category);
-  // }
-
+  );
+  function handleCategoryChange(category) {
+    console.log("Selected categorssssssssssssy:", category);
+    setSelectedCategory(category);
+  }
   const { products, setProducts } = useProductsContext();
 
   return (

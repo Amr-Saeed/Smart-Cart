@@ -48,6 +48,7 @@ function SocketManager() {
   const { getToken } = useAuth();
   const { cartItems, fetchCart } = useCartContext();
   const [scannedProduct, setScannedProduct] = useState(null);
+  const [recommendations, setRecommendations] = useState([]);
 
   useEffect(() => {
     if (products && products.length > 0) {
@@ -60,7 +61,8 @@ function SocketManager() {
         (product) => {
           setScannedProduct(product); // ✅ show popup
           //   setTimeout(() => setScannedProduct(null), 4000); // optional auto-close
-        }
+        },
+        setRecommendations // ✅ pass to handler
       );
     }
   }, [products, user, cartItems]);
@@ -71,6 +73,8 @@ function SocketManager() {
         <ScanPopup
           product={scannedProduct}
           onClose={() => setScannedProduct(null)}
+          recommendations={recommendations} // ✅ add this prop
+          allProducts={products} // pass all products if needed
         />
       )}
     </>

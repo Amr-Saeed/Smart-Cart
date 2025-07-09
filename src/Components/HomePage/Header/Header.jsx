@@ -18,6 +18,8 @@ function Header() {
   const { getToken } = useAuth();
   const token = getToken();
   console.log("token", token); // This will log the token to the console
+
+  console.log("products", products);
   return (
     <header className=" w-full header sticky lg:relative top-0 z-50 shadow lg:shadow-none">
       <UpperContainer>

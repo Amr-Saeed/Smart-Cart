@@ -1189,8 +1189,8 @@ export default function QRCode() {
   const [scanner, setScanner] = useState(null);
   const [scanning, setScanning] = useState(false);
   const [manualMac, setManualMac] = useState("");
-  const [macFromQR, setMacFromQR] = useState(null); // ✅ Store MAC from scan
-  const [showModal, setShowModal] = useState(false); // ✅ Show popup
+  const [macFromQR, setMacFromQR] = useState(null);
+  const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -1198,8 +1198,14 @@ export default function QRCode() {
     setScanner(qrScanner);
 
     return () => {
-      qrScanner.stop().catch(() => {});
-      qrScanner.clear().catch(() => {});
+      if (qrScanner) {
+        qrScanner
+          .stop()
+          .catch((e) => console.warn("Scanner stop error on unmount:", e));
+        qrScanner
+          .clear()
+          .catch((e) => console.warn("Scanner clear error on unmount:", e));
+      }
     };
   }, []);
 
@@ -1233,10 +1239,17 @@ export default function QRCode() {
           console.log("✅ QR Code:", decodedText);
           localStorage.setItem("esp32-mac", decodedText);
           setMacFromQR(decodedText);
-          setShowModal(true); // ✅ Show modal
-          await scanner.stop();
-          await scanner.clear();
-          setScanning(false);
+          setShowModal(true);
+
+          if (scanning) {
+            try {
+              await scanner.stop();
+              await scanner.clear();
+              setScanning(false);
+            } catch (err) {
+              console.error("❌ Error stopping scanner:", err);
+            }
+          }
         }
       );
     } catch (err) {
@@ -1361,22 +1374,19 @@ export default function QRCode() {
       {/* ✅ Modal popup after scan */}
       {showModal && (
         <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-60 flex items-center justify-center z-50">
-          <div className="bg-white text-black !p-6 rounded-lg shadow-xl text-center w-[90%] max-w-sm">
-            <h2 className="font-bold text-lg !mb-4 text-blueviolet">
-              Device scanned. Click below to connect.
-            </h2>
-            <button
-              onClick={connectToESP}
-              className="w-full bg-[blueviolet] text-white font-bold rounded-lg !px-4 !py-2 !mb-3"
-            >
-              Connect to ESP32
-            </button>
-            <button
-              onClick={() => setShowModal(false)}
-              className="w-full border border-[blueviolet] text-[blueviolet] font-bold rounded-lg !px-4 !py-2"
-            >
-              Cancel
-            </button>
+          {/* ✅ Modal popup after scan */}
+          <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-60 flex items-center justify-center z-50">
+            <div className="bg-white text-black !p-6 rounded-lg shadow-xl text-center w-[90%] max-w-sm">
+              <h2 className="font-bold text-lg !mb-4 text-blueviolet">
+                Device scanned. Click below to connect.
+              </h2>
+              <button className="w-full bg-[blueviolet] text-white font-bold rounded-lg !px-4 !py-2 !mb-3">
+                Connect to ESP32
+              </button>
+              <button className="w-full border border-[blueviolet] text-[blueviolet] font-bold rounded-lg !px-4 !py-2">
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
       )}

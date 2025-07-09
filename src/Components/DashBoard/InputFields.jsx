@@ -102,6 +102,18 @@ const inputFields = [
     id: "barcode",
   },
   {
+    label: "Product Location X",
+    name: "x",
+    type: "number",
+    id: "x",
+  },
+  {
+    label: "Product Location Y",
+    name: "y",
+    type: "number",
+    id: "y",
+  },
+  {
     label: "Best Deal",
     name: "bestDeal",
     type: "checkbox", // A checkbox for best deal flag

@@ -7,15 +7,19 @@ import MainCategory from "../Components/Category/MainCategory";
 function Category() {
   const [currentCategoryProducts, setCurrentCategoryProducts] = useState([]);
   const { category } = useParams();
+  console.log("Category from URL:", category);
 
   async function getCategoryProducts(category) {
     try {
       const res = await fetch(
-        // `https://smartcart.tryasp.net/api/TodoItems/get-by-category/${category}`
-        `https://nutrigeen.com/api/cart/products/category/${category}`
+        `https://smartcart.tryasp.net/api/TodoItems/get-by-category/${category}`
+        // `https://nutrigeen.com/api/cart/products/category/${category}`
       );
+      console.log("Category from URL:", category);
 
       const data = await res.json();
+      console.log("API response:", data);
+
       setCurrentCategoryProducts(data);
     } catch (error) {
       console.log("Error fetching products", error);

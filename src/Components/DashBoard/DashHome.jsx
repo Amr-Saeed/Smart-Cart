@@ -14,6 +14,7 @@ import axios from "axios";
 import { SignIn, useUser, SignUp } from "@clerk/clerk-react";
 import { useToken } from "../TokenContext";
 import ImgDropZone from "./ImgDropZone";
+import { CgSpinner } from "react-icons/cg";
 
 function DashHome({
   product,
@@ -36,6 +37,8 @@ function DashHome({
 
   const [productToEdit, setProductToEdit] = useState(defaultProduct);
 
+  const [isLoading, setIsLoading] = useState(false);
+
   // Update selectedCategory whenever productToEdit changes
   useEffect(() => {
     if (productToEdit && productToEdit.category !== selectedCategory) {
@@ -45,6 +48,7 @@ function DashHome({
 
   async function handlEditeSubmit(e) {
     e.preventDefault();
+    setIsLoading(true); // Start loading state
     if (!productToEdit.id) {
       console.error("No product ID provided");
       return;
@@ -59,10 +63,15 @@ function DashHome({
       console.log("dash home token", token);
 
       // Create FormData to simulate a form submission
+      const updatedProduct = {
+        ...productToEdit,
+        stockAvailability: Number(productToEdit.inStock) > 0 ? 1 : 0,
+      };
+
       const formData = new FormData();
 
       // Append your product data to FormData
-      for (const key in productToEdit) {
+      for (const key in updatedProduct) {
         if (productToEdit.hasOwnProperty(key)) {
           formData.append(key, productToEdit[key]);
         }
@@ -101,6 +110,8 @@ function DashHome({
       CloseEditModal();
     } catch (error) {
       console.error("Error updating product:", error);
+    } finally {
+      setIsLoading(false); // End loading state
     }
   }
 
@@ -219,11 +230,11 @@ function DashHome({
   // Handle category selection
 
   function handleEditChange(e) {
-    const { value, name } = e.target;
+    const { name, type, checked, value } = e.target;
 
     setProductToEdit((product) => ({
       ...product,
-      [name]: value,
+      [name]: type === "checkbox" ? (checked ? 1 : 0) : value,
       category: selectedCategory,
     }));
   }
@@ -334,14 +345,22 @@ function DashHome({
             {/* 🔘 Action buttons */}
             <div className="flex gap-2 !mt-[20px]">
               <button
-                className="w-[50%] justify-center inline-flex items-center gap-2 rounded-md bg-gray-700 !py-1.5 !px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[focus]:outline-1 data-[focus]:outline-white data-[open]:bg-gray-700"
+                className="w-[50%] justify-center inline-flex items-center gap-2 rounded-md bg-[blueviolet] !py-1.5 !px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[focus]:outline-1 data-[focus]:outline-white data-[open]:bg-gray-700"
                 onClick={handleCancel}
                 type="button"
               >
                 Cancel
               </button>
-              <button className="w-[50%] justify-center inline-flex items-center gap-2 rounded-md bg-gray-700 !py-1.5 !px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[focus]:outline-1 data-[focus]:outline-white data-[open]:bg-gray-700">
-                Submit
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-[50%] justify-center inline-flex items-center gap-2 rounded-md bg-[blueviolet] !py-1.5 !px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[focus]:outline-1 data-[focus]:outline-white data-[open]:bg-gray-700"
+              >
+                {isLoading ? (
+                  <CgSpinner className="animate-spin text-blueviolet text-lg" />
+                ) : (
+                  "Submit"
+                )}
               </button>
             </div>
           </form>

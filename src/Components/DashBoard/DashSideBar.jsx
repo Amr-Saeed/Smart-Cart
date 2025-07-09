@@ -12,6 +12,8 @@ import { useEffect } from "react";
 import { useToken } from "../TokenContext";
 import axios from "axios";
 import { motion } from "framer-motion";
+import Combo from "./ComboBox";
+import { CgSpinner } from "react-icons/cg";
 
 function DashSideBar({
   product,
@@ -21,10 +23,12 @@ function DashSideBar({
   handleCategoryChange,
   defaultProduct,
   setSelectedCategory,
+  setProducts,
 }) {
   const [activeTab, setActiveTab] = useState("Home");
   const [isOpen, setIsOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   // const { getToken } = useAuth();
   const { token } = useToken(); // Assuming you're using a custom hook to get the token
@@ -65,6 +69,7 @@ function DashSideBar({
   }
   async function handleSubmit(e) {
     e.preventDefault();
+    setIsLoading(true);
 
     console.log(product); // Confirm it contains id and other fields
 
@@ -85,7 +90,7 @@ function DashSideBar({
 
       const finalProduct = {
         ...product,
-        stockAvailability: product.inStock > 0,
+        stockAvailability: Number(product.inStock) > 0 ? 1 : 0,
       };
 
       for (const key in finalProduct) {
@@ -118,10 +123,13 @@ function DashSideBar({
 
       const updatedProduct = await response.json();
       console.log("Product updated successfully:", updatedProduct);
+
       // Optionally, close modal and refresh the product list
       CloseAddModal();
     } catch (error) {
       console.error("Error updating product:", error);
+    } finally {
+      setIsLoading(false);
     }
     handleTabClick("Home");
   }
@@ -135,7 +143,7 @@ function DashSideBar({
 
     setProduct((product) => ({
       ...product,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: type === "checkbox" ? (checked ? 1 : 0) : value,
       category: selectedCategory,
     }));
   }
@@ -224,21 +232,29 @@ function DashSideBar({
             ))}
           </div>
 
-          <SelectMenu
+          <Combo
             products={products}
             value={selectedCategory}
             onValueChange={handleCategoryChange}
           />
           <div className="flex gap-2 !mt-[20px]">
             <button
-              className="w-[50%] justify-center inline-flex items-center gap-2 rounded-md bg-gray-700 !py-1.5 !px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[focus]:outline-1 data-[focus]:outline-white data-[open]:bg-gray-700"
+              className="w-[50%] justify-center inline-flex items-center gap-2 rounded-md bg-[blueviolet] !py-1.5 !px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[focus]:outline-1 data-[focus]:outline-white data-[open]:bg-gray-700"
               onClick={handleCancel}
               type="button"
             >
               Cancel
             </button>
-            <button className="w-[50%] justify-center inline-flex items-center gap-2 rounded-md bg-gray-700 !py-1.5 !px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[focus]:outline-1 data-[focus]:outline-white data-[open]:bg-gray-700">
-              Submit
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-[50%] justify-center inline-flex items-center gap-2 rounded-md bg-[blueviolet] !py-1.5 !px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[focus]:outline-1 data-[focus]:outline-white data-[open]:bg-gray-700"
+            >
+              {isLoading ? (
+                <CgSpinner className="animate-spin text-blueviolet text-lg" />
+              ) : (
+                "Submit"
+              )}{" "}
             </button>
           </div>
         </form>

@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import socket from "../../WebSockets/ScannerSocket"; // ✅ Import socket
 import { CgSpinner } from "react-icons/cg";
 
-function GoToPopup({ onClose, name }) {
+function GoToPopup({ onClose, name, x, y }) {
   const [loading, setLoading] = useState(false);
   const [imagePath, setImagePath] = useState(null);
 
@@ -15,8 +15,8 @@ function GoToPopup({ onClose, name }) {
 
     const coords = {
       productName: name,
-      x: 10, // hardcoded for now or pass as props
-      y: 20,
+      x, // hardcoded for now or pass as props
+      y,
     };
 
     console.log("📤 Sending go-to-request with:", coords);
@@ -81,7 +81,7 @@ function GoToPopup({ onClose, name }) {
         {!loading && !imagePath && (
           <button
             onClick={handleGoToClick}
-            className="w-[250px] !mt-[15px] bg-[blueviolet] text-white font-bold text-[1.4rem] h-12 rounded-[20px] hover:bg-[#aa8cee] transition duration-300"
+            className="w-[260px] !mt-[15px] bg-[blueviolet] text-white font-bold text-[1.4rem] h-16 rounded-[20px] hover:bg-[#aa8cee] transition duration-300"
           >
             GoTo {name} Location
           </button>
