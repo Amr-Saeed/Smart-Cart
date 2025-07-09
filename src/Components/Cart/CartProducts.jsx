@@ -36,6 +36,8 @@ export function ProductCart({ product, handleDelete }) {
     setIsDeleting(false); // Done
   }
 
+  console.log("asdasdasd", imageUrl);
+
   return (
     <li key={id}>
       <div className="cartData border-b border-b-[var(--main-color)] relative flex-col md:flex-row flex md:gap-[30px]">

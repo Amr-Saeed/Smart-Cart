@@ -1193,6 +1193,12 @@ export default function QRCode() {
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
+  function handleCancel() {
+    setMacFromQR(null);
+    setShowModal(false);
+    navigate("/HomePage");
+  }
+
   useEffect(() => {
     const qrScanner = new Html5Qrcode("qr-reader");
     setScanner(qrScanner);
@@ -1380,10 +1386,16 @@ export default function QRCode() {
               <h2 className="font-bold text-lg !mb-4 text-blueviolet">
                 Device scanned. Click below to connect.
               </h2>
-              <button className="w-full bg-[blueviolet] text-white font-bold rounded-lg !px-4 !py-2 !mb-3">
+              <button
+                onClick={connectToESP}
+                className="w-full bg-[blueviolet] text-white font-bold rounded-lg !px-4 !py-2 !mb-3"
+              >
                 Connect to ESP32
               </button>
-              <button className="w-full border border-[blueviolet] text-[blueviolet] font-bold rounded-lg !px-4 !py-2">
+              <button
+                onClick={() => setShowModal(false)}
+                className="w-full border border-[blueviolet] text-[blueviolet] font-bold rounded-lg !px-4 !py-2"
+              >
                 Cancel
               </button>
             </div>
