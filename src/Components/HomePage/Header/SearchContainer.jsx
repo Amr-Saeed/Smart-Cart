@@ -9,6 +9,7 @@ import SearchMenu from "../Header/SearchMenu";
 import { useProductsContext } from "../ProductsContext";
 import { useState, useCallback, useMemo, memo } from "react";
 import { lazy, Suspense } from "react";
+import Loader from "../../Loader";
 
 // const SearchMenu = lazy(() => import("../Header/SearchMenu"));
 const BottomDrawer = lazy(() => import("../BottomDrawer"));
@@ -122,7 +123,7 @@ function SearchContainer({ children, open, setOpen }) {
           {/* )} */}
         </form>
         {open && (
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<Loader />}>
             <BottomDrawer
               open={open}
               searchQuery2={searchQuery}

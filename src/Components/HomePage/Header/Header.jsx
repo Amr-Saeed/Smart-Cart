@@ -7,6 +7,7 @@ import LowCategories from "./LowCategories";
 import { lazy, Suspense } from "react";
 import { useProductsContext } from "../ProductsContext";
 import { useAuth } from "@clerk/clerk-react";
+import Loader from "../../Loader";
 // import ScannerData from "../../../WebSockets/ScannerData";
 
 const SideBar = lazy(() => import("../SideBar"));
@@ -37,7 +38,7 @@ function Header() {
       </UpperContainer>
       <LowCategories setIsSideBarOpen={setIsSideBarOpen} products={products}>
         {isSideBarOpen && (
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<Loader className="w-10 h-10 animate-spin" />}>
             <SideBar
               isOpen={isSideBarOpen}
               setIsOpen={setIsSideBarOpen}

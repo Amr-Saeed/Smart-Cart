@@ -49,44 +49,35 @@ function DashHome({
   async function handlEditeSubmit(e) {
     e.preventDefault();
     setIsLoading(true); // Start loading state
+
     if (!productToEdit.id) {
       console.error("No product ID provided");
       return;
     }
 
-    console.log(productToEdit); // Confirm it contains id and other fields
-
     try {
-      // const token = await getToken();
-      // const token = "ONyAiXVOgAbW8qTmVeObDAQglMcf5IZQuOPx5K9A5b7f9818";
-
-      console.log("dash home token", token);
-
-      // Create FormData to simulate a form submission
+      // Update stockAvailability in the productToEdit object
       const updatedProduct = {
         ...productToEdit,
-        stockAvailability: Number(productToEdit.inStock) > 0 ? 1 : 0,
+        stockAvailability: Number(productToEdit.inStock) > 1 ? 1 : 0,
       };
 
+      // Create FormData to simulate a form submission
       const formData = new FormData();
-
-      // Append your product data to FormData
       for (const key in updatedProduct) {
-        if (productToEdit.hasOwnProperty(key)) {
-          formData.append(key, productToEdit[key]);
+        if (updatedProduct.hasOwnProperty(key)) {
+          formData.append(key, updatedProduct[key]);
         }
       }
 
       // Add the authorization token to headers
       console.log("Token:", token); // Debug token
-
       const response = await axios.put(
-        `https://nutrigeen.com/api/products/${productToEdit.id}`,
+        `https://nutrigeen.com/api/products/ ${productToEdit.id}`,
         formData,
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            // Do NOT set 'Content-Type' when sending FormData
           },
           withCredentials: true,
         }
@@ -96,17 +87,16 @@ function DashHome({
         throw new Error("Failed to update product");
       }
 
-      // const updatedProduct = await response.json();
-      // console.log("Product updated successfully:", updatedProduct);
-
+      // Log the API response
       console.log("Product updated successfully:", response.data);
 
-      // Optionally, close modal and refresh the product list
+      // Update local products list with the updated product
       setProducts((prevProducts) =>
         prevProducts.map((p) =>
-          p.id === productToEdit.id ? { ...p, ...productToEdit } : p
+          p.id === updatedProduct.id ? { ...p, ...updatedProduct } : p
         )
       );
+
       CloseEditModal();
     } catch (error) {
       console.error("Error updating product:", error);

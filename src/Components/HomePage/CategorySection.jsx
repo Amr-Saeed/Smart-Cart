@@ -4,6 +4,7 @@ import { useProductsContext } from "../HomePage/ProductsContext";
 
 // import Category from "./Category";
 import { lazy, Suspense, useMemo } from "react";
+import Loader from "../Loader";
 
 const Category = lazy(() => import("./Category"));
 function CategorySection() {
@@ -85,7 +86,7 @@ function CategorySection() {
       </h2>
       <div className="containerr grid grid-cols-4 lg:grid lg:grid-cols-8 gap-x-4">
         {newProduct.map((product) => (
-          <Suspense fallback={<div>Loading...</div>} key={product.id}>
+          <Suspense fallback={<Loader />} key={product.id}>
             <Category product={product} key={product.id} />
           </Suspense>
         ))}

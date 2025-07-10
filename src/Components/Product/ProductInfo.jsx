@@ -14,6 +14,7 @@ function ProductInfo({ currentProduct, id }) {
     unit,
     offers,
   } = currentProduct;
+
   return (
     <section className="Product containerr">
       <div className="flex w-full lg:gap-[50px] lg:flex-row flex-col gap-[30px] place-items-center md:place-items-start">

@@ -10,6 +10,7 @@ import LandingSection from "../Components/HomePage/LandingSection";
 import { lazy, Suspense, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ProductsProvider } from "../Components/HomePage/ProductsContext";
+import Loader from "../Components/Loader";
 
 const Header = lazy(() => import("../Components/HomePage/Header/Header"));
 const CategorySection = lazy(() =>
@@ -29,9 +30,9 @@ function HomePage() {
   }
   return (
     // <ProductsProvider>
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<Loader />}>
       <LandingSection />
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Loader />}>
         <CategorySection />
       </Suspense>
       <EveryDayNeeds />

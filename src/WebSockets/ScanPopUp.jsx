@@ -30,7 +30,7 @@ function ScanPopup({
   console.log("asasd", recommended);
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white h-[80%] rounded-xl shadow-lg p-8 w-[80%] overflow-y-auto">
+      <div className="bg-white h-[80%] rounded-xl shadow-lg p-8 w-[50%] overflow-y-auto">
         <div>
           <div className="flex items-center justify-between !mb-4 !mt-2">
             <h2 className="text-2xl font-semibold  text-[blueviolet]">
@@ -69,7 +69,7 @@ function ScanPopup({
               <span className="text-2xl font-semibold  text-[blueviolet] !mb-[30px] inline-block">
                 🤖AI Recommendations:
               </span>
-              <div className="grid grid-cols-2 gap-x-2.5 gap-y-10 !p-2.5 place-items-center">
+              <div className="grid lg:grid-cols-2 grid-cols-1 gap-x-2.5 gap-y-10 !p-2.5 place-items-center">
                 {recommended.map((item) => (
                   <ProdutCard
                     key={item.id}

@@ -12,15 +12,16 @@ function Category() {
   async function getCategoryProducts(category) {
     try {
       const res = await fetch(
-        `https://smartcart.tryasp.net/api/TodoItems/get-by-category/${category}`
-        // `https://nutrigeen.com/api/cart/products/category/${category}`
+        // `https://smartcart.tryasp.net/api/TodoItems/get-by-category/${category}`
+        `https://nutrigeen.com/api/products/category/${category}`
       );
       console.log("Category from URL:", category);
 
       const data = await res.json();
       console.log("API response:", data);
-
-      setCurrentCategoryProducts(data);
+      console.log("API response (should be an array):", data);
+      console.log("Array.isArray(data):", Array.isArray(data)); // ✅
+      setCurrentCategoryProducts(data.products); // ✅ Only pass the array
     } catch (error) {
       console.log("Error fetching products", error);
     }

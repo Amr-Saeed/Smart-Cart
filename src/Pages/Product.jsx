@@ -4,6 +4,7 @@ import Header from "../Components/HomePage/Header/Header";
 import LowCategories from "../Components/HomePage/Header/LowCategories";
 
 import { useProductsContext } from "../Components/HomePage/ProductsContext";
+import Loader from "../Components/Loader";
 // import Footer from "../Footer";
 // import MayAlsoLike from "./MayAlsoLike";
 // import ProductInfo from "./ProductInfo";
@@ -21,21 +22,34 @@ function Product() {
 
   // const [isAddCart, setIsAddCart] = useState(true);
 
+  // async function getProduct(id) {
+  //   try {
+  //     setIsLoading(true);
+  //     const res = await fetch();
+  //     // `https://smartcart.tryasp.net/api/TodoItems/get-by-id/${id}`
+  //     `https://nutrigeen.com/api/cart/products/${id}`;
+  //     const data = await res.json();
+  //     setCurrentProduct(data);
+  //   } catch {
+  //     console.log("Error fetching products");
+  //   } finally {
+  //     setIsLoading(false);
+  //     // hasFetched.current = true; // Mark fetch as complete
+  //   }
+  // }
   async function getProduct(id) {
     try {
       setIsLoading(true);
-      const res = await fetch();
-      // `https://smartcart.tryasp.net/api/TodoItems/get-by-id/${id}`
-      `https://nutrigeen.com/api/cart/products/${id}`;
+      const res = await fetch(`https://nutrigeen.com/api/products/${id}`);
       const data = await res.json();
       setCurrentProduct(data);
-    } catch {
-      console.log("Error fetching products");
+    } catch (error) {
+      console.log("Error fetching product:", error);
     } finally {
       setIsLoading(false);
-      // hasFetched.current = true; // Mark fetch as complete
     }
   }
+
   if (!currentProduct) return <h1>Product not found</h1>;
 
   const relatedProducts = useMemo(() => {
@@ -70,7 +84,7 @@ function Product() {
   return (
     <>
       <LowCategories />
-      <Suspense fallback={<h1>Loading...</h1>}>
+      <Suspense fallback={<Loader />}>
         <ProductInfo currentProduct={currentProduct} id={id} />
 
         <MayAlsoLike relatedProducts={relatedProducts} />

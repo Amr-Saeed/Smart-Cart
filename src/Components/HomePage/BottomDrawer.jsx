@@ -13,6 +13,7 @@ import {
   DrawerTitle,
   DrawerDescription,
 } from "../ui/drawer";
+import Loader from "../Loader";
 
 export default function BottomDrawer({
   open,
@@ -38,7 +39,7 @@ export default function BottomDrawer({
           handleClose={handleClose}
         /> */}
         {children}
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<Loader />}>
           <SearchMenu2>
             <SearchList>
               {/* searchedProducts.length === 0 this means that what users entered isn't in out ptoducts so the searchedProducts will be empty so it's length is 0*/}
