@@ -92,8 +92,9 @@ function CartCheckout({ cartProducts, user, APIToialPrice }) {
             >
               <div className="w-full relative">
                 <label className="font-semibold text-[0.9rem] text-[#0000008c]">
-                  Add Code
+                  Add Code ( Use Smart-Cart for 10% discount )
                 </label>
+
                 <input
                   onChange={(e) => setPromoCode(e.target.value)}
                   type="text"
