@@ -26,6 +26,8 @@ function DashHome({
   setProducts,
 }) {
   const [searchDashQuery, setDashSearchQuery] = useState("");
+  const [newImageFile, setNewImageFile] = useState(null);
+
   //start Modal control
   const { getToken } = useAuth();
   const { user, isLoaded } = useUser(); // Get the current user
@@ -62,18 +64,24 @@ function DashHome({
         stockAvailability: Number(productToEdit.inStock) > 1 ? 1 : 0,
       };
 
-      // Create FormData to simulate a form submission
       const formData = new FormData();
+
+      // Only send new file if user uploaded it
+      if (newImageFile) {
+        formData.append("imageUrl", newImageFile);
+      }
+
       for (const key in updatedProduct) {
-        if (updatedProduct.hasOwnProperty(key)) {
+        if (key !== "imageUrl" && updatedProduct.hasOwnProperty(key)) {
           formData.append(key, updatedProduct[key]);
         }
       }
 
       // Add the authorization token to headers
       console.log("Token:", token); // Debug token
-      const response = await axios.put(
-        `https://nutrigeen.com/api/products/ ${productToEdit.id}`,
+      const response = await axios.post(
+        `https://nutrigeen.com/api/products/${productToEdit.id}`, //  `https://nutrigeen.com/public/api/products/${productToEdit.id}`,
+
         formData,
         {
           headers: {
@@ -204,6 +212,8 @@ function DashHome({
   }
 
   function openEditModal() {
+    setNewImageFile(null); // ✅ Clear previously selected image
+
     setIsOpenEdit(true);
   }
 
@@ -215,6 +225,8 @@ function DashHome({
   //End Modal control
   function handleCancel() {
     setProductToEdit(defaultProduct);
+    setNewImageFile(null); // ✅ Reset new image on cancel
+
     CloseEditModal();
   }
   // Handle category selection
@@ -299,11 +311,12 @@ function DashHome({
             {/* 🆕 Dropzone for uploading the product image (match Add Product layout) */}
             <div className="!mb-[10px] flex flex-col">
               <label className="text-[#0000009c] font-bold">Upload Image</label>
-              <ImgDropZone
+              {/* <ImgDropZone
                 onFileAccepted={(file) =>
                   setProductToEdit((prev) => ({ ...prev, imageUrl: file }))
                 }
-              />
+              /> */}
+              <ImgDropZone onFileAccepted={(file) => setNewImageFile(file)} />
             </div>
 
             {/* 🧾 Input fields layout (same as Add Product) */}

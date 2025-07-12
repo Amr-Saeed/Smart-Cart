@@ -53,7 +53,7 @@ export function ProductCart({ product, handleDeleteWish }) {
             <FavBtn id={product.id} prod={true} />{" "}
             <img
               loading="lazy"
-              src={imageUrl}
+              src={`https://nutrigeen.com/public/${imageUrl}`}
               alt={name}
               className="!mb-[20px] !mt-[20px] !rounded-[10px]"
             />

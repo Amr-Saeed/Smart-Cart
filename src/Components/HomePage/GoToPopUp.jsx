@@ -51,7 +51,7 @@ function GoToPopup({ onClose, name, x, y }) {
       >
         <div className="flex items-center justify-between !mb-4 !mt-2">
           <h2 className="text-2xl font-semibold text-[blueviolet] flex items-center gap-2">
-            <span className={`${imagePath ? "scale-x-[-1]" : ""}`}>🚶</span>
+            {/* <span className={`${imagePath ? "scale-x-[-1]" : ""}`}>🚶</span> */}
             {imagePath ? "Follow This Path" : "Need To Go?"}
           </h2>
 

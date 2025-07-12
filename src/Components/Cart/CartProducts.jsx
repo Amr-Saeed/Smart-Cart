@@ -46,7 +46,7 @@ export function ProductCart({ product, handleDelete }) {
             <FavBtn id={product.product_id || product.id} prod={true} />{" "}
             <img
               loading="lazy"
-              src={imageUrl}
+              src={`https://nutrigeen.com/public/${imageUrl}`}
               alt={name}
               className="!mb-[20px] !mt-[20px] !rounded-[10px]"
             />
@@ -63,6 +63,7 @@ export function ProductCart({ product, handleDelete }) {
               <Quantity
                 id={product.product_id || product.id}
                 stockAvailability={true}
+                productName={name}
               />
             </CardActions>
             <Price

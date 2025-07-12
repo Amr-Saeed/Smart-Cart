@@ -93,20 +93,7 @@ async def disconnect(sid):
     print(f"Client disconnected: {sid}")
     connected_clients.discard(sid)
 
-# @sio.event
-# async def product_location(sid, data):
-#     print(f"Product Location is: {data}")
-    
-#     # Read the route.jpg file
-#     image_path = os.path.join(os.path.dirname(__file__), "route.jpg")
-    
-#     if os.path.exists(image_path):
-#         with open(image_path, "rb") as image_file:
-#             encoded_image = base64.b64encode(image_file.read()).decode("utf-8")
-        
-#         await sio.emit("route-image", {"imageData": encoded_image}, to=sid)
-#     else:
-#         print("❌ route.jpg not found.")
+
 
 @sio.event
 async def product_location(sid, data):

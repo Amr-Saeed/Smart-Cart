@@ -63,6 +63,7 @@ function ProductCard({
           <Quantity
             id={id}
             stockAvailability={stockAvailability}
+            productName={name}
             comingFromSmScreensCategoryPage={comingFromSmScreensCategoryPage}
           />
         </CardActions>
