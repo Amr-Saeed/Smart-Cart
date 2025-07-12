@@ -6,6 +6,8 @@ import { RiVisaFill } from "react-icons/ri";
 
 function CartCheckout({ cartProducts, user, APIToialPrice }) {
   const [isPromoCodeVisible, setIsPromoCodeVisible] = useState(false);
+  const [discount, setDiscount] = useState(0);
+  const [promoCode, setPromoCode] = useState("");
 
   // const pricesafterOffers = useMemo(() => {
   //   return cartProducts.map((product) => {
@@ -33,6 +35,15 @@ function CartCheckout({ cartProducts, user, APIToialPrice }) {
   function handlePromoCodeToggle() {
     setIsPromoCodeVisible((isPromoCodeVisible) => !isPromoCodeVisible);
   }
+
+  const handlePromoSubmit = (e) => {
+    e.preventDefault();
+    if (promoCode.trim().toLowerCase() === "smart-cart") {
+      setDiscount(0.1); // 10% discount
+    } else {
+      setDiscount(0); // No discount if incorrect
+    }
+  };
   return (
     <section className="w-full lg:w-1/3 !mt-[-65px] lg:!mt-[50px]">
       <div className="PaymentSummary bg-[#aa8cee9e] !p-[20px] rounded-lg shadow-md flex flex-col gap-4 h-[500px]">
@@ -41,7 +52,7 @@ function CartCheckout({ cartProducts, user, APIToialPrice }) {
         </h2>
         <div className="subTotal flex justify-between text-[#000000b3] !mt-[15px]">
           <p>SubTotal</p>
-          <span>{`${finalTotalPrice.toFixed(2)}EGP`}</span>
+          <span> {`${(finalTotalPrice * (1 - discount)).toFixed(2)}EGP`}</span>
         </div>
         <div className="promoCode flex justify-between  !mt-[15px] items-center">
           <p className="text-[blueviolet] font-bold text-[1.3rem]">
@@ -74,12 +85,17 @@ function CartCheckout({ cartProducts, user, APIToialPrice }) {
                 : "opacity-0 h-0 translate-y-2 pointer-events-none"
             }`}
           >
-            <form id="searchForm" className="searchBar  flex ">
+            <form
+              id="searchForm"
+              className="searchBar flex"
+              onSubmit={handlePromoSubmit}
+            >
               <div className="w-full relative">
                 <label className="font-semibold text-[0.9rem] text-[#0000008c]">
                   Add Code
                 </label>
                 <input
+                  onChange={(e) => setPromoCode(e.target.value)}
                   type="text"
                   className="searchInput   bg-white outline-none   rounded-lg relative h-12 w-full"
                 />
@@ -87,7 +103,7 @@ function CartCheckout({ cartProducts, user, APIToialPrice }) {
                   aria-label="search"
                   type="submit"
                   className="searchButton absolute !right-[-2px] top-[24px] rounded-[10px] h-12   w-[4rem] md:w-12 flex justify-center items-center"
-                  onClick={(e) => e.preventDefault()}
+                  // onClick={(e) => e.preventDefault()}
                 >
                   <FaArrowRight color="white" size={20} />
                 </button>
