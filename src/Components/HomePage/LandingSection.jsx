@@ -25,7 +25,7 @@ function LandingSection() {
             <img
               src="/png.avif"
               alt="Smart-Cart"
-              className="w-[500px] md:h-96 object-cover h-auto"
+              className="w-[250px] h-[350px] md:w-[300px] md:h-[400px] object-cover lg:h-auto"
             />
           </picture>
         </div>
