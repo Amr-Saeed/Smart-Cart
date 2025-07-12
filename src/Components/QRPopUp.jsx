@@ -38,7 +38,7 @@ function QRPopup() {
           Scanned QR
         </h2>
         <img
-          src={"/png.png"} // Replace with actual QR image path
+          src={imageData} // Replace with actual QR image path
           alt="QR"
           className="max-w-full max-h-[500px] !mx-auto rounded-md"
         />
