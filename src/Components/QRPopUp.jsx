@@ -35,7 +35,7 @@ function QRPopup() {
           <IoClose />
         </button>
         <h2 className="text-xl font-bold text-[blueviolet] !mb-4">
-          Scanned QR
+          Connect To Cart
         </h2>
         <img
           src={imageData} // Replace with actual QR image path
