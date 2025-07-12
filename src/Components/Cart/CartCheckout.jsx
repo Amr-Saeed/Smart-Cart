@@ -113,9 +113,10 @@ function CartCheckout({ cartProducts, user, APIToialPrice }) {
         }
         <div className="Total flex justify-between  !mt-[15px] items-center">
           <p className="text-[blueviolet] font-bold text-[2rem]">Total</p>
-          <span className="text-[1.5rem] text-black font-bold">{`${finalTotalPrice.toFixed(
-            2
-          )}EGP`}</span>
+          <span className="text-[1.5rem] text-black font-bold">
+            {" "}
+            {`${(finalTotalPrice * (1 - discount)).toFixed(2)}EGP`}
+          </span>
         </div>
         <button className="w-full !mt-[15px] bg-[blueviolet] text-white font-bold text-[1.4rem] h-12 rounded-[20px] hover:bg-[#aa8cee] transition duration-300">
           Checkout
