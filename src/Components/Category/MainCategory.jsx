@@ -58,8 +58,8 @@ function MainCategory({ category, categoryProducts }) {
   const filteredProducts = useMemo(() => {
     let result = categoryProducts.filter((product) => {
       //checking the hasDEal
-      const matchDeal = hasDeal === "Yes" ? product.bestDeal === true : true;
-      const noDeal = hasDeal === "No" ? product.bestDeal === false : true;
+      const matchDeal = hasDeal === "Yes" ? product.bestDeal === 1 : true;
+      const noDeal = hasDeal === "No" ? product.bestDeal === 0 : true;
 
       //checking the stores
       const matchStores = stores > 0 ? product.inStock >= stores : true;
